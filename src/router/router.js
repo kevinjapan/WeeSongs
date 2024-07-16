@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useSongStore } from '@/stores/songStore'
 
 
 const router = createRouter({
@@ -66,5 +67,17 @@ const router = createRouter({
       }
    ]
 })
+
+router.beforeEach((to,from,next) => {
+   const song_store = useSongStore()
+   if(song_store && !song_store.synched) {
+      if(window.confirm("You have not applied your changes, are you sure you want to leave the page?")) {
+         next()
+      }
+   }
+   else {
+      next()
+   }
+ })
 
 export default router
