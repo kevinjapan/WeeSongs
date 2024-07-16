@@ -21,8 +21,10 @@ const del_section = async(section_id) => {
    // notify_msg.value = result.message  // to do : handle *if* error; on success, change is visible in UI
 }
 
-const clone_section = (section_id) => {
+const clone_section = async(section_id) => {
    console.log('clone_section in Song',section_id)
+   const result = await song_store.clone_section(section_id)
+   // notify_msg.value = result.message  // to do : handle *if* error; on success, change is visible in UI
 }
 
 const move_section = (section_id,direction) => {

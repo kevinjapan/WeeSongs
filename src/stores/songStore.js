@@ -52,7 +52,7 @@ export const useSongStore = defineStore('song_store', () => {
 
    watch(() => song.value,(new_song) => {
       if(new_song) {
-         console.log('song changed in store')
+         // detect if song has changed - console.log('song changed in store')
       }
    })
 
@@ -144,19 +144,52 @@ export const useSongStore = defineStore('song_store', () => {
          return section.id !== section_id
       })
       modified.aSections = modified_sections
+
       song.value.songsheet = modified
-
       synched.value = false
-
       return {
          outcome: 'success',
          message: 'The section was deleted successfully'
       }
    }
 
+   async function clone_section(section_id) {
+
+      let modified = {...song.value.songsheet}
+      const target_section = modified.aSections.find(section => {
+         return section.id === section.id
+      })
+      let copy_section = {...target_section}
+
+      // calc id by incrementing current highest
+      const ids = modified.aSections.map(section => section.id)
+      ids.sort()
+      copy_section.id = ids[ids.length - 1] + 1
+
+      // calc next DAW char
+      const daws = modified.aSections.map(section => section.daw)
+      daws.sort()
+      const next_daw = String.fromCharCode(daws[daws.length -1].charCodeAt(0) + 1)
+      if(next_daw > 'Z'.charCodeAt(0)) next_daw = 'Z'.charCodeAt(0)
+      copy_section.daw = next_daw
+
+      // we retain title since section type most likely remains the same
+
+      modified.aSections.push(copy_section)
+
+      song.value.songsheet = modified
+      synched.value = false
+      return {
+         outcome: 'success',
+         message: 'The section was cloned successfully'
+      }
+   }
+
    return {
       my_object, change_my_object,
-      song, synched, load_song, update_song, save, del_section
+      song, synched, load_song, 
+      update_song, save, 
+      del_section, clone_section
    }
 
 })
