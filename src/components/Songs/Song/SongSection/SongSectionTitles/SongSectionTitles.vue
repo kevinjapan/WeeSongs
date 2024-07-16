@@ -8,7 +8,9 @@ const update = () => props.notify_updated_titles()
 </script>
 
 <template>
-   <div style="display:flex;justify-content:start;max-width:160px;gap:0.5rem;" class="p_0.5">
+   <div style="display:flex;justify-content:start;max-width:200px;gap:0.5rem;" class="p_0.5">
+
+      {{ props.section.id }}
 
       <input 
          v-model="props.section.daw" 
