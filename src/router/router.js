@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
 
 
@@ -69,8 +70,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to,from,next) => {
+   const app_store = useAppStore()
    const song_store = useSongStore()
-   if(song_store && !song_store.synched) {
+   if(song_store && !song_store.synched && app_store.bearer_token !== '') {
       if(window.confirm("You have not applied your changes, are you sure you want to leave the page?")) {
          next()
       }
