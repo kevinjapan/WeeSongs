@@ -2,7 +2,7 @@
 
 // App, Root Component
 
-import { useAppStore } from '@/stores/appstore'
+import { useAppStore } from '@/stores/appStore'
 
 const app_store = useAppStore()
 

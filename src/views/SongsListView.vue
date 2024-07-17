@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
-import { useAppStore } from '@/stores/appstore'
+import { useAppStore } from '@/stores/appStore'
 import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
 import reqInit from "../utilities/requestInit/RequestInit"
 import get_ui_ready_date from "../utilities/dates/dates"
@@ -111,8 +111,6 @@ const get_list =async() => {
          page_links.value = data.songs_list.links.filter((element, index,array) => { 
             return index !== 0 && index !== array.length - 1 // we remove server-provided 'prev' and 'next' (unpredictable)
          })
-
-         console.log('songs_list',songs_list.value)
       })
       .catch((error) => {
          loading_error.is_error = true

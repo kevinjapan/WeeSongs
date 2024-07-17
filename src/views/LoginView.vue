@@ -1,7 +1,7 @@
 <script setup>
 import { ref,reactive,computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAppStore } from '@/stores/appstore'
+import { useAppStore } from '@/stores/appStore'
 import reqInit from '../utilities/requestInit/RequestInit'
 
 //
@@ -86,6 +86,7 @@ const login = () => {
          We were unable to login.
       </div>
       <div v-else>
+         <!-- to do : remove showing this! -->
          token: {{ app_store.bearer_token }}
       </div>
 

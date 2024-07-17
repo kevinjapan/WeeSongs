@@ -1,7 +1,7 @@
 
 import { ref,computed,watch } from 'vue'
 import { defineStore } from 'pinia'
-import { useAppStore } from './appstore'
+import { useAppStore } from './appStore'
 import reqInit from "../utilities/requestInit/RequestInit"
 
 
