@@ -34,11 +34,20 @@ const clone = () => {
 const move = (direction) => {
    props.move_section(props.section.id,direction)
 }
+
+
+      // <!-- to do : capture in my docs
+      //    c.f.    id="props.section.daw"   with    :id="props.section.daw"
+
+      //    the bind declaration (colon) instructs vue to interpret the string as a script variable...
+      // -->
 </script>
 
 
 <template>
-   <div style="display:flex;justify-content:flex-start;flex-direction:column;border:solid 1px grey;margin:1rem;margin-top:2rem;">
+   <div 
+      :id="props.section.daw"
+      style="display:flex;justify-content:flex-start;flex-direction:column;border:solid 1px grey;margin:1rem;margin-top:2rem;">
 
       <SongSectionTitles 
          :section="section"
@@ -55,14 +64,32 @@ const move = (direction) => {
       </div>
 
       <div className="flex justify-end gap-3">
-         <button v-if="props.last" disabled>MoveDown</button>
-         <button v-else @click="move('down')">MoveDown</button>
-         <button v-if="props.index > 0" @click="move('up')">Move Up</button>
-         <button v-else disabled>Move Up</button>
-         <button @click="del">Delete</button>
-         <button @click="clone">Clone</button>
-         <button v-if="requires_update === true" @click="update">Apply</button>
+
+         <button v-if="props.last" disabled>
+            <img src="../../../../assets/icons/arrow-down-circle.svg" />
+         </button>
+         <button v-else @click="move('down')">
+            <img src="../../../../assets/icons/arrow-down-circle.svg" />
+         </button>
+
+         <button v-if="props.index > 0" @click="move('up')">
+            <img src="../../../../assets/icons/arrow-up-circle.svg" />
+         </button>
+         <button v-else disabled>
+            <img src="../../../../assets/icons/arrow-up-circle.svg" />
+         </button>
+
+         <button @click="del">
+            <img src="../../../../assets/icons/trash.svg" alt="delete section"/>
+         </button>
+
+         <button @click="clone">
+            <img src="../../../../assets/icons/copy.svg" />
+         </button>
+
+         <button v-if="requires_update === true" @click="update">Apply</button>         
          <button v-else disabled>Apply</button>
+
       </div>
 
    </div>
@@ -70,8 +97,36 @@ const move = (direction) => {
 
 
 <style scoped>
+button {
+   background:white;
+}
+button:disabled {
+   position:relative;
+}
 button:disabled:hover {
    border:solid 1px transparent;
    cursor:auto;
 }
+/* grey out disabled btn */
+button:disabled::before {
+   content:'';
+   position:absolute;
+   width:100%;
+   height:100%;
+   top:0;
+   left:0;
+   background:white;
+   opacity:.7;
+}
+
+/*  
+   change color on svgs 
+*/
+/* #history_component {
+   fill:white;
+}
+button:disabled {
+   filter: invert(5%) sepia(61%) saturate(5216%) hue-rotate(180deg) brightness(227%) contrast(105%);
+} */
+
 </style>
