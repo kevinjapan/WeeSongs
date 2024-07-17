@@ -3,6 +3,8 @@ import { useSongStore } from '@/stores/songStore'
 
 const song_store = useSongStore()
 
+const props = defineProps(['apply_changes'])
+
 // to do : flickers btwn 'edit' and 'meta' pages, since on ContainerView we don't have Song immediately -
 //         solution options: 
 //         - display disabled links and watch Song and hydrate/enable once it is populated
@@ -14,8 +16,11 @@ const song_store = useSongStore()
 </script>
 
 <template>
-   <div v-if="song_store.song" class="flex justify_end gap_1">      
-      <ul class="flex gap_1">
+   <div v-if="song_store.song" class="flex space_between gap_1">
+
+      <h3 class="m_1">{{  song_store.song.title }}</h3>
+
+      <ul class="flex gap_1 align_items_center">
          <li>
             <RouterLink :to="{ name: 'songcontainer', params: { slug: song_store.song.slug }}"
                activeClass="selected_tab" exactActiveClass="selected_tab">edit</RouterLink>
@@ -32,12 +37,46 @@ const song_store = useSongStore()
             <RouterLink :to="{ name: 'songprint', params: { slug: song_store.song.slug }}"
                activeClass="selected_tab" exactActiveClass="selected_tab">print</RouterLink>
          </li>
+         <li>
+            <button v-if="song_store.synched" disabled>
+               <img src="../../../../assets/icons/cloud-upload.svg" />
+            </button>
+            <button v-else @click="apply_changes">
+               <img src="../../../../assets/icons/cloud-upload.svg" />
+            </button>
+         </li>
       </ul>
    </div>
 </template>
 
 <style scoped>
+
 .selected_tab {
    background:hsl(0, 0%, 83%);
 }
+
+/* to do : duplicates code in SongSection */
+button {
+   background:white;
+}
+button:disabled {
+   position:relative;
+}
+button:disabled:hover {
+   border:solid 1px transparent;
+   cursor:auto;
+}
+/* grey out disabled btn */
+button:disabled::before {
+   content:'';
+   position:absolute;
+   width:100%;
+   height:100%;
+   top:0;
+   left:0;
+   background:white;
+   opacity:.7;
+}
+
+
 </style>

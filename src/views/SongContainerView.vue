@@ -32,8 +32,6 @@ const apply_changes = async() => {
    const result = await song_store.save()
    notify_msg.value = result.message
 }
-
-
 </script>
 
 <template>
@@ -49,16 +47,12 @@ const apply_changes = async() => {
             Loading data...
          </div>
 
-         <div class="relative" v-else>
+         <div v-else class="relative">
 
-            <!-- to do : enable Apply btn - we use two methods to practice them -->
-            <div v-if="!song_store.synched">
-               <button :class="{ active_button: !song_store.synched}" @click="apply_changes">Apply</button>
-            </div>
-
-            <SongCtrls />
+            <SongCtrls :apply_changes="apply_changes"/>
 
             <Song :song="song_store.song" />
+
          </div>
       </div>
       
@@ -69,7 +63,5 @@ const apply_changes = async() => {
 </template>
 
 <style scoped>
-.active_button {
-   background:yellow;/* to do : */
-}
+
 </style>
