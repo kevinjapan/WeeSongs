@@ -8,7 +8,7 @@ import SongSectionTitles from './SongSectionTitles/SongSectionTitles.vue'
 // single SongSection component within Song.aSections
 //
 
-const props = defineProps(['section','update','del_section','clone_section','move_section'])
+const props = defineProps(['section','index','update','del_section','clone_section','move_section','last'])
 const requires_update = ref(false)
 
 // child Bar handlers
@@ -55,8 +55,10 @@ const move = (direction) => {
       </div>
 
       <div className="flex justify-end gap-3">
-         <button @click="move('down')">MoveDown</button>
-         <button @click="move('up')">Move Up</button>
+         <button v-if="props.last" disabled>MoveDown</button>
+         <button v-else @click="move('down')">MoveDown</button>
+         <button v-if="props.index > 0" @click="move('up')">Move Up</button>
+         <button v-else disabled>Move Up</button>
          <button @click="del">Delete</button>
          <button @click="clone">Clone</button>
          <button v-if="requires_update === true" @click="update">Apply</button>
@@ -68,5 +70,8 @@ const move = (direction) => {
 
 
 <style scoped>
-
+button:disabled:hover {
+   border:solid 1px transparent;
+   cursor:auto;
+}
 </style>

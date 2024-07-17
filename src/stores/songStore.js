@@ -140,6 +140,11 @@ export const useSongStore = defineStore('song_store', () => {
    async function del_section(section_id) {
       
       let modified = {...song.value.songsheet}
+
+      // to do : note using spread will only clone first level, all nested are still refs
+      //         try w/ JSON.parse(JSON.stringify(song.value.songsheet))
+      //         this will clone all nested objects
+      
       const modified_sections = modified.aSections.filter(section => {
          return section.id !== section_id
       })
@@ -157,7 +162,7 @@ export const useSongStore = defineStore('song_store', () => {
 
       let modified = {...song.value.songsheet}
       const target_section = modified.aSections.find(section => {
-         return section.id === section.id
+         return section.id === section_id
       })
       let copy_section = {...target_section}
 
@@ -179,17 +184,42 @@ export const useSongStore = defineStore('song_store', () => {
 
       song.value.songsheet = modified
       synched.value = false
+
       return {
          outcome: 'success',
          message: 'The section was cloned successfully'
       }
    }
 
+   function move_section(section_id,direction) {
+      
+      let modified = {...song.value.songsheet}
+      const target_index = modified.aSections.findIndex(section => {
+         return section.id === section_id
+      })
+      const swap_to_index = direction === "down" ? target_index + 1 :  target_index - 1
+      if(swap_to_index > -1 && swap_to_index < modified.aSections.length) {
+         const target_section = modified.aSections[target_index]
+         const swap_section = modified.aSections[swap_to_index]
+         if(swap_section) {
+               modified.aSections[swap_to_index] = target_section
+               modified.aSections[target_index] = swap_section
+         }
+      }
+      song.value.songsheet = modified
+      synched.value = false
+      return {
+         outcome: 'success',
+         message: 'The section was moved successfully'
+      }
+   }
+
+
    return {
       my_object, change_my_object,
       song, synched, load_song, 
       update_song, save, 
-      del_section, clone_section
+      del_section, clone_section, move_section
    }
 
 })
