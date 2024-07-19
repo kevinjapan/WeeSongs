@@ -21,29 +21,12 @@ const songStore = useSongStore()
 const song = songStore.song
 const notify_msg = ref('')
 
-// flag for template display
-const got_song = ref(false)
-
-// to do : maybe solution for refreshing page..?
-// we don't assign initial state until we can verify song
-const meta_form = reactive({
-   id:-1,
-   title:'',
-   slug:'',
-   created_at:null,
-   updated_at:null,
-   bpm:-1,
-   duration:-1,
-   song_key:''
-})
-
 onBeforeMount(() => {
    // if user refreshes page, we lose current song, so return to songslist view
    if(!song) {
       router.push('/songs')
    }
 })
-
 
 const apply = async() => {
    const result = await songStore.save()
@@ -75,13 +58,16 @@ const patch_test = () => {
       <input id="slug" name="slug" v-model="songStore.song.slug" />
       
       <label for="id">id</label>
-      <input id="id" name="id" v-model="songStore.song.id" readonly class="readonly_input"/>
+      <input id="id" name="id" v-model="songStore.song.id" readonly 
+         class="readonly_input"/>
       
       <label for="created_at">Created At</label>
-      <input id="created_at" name="created_at" v-model="songStore.song.created_at" readonly  class="readonly_input"/>
+      <input id="created_at" name="created_at" v-model="songStore.song.created_at" readonly 
+         class="readonly_input"/>
       
       <label for="updated_at">Updated At</label>
-      <input id="updated_at" name="updated_at" v-model="songStore.song.updated_at" readonly  class="readonly_input"/>
+      <input id="updated_at" name="updated_at" v-model="songStore.song.updated_at" readonly 
+         class="readonly_input"/>
       
       <div></div>
       <button type="submit">Apply</button>
