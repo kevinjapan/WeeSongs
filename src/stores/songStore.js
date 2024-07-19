@@ -214,12 +214,27 @@ export const useSongStore = defineStore('song_store', () => {
       }
    }
 
+   function update_section(section_id,modified_section) {
+
+      let modified = {...song.value.songsheet}
+      const target_index = modified.aSections.findIndex(section => {
+         return section.id === section_id
+      })
+      modified.aSections[target_index] = modified_section
+      song.value.songsheet = modified
+      synched.value = false
+      return {
+         outcome: 'success',
+         message: 'The section was updated successfully'
+      }
+
+   }
 
    return {
       my_object, change_my_object,
       song, synched, load_song, 
       update_song, save, 
-      del_section, clone_section, move_section
+      del_section, clone_section, move_section, update_section
    }
 
 })
