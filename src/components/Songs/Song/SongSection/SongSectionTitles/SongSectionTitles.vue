@@ -1,14 +1,23 @@
 <script setup>
 import BarCounter from '../../BarCounter/BarCounter.vue'
 
-const props = defineProps(['section','notify_updated_titles'])
+const emit = defineEmits(['barNumsChanged'])
+const props = defineProps(['section','num_bars','notify_updated_titles'])
+
+// to do : we are mutating child properties of 'section' prop   
+//          see 'Binding Multiple Properties Using an Object' in components/props.html
 
 const update = () => props.notify_updated_titles()
+
+const change_num_bars = (num) => {
+   emit('barNumsChanged',num)
+}
 
 </script>
 
 <template>
-   <div style="display:flex;justify-content:start;max-width:200px;gap:0.5rem;" class="p_0.5">
+   <div style="display:flex;justify-content:start;max-width:500px;gap:0.5rem;" class="p_0.5">
+
 
       {{ props.section.id }}
 
@@ -30,9 +39,8 @@ const update = () => props.notify_updated_titles()
          @input="update"
       />
       
-      <BarCounter></BarCounter>
-           <!-- num_bars={props.num_bars}
-            onKeyPress={props.onBarsKeyPress} />-->
+      
+      <BarCounter :num_bars="props.num_bars" @bar-nums-changed="change_num_bars"></BarCounter>
    
    </div>
 

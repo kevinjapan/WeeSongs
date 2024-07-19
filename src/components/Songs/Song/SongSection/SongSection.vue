@@ -8,8 +8,11 @@ import SongSectionTitles from './SongSectionTitles/SongSectionTitles.vue'
 // single SongSection component within Song.aSections
 //
 
-const props = defineProps(['section','index','update','del_section','clone_section','move_section','last'])
+const props = defineProps(['section','index','update_song','del_section','clone_section','move_section','last','update_section'])
 const requires_update = ref(false)
+
+const num_bars = ref(props.section.aBars.length)
+const max_bars = 32
 
 // child Bar handlers
 const notify_updated_bar = () => {
@@ -21,8 +24,8 @@ const notify_updated_titles = () => {
 }
 
 // Section handlers
-const update = () => {
-   props.update()
+const update_song = () => {
+   props.update_song()
    requires_update.value = false
 }
 const del = () => {
@@ -36,11 +39,48 @@ const move = (direction) => {
 }
 
 
+
       // <!-- to do : capture in my docs
       //    c.f.    id="props.section.daw"   with    :id="props.section.daw"
 
       //    the bind declaration (colon) instructs vue to interpret the string as a script variable...
       // -->
+
+const change_num_bars = (num_bars) => {
+   
+   // we will change the section here - this should update the local copy in store - 
+   // to do : set requires_update = true
+
+
+   const new_num_bars = parseInt(num_bars)
+   if(!Number.isInteger(new_num_bars)) return
+   if(new_num_bars < 1 || new_num_bars > max_bars) return
+
+   // to do : we have the new_num_bars now,
+   //         let's change the Song
+   //    see SongSection.changeNumBars() in react Songs project
+   
+   // extract as a local var - 'unwrap'
+   const modified = JSON.parse(JSON.stringify(props.section))
+   // console.log('orig_bars',props.section)
+   const current_len = modified.aBars.length
+   if(new_num_bars === current_len) return
+
+   let temp_id = 1000   // to do : replace w/ actual calculated id
+
+   if(new_num_bars < current_len) {
+      for(let i = 0; i < (current_len - new_num_bars); i++) {   // to do : change for modern array method
+         modified.aBars.pop()
+      }
+   }
+   else {
+      for(let j = 0; j < (num_bars - current_len); j++) {
+         modified.aBars.push({id:temp_id++, text:"", mods:"", chords:""}) // to do : calc id from pre-existing ids / chords from song key (?)
+      }
+   }
+   props.update_section(modified.id,modified)
+}
+
 </script>
 
 
@@ -49,9 +89,12 @@ const move = (direction) => {
       :id="props.section.daw"
       style="display:flex;justify-content:flex-start;flex-direction:column;border:solid 1px grey;margin:1rem;margin-top:2rem;">
 
+      {{ num_bars }}
       <SongSectionTitles 
          :section="section"
+         :num_bars="num_bars"
          :notify_updated_titles="notify_updated_titles"
+         @bar-nums-changed="change_num_bars"
          />
 
       <div class="grid section_grid w-full border-t border-l border-slate-400 text-slate-700">
@@ -62,6 +105,7 @@ const move = (direction) => {
             :notify_updated_bar="notify_updated_bar"
          />
       </div>
+      
 
       <div className="flex justify-end gap-3">
 
@@ -87,7 +131,7 @@ const move = (direction) => {
             <img src="../../../../assets/icons/copy.svg" />
          </button>
 
-         <button v-if="requires_update === true" @click="update">Apply</button>         
+         <button v-if="requires_update === true" @click="update_song">Apply</button>         
          <button v-else disabled>Apply</button>
 
       </div>
