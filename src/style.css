@@ -124,6 +124,9 @@ ul {
 .justify-end {
    justify-content:end;
 }
+.align_items_center {
+   align-items:center;
+}
 
 .m_1 {margin:1rem;}
 .mx_1 {margin-left:1rem;margin-right:1rem;}
