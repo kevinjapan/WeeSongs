@@ -25,21 +25,10 @@ export const useSongStore = defineStore('song_store', () => {
    // Components can enable their 'apply' ctrls on this flag
    const synched = ref(true)
 
-   const my_object = ref({
-      name:'my_object_name',
-      code:'my_object_code_key'
-   })
-
-   //
    // getters
-   //
    // const load_song = computed(() => app_api) - only for getting stuff!
-   // to do : research - getters are cached (?), so any op inside will effectively only act once until state has changed again
 
-
-   //
    // actions
-   //
    // change and rely on reactivity to update components
    function change_my_object() {
       // store.$patch({
@@ -50,28 +39,34 @@ export const useSongStore = defineStore('song_store', () => {
        
    }
 
-   watch(() => song.value,(new_song) => {
-      if(new_song) {
-         // detect if song has changed - console.log('song changed in store')
-      }
-   })
-
    async function load_song(slug) {
    
       // to use another store, we 'use' it inside an action
       const app_store = useAppStore()
 
-      await fetch(`${app_store.app_api}/songs/${slug}`,reqInit())
-         .then(response => response.json())
-         .then(data => {
-            if(data.outcome === 'success') {
-               song.value = data.song
-            }
-         })
-         .catch((error) => {
-            console.log('ERR',error)
-         })
+      try {
+         await fetch(`${app_store.app_api}/songs/${slug}`,reqInit())
+            .then(response => response.json())
+            .then(data => {
+               if(data.outcome === 'success') {
+                  song.value = data.song
+               }
+            })
+            .catch((error) => {
+               console.log('ERR',error)
+            })
+      }
+      catch(error) {
+         return {
+            outcome: 'fail',
+            message: error
+         }
+      }
       synched.value = true
+      return {
+         outcome: 'success',
+         message: ''   // we don't need notification, the song will appear!
+      }
    }
 
    async function save() {
@@ -137,54 +132,67 @@ export const useSongStore = defineStore('song_store', () => {
       }
    }
 
-   async function del_section(section_id) {
+   function del_section(section_id) {
       
-      let modified = {...song.value.songsheet}
-
-      // to do : note using spread will only clone first level, all nested are still refs
-      //         try w/ JSON.parse(JSON.stringify(song.value.songsheet))
-      //         this will clone all nested objects
+      // note using spread will only clone first level, all nested are still refs
+      // for deeper unwrapping, use JSON.parse(JSON.stringify(song.value.songsheet))
+      try {
+         let modified = {...song.value.songsheet}
       
-      const modified_sections = modified.aSections.filter(section => {
-         return section.id !== section_id
-      })
-      modified.aSections = modified_sections
+         const modified_sections = modified.aSections.filter(section => {
+            return section.id !== section_id
+         })
+         modified.aSections = modified_sections
 
-      song.value.songsheet = modified
-      synched.value = false
+         song.value.songsheet = modified
+         synched.value = false
+      }
+      catch(error) {
+         return {
+            outcome: 'fail',
+            message: error
+         }
+      }
       return {
          outcome: 'success',
          message: 'The section was deleted successfully'
       }
    }
 
-   async function clone_section(section_id) {
+   function clone_section(section_id) {
 
-      let modified = {...song.value.songsheet}
-      const target_section = modified.aSections.find(section => {
-         return section.id === section_id
-      })
-      let copy_section = {...target_section}
+      try {
+         let modified = {...song.value.songsheet}
+         const target_section = modified.aSections.find(section => {
+            return section.id === section_id
+         })
+         let copy_section = {...target_section}
 
-      // calc id by incrementing current highest
-      const ids = modified.aSections.map(section => section.id)
-      ids.sort()
-      copy_section.id = ids[ids.length - 1] + 1
+         // calc id by incrementing current highest
+         const ids = modified.aSections.map(section => section.id)
+         ids.sort()
+         copy_section.id = ids[ids.length - 1] + 1
 
-      // calc next DAW char
-      const daws = modified.aSections.map(section => section.daw)
-      daws.sort()
-      const next_daw = String.fromCharCode(daws[daws.length -1].charCodeAt(0) + 1)
-      if(next_daw > 'Z'.charCodeAt(0)) next_daw = 'Z'.charCodeAt(0)
-      copy_section.daw = next_daw
+         // calc next DAW char
+         const daws = modified.aSections.map(section => section.daw)
+         daws.sort()
+         const next_daw = String.fromCharCode(daws[daws.length -1].charCodeAt(0) + 1)
+         if(next_daw > 'Z'.charCodeAt(0)) next_daw = 'Z'.charCodeAt(0)
+         copy_section.daw = next_daw
 
-      // we retain title since section type most likely remains the same
+         // we retain title since section type most likely remains the same
 
-      modified.aSections.push(copy_section)
+         modified.aSections.push(copy_section)
 
-      song.value.songsheet = modified
-      synched.value = false
-
+         song.value.songsheet = modified
+         synched.value = false
+      }
+      catch(error){
+         return {
+            outcome: 'fail',
+            message: error
+         }
+      }
       return {
          outcome: 'success',
          message: 'The section was cloned successfully'
@@ -192,22 +200,30 @@ export const useSongStore = defineStore('song_store', () => {
    }
 
    function move_section(section_id,direction) {
-      
-      let modified = {...song.value.songsheet}
-      const target_index = modified.aSections.findIndex(section => {
-         return section.id === section_id
-      })
-      const swap_to_index = direction === "down" ? target_index + 1 :  target_index - 1
-      if(swap_to_index > -1 && swap_to_index < modified.aSections.length) {
-         const target_section = modified.aSections[target_index]
-         const swap_section = modified.aSections[swap_to_index]
-         if(swap_section) {
-               modified.aSections[swap_to_index] = target_section
-               modified.aSections[target_index] = swap_section
+         
+      try {
+         let modified = {...song.value.songsheet}
+         const target_index = modified.aSections.findIndex(section => {
+            return section.id === section_id
+         })
+         const swap_to_index = direction === "down" ? target_index + 1 :  target_index - 1
+         if(swap_to_index > -1 && swap_to_index < modified.aSections.length) {
+            const target_section = modified.aSections[target_index]
+            const swap_section = modified.aSections[swap_to_index]
+            if(swap_section) {
+                  modified.aSections[swap_to_index] = target_section
+                  modified.aSections[target_index] = swap_section
+            }
+         }
+         song.value.songsheet = modified
+         synched.value = false
+      }
+      catch(error) {
+         return {
+            outcome: 'fail',
+            message: error
          }
       }
-      song.value.songsheet = modified
-      synched.value = false
       return {
          outcome: 'success',
          message: 'The section was moved successfully'
@@ -216,22 +232,28 @@ export const useSongStore = defineStore('song_store', () => {
 
    function update_section(section_id,modified_section) {
 
-      let modified = {...song.value.songsheet}
-      const target_index = modified.aSections.findIndex(section => {
-         return section.id === section_id
-      })
-      modified.aSections[target_index] = modified_section
-      song.value.songsheet = modified
-      synched.value = false
+      try {
+         let modified = {...song.value.songsheet}
+         const target_index = modified.aSections.findIndex(section => {
+            return section.id === section_id
+         })
+         modified.aSections[target_index] = modified_section
+         song.value.songsheet = modified
+         synched.value = false
+      }
+      catch(error) {
+         return {
+            outcome: 'fail',
+            message: error
+         }
+      }
       return {
          outcome: 'success',
          message: 'The section was updated successfully'
       }
-
    }
 
    return {
-      my_object, change_my_object,
       song, synched, load_song, 
       update_song, save, 
       del_section, clone_section, move_section, update_section
