@@ -4,28 +4,19 @@ import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import reqInit from '../utilities/requestInit/RequestInit'
 
-//
+
 // LoginView
-//
-
-// to do : handle login invalid attempts 
-// - empty strings
-// - invalid values
-
-// to do : handle if server not available
-
 
 const router = useRouter()
 const app_store = useAppStore()
 const email = ref('')
 const password = ref('')
-const login_error = reactive({is_error:false})     // to do : 'login_success' better?
 
-const has_login_error = computed(() => {
-  return login_error.is_error === true ? true : false
-})
+const login_error = ref(false)
+const has_success = ref(false)
 
-const authenticate = (credentials,cb_fail,cb_success,cb_restart) => {
+
+const authenticate = (credentials,cb_fail,cb_success) => {
 
    let myRequest = new Request(
       `${app_store.app_api}/login`,
@@ -36,16 +27,26 @@ const authenticate = (credentials,cb_fail,cb_success,cb_restart) => {
       .then(jsonDataSet => {
          app_store.bearer_token = jsonDataSet.token
          app_store.username = jsonDataSet.user.name
-         login_error.is_error = false         
-         router.push('/songs')
+         cb_success()
       })
       .catch(error => {
-         login_error.is_error = true
+         cb_fail()
       })
 }
 
 const login = () => {
-   authenticate({email:email.value,password:password.value},() => failed(),() => succeeded(),() => restart())
+   login_error.value = false
+   authenticate({email:email.value,password:password.value},() => failed(),() => succeeded())
+}
+
+const failed = () => {
+   // we set a short delay to clearly empty and fill notification btwn attempts
+   setTimeout(() => login_error.value = true,500)
+}
+const succeeded = () => {
+   // we set a short delay to notify attempt succeeded
+   has_success.value = true
+   setTimeout(() => router.push('/songs'),1600)
 }
 </script>
 
@@ -67,8 +68,8 @@ const login = () => {
             type="text" 
             class="border border-slate-200"
             maxLength="120"/>
-         <label for="password">Password</label>
 
+         <label for="password">Password</label>
          <input 
             v-model="password"
             name="password" 
@@ -76,18 +77,19 @@ const login = () => {
             type="text" 
             class="border border-slate-200"
             maxLength="36"/>
+
          <div></div>
          <button type="submit">Login</button>
 
       </form>
 
-
-      <div v-if="has_login_error">
+      <div v-if="login_error">
          We were unable to login.
       </div>
-      <div v-else>
-         <!-- to do : remove showing this! -->
-         token: {{ app_store.bearer_token }}
+
+      <div v-if="has_success">
+         <p>You were logged in successfully.</p>
+         <p>Redirecting you to Songs.</p>
       </div>
 
    </div>
