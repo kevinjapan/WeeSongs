@@ -24,7 +24,8 @@ const has_error = computed(() => {
 
 onBeforeMount(async() => {
    // load selected song into store (from 'slug' route param)
-   await song_store.load_song(route.params.slug)   // to do : use return from load_song() - see song_store.save()'s return..
+   const result = await song_store.load_song(route.params.slug)
+   notify_msg.value = result.message
    loading.value = false
 })
 
