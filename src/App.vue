@@ -10,12 +10,18 @@ const app_store = useAppStore()
 
 <template>
    <nav>
-      <RouterLink to="/" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">Home</RouterLink>&nbsp;
-      <RouterLink to="/songs" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">Songs</RouterLink>&nbsp;
-      <RouterLink to="/albums" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">Albums</RouterLink>&nbsp;
-      <RouterLink to="/search" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">Search</RouterLink>&nbsp;
-      <RouterLink v-if="app_store.bearer_token === ''" to="/login" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">Login</RouterLink>
-      <RouterLink v-else to="/login" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">{{ app_store.username }}</RouterLink>
+      <RouterLink to="/" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
+         Home</RouterLink>&nbsp;
+      <RouterLink to="/songs" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
+         Songs</RouterLink>&nbsp;
+      <RouterLink to="/albums" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
+         Albums</RouterLink>&nbsp;
+      <RouterLink to="/search" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
+         Search</RouterLink>&nbsp;
+      <RouterLink v-if="!app_store.bearer_token" to="/login" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
+         Login</RouterLink>
+      <RouterLink v-else to="/login" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
+         {{ app_store.username }}</RouterLink>
    </nav>
    <main>
       <RouterView />

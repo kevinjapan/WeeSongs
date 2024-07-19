@@ -1,6 +1,8 @@
 <script setup>
+import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
 
+const app_store = useAppStore()
 const song_store = useSongStore()
 
 const props = defineProps(['apply_changes'])
@@ -10,9 +12,6 @@ const props = defineProps(['apply_changes'])
 //         - display disabled links and watch Song and hydrate/enable once it is populated
 //         - load song into store in SongsListView (call load_song in store)
 //           so that ContainerView has Song in store ready to use immediately
-
-// to do : 'SongCtrls' -> 'SongLinks'
-
 </script>
 
 <template>
@@ -38,19 +37,16 @@ const props = defineProps(['apply_changes'])
                activeClass="selected_tab" exactActiveClass="selected_tab">print</RouterLink>
          </li>
          <li>
-            <button v-if="song_store.synched" disabled>
-               <img src="../../../../assets/icons/cloud-upload.svg" />
-            </button>
-            <button v-else @click="apply_changes">
-               <img src="../../../../assets/icons/cloud-upload.svg" />
-            </button>
+            <button v-if="app_store.bearer_token && !song_store.synched" @click="apply_changes">
+               <img src="../../../../assets/icons/cloud-upload.svg"/></button>
+            <button v-else disabled>
+               <img src="../../../../assets/icons/cloud-upload.svg"/></button>
          </li>
       </ul>
    </div>
 </template>
 
 <style scoped>
-
 .selected_tab {
    background:hsl(0, 0%, 83%);
 }

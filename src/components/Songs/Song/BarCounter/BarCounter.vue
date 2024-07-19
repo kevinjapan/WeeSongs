@@ -1,25 +1,19 @@
 <script setup>
 import { ref } from 'vue'
 
-//
+
 // BarCounter
-//
-// const model = defineModel()
 
 const props = defineProps(['bar','num_bars'])
+const local_num_bars = ref(props.num_bars)
+
 
 // v-model below is equivalent to:
 // <input
 //   :value="text"
 //   @input="event => text = event.target.value">
 
-const local_num_bars = ref(props.num_bars)
-
-
-      // @input="$emit('barNumsChanged',local_num_bars)"
-
 </script>
-
 
 <template>
    <input 

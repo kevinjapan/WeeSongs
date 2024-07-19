@@ -10,19 +10,19 @@ export const useAppStore = defineStore('app_store', () => {
 
    // state props
    const app_api = ref('http://songs-api-laravel/api')
+
+   // we use presence/absence as logged in flag
    const bearer_token = ref('')
    const username = ref('')
 
    // getters
    const get_api = computed(() => app_api.value)
 
-   // to do : expand on using patterns:
+   // to do : expand on using patterns,  persist some data
    const user = ref({
       name:"kev",
       email:"kev@weesongsvuebuild.com"
    })
-
-   // to do : persist some data
    watch(user,
       (user_value) => {
          localStorage.setItem("user",JSON.stringify(user_value))

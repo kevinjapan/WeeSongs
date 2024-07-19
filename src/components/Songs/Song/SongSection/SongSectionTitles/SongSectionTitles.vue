@@ -18,9 +18,6 @@ const change_num_bars = (num) => {
 <template>
    <div style="display:flex;justify-content:start;max-width:500px;gap:0.5rem;" class="p_0.5">
 
-
-      {{ props.section.id }}
-
       <input 
          v-model="props.section.daw" 
          class="w-12 text-slate-400" 
@@ -38,7 +35,6 @@ const change_num_bars = (num) => {
          type="text"
          @input="update"
       />
-      
       
       <BarCounter :num_bars="props.num_bars" @bar-nums-changed="change_num_bars"></BarCounter>
    
