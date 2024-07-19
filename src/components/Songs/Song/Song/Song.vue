@@ -16,21 +16,19 @@ const update_song = async() => {
    notify_msg.value = result.message
 }
 
-// to do : do the following funcs have to be async?
-
-const del_section = async(section_id) => {
-   const result = await song_store.del_section(section_id)
-   // notify_msg.value = result.message  // to do : handle *if* error; on success, change is visible in UI
+const del_section = (section_id) => {
+   const result = song_store.del_section(section_id)
+   notify_msg.value = result.message
 }
 
-const clone_section = async(section_id) => {
-   const result = await song_store.clone_section(section_id)
-   // notify_msg.value = result.message  // to do : handle *if* error; on success, change is visible in UI
+const clone_section = (section_id) => {
+   const result = song_store.clone_section(section_id)
+   notify_msg.value = result.message
 }
 
 const move_section = (section_id,direction) => {
    const result = song_store.move_section(section_id,direction)
-   // notify_msg.value = result.message  // to do : handle *if* error; on success, change is visible in UI
+   notify_msg.value = result.message
 }
 
 const change_num_bars = (num_bars) => {
@@ -39,9 +37,7 @@ const change_num_bars = (num_bars) => {
 
 const update_section = (section_id,modified_section) => {
    const result = song_store.update_section(section_id,modified_section)
-   // notify_msg.value = result.message  // to do : handle *if* error; on success, change is visible in UI
-
-   // to do : inject modified_section correctly and then update song in store!
+   notify_msg.value = result.message
 }
 </script>
 
