@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { useAppStore } from '@/stores/appStore'
 import Bar from '../Bar/Bar.vue'
 import SongSectionTitles from './SongSectionTitles/SongSectionTitles.vue'
 
@@ -8,7 +9,11 @@ import SongSectionTitles from './SongSectionTitles/SongSectionTitles.vue'
 // single SongSection component within Song.aSections
 
 const props = defineProps(['section','index','update_song','del_section','clone_section','move_section','last','update_section'])
+
+const app_store = useAppStore()
+
 const requires_update = ref(false)
+const notify_msg = ref('')
 
 const num_bars = ref(props.section.aBars.length)
 const max_bars = 32
@@ -39,6 +44,11 @@ const move = (direction) => {
 
 const change_num_bars = (num_bars) => {
    
+   if(!app_store.bearer_token) {
+      notify_msg.value = 'You need to login to perform this action'
+      return
+   }
+
    const new_num_bars = parseInt(num_bars)
    if(!Number.isInteger(new_num_bars)) return
    if(new_num_bars < 1 || new_num_bars > max_bars) return
@@ -48,16 +58,18 @@ const change_num_bars = (num_bars) => {
    const current_len = modified.aBars.length
    if(new_num_bars === current_len) return
 
-   let temp_id = 1000   // to do : replace w/ - actual calculated id  calc id from pre-existing ids / chords from song key (?)
-
    if(new_num_bars < current_len) {
       for(let i = 0; i < (current_len - new_num_bars); i++) {
          modified.aBars.pop()
       }
    }
    else {
+      // increment max id
+      const bar_ids = modified.aBars.map(bar => bar.id)
+      let max_id = bar_ids.reduce((a,b) => Math.max(a,b),-Infinity)
+
       for(let j = 0; j < (num_bars - current_len); j++) {
-         modified.aBars.push({id:temp_id++, text:"", mods:"", chords:""})
+         modified.aBars.push({id:max_id++, text:"", mods:"", chords:""})
       }
    }
    props.update_section(modified.id,modified)
@@ -68,7 +80,8 @@ const change_num_bars = (num_bars) => {
 
 <template>
    <div :id="props.section.daw"
-      style="display:flex;justify-content:flex-start;flex-direction:column;border:solid 1px grey;margin:1rem;margin-top:2rem;">
+      style="display:flex;justify-content:flex-start;flex-direction:column;
+      margin:1rem;margin-top:2rem;">
 
       <SongSectionTitles 
          :section="section"
@@ -89,32 +102,28 @@ const change_num_bars = (num_bars) => {
 
       <div className="flex justify-end gap-3">
 
-         <button v-if="props.last" disabled>
-            <img src="../../../../assets/icons/arrow-down-circle.svg" />
-         </button>
-         <button v-else @click="move('down')">
+         <button @click="move('down')" :disabled="app_store.bearer_token === '' || props.last">
             <img src="../../../../assets/icons/arrow-down-circle.svg" />
          </button>
 
-         <button v-if="props.index > 0" @click="move('up')">
-            <img src="../../../../assets/icons/arrow-up-circle.svg" />
-         </button>
-         <button v-else disabled>
+         <button @click="move('up')" :disabled="app_store.bearer_token === '' || props.index <= 0">
             <img src="../../../../assets/icons/arrow-up-circle.svg" />
          </button>
 
-         <button @click="del">
+         <button @click="del" :disabled="app_store.bearer_token === ''">
             <img src="../../../../assets/icons/trash.svg" alt="delete section"/>
          </button>
 
-         <button @click="clone">
+         <button :disabled="app_store.bearer_token === ''" @click="clone">
             <img src="../../../../assets/icons/copy.svg" />
          </button>
 
-         <button v-if="requires_update === true" @click="update_song">Apply</button>         
+         <button v-if="requires_update === true && app_store.bearer_token" @click="update_song">Apply</button>         
          <button v-else disabled>Apply</button>
 
       </div>
+
+      <AppStatus v-model="notify_msg" />
 
    </div>
 </template>
