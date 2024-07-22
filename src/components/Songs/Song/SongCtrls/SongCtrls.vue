@@ -6,16 +6,10 @@ const app_store = useAppStore()
 const song_store = useSongStore()
 
 const props = defineProps(['apply_changes'])
-
-// to do : flickers btwn 'edit' and 'meta' pages, since on ContainerView we don't have Song immediately -
-//         solution options: 
-//         - display disabled links and watch Song and hydrate/enable once it is populated
-//         - load song into store in SongsListView (call load_song in store)
-//           so that ContainerView has Song in store ready to use immediately
 </script>
 
 <template>
-   <div v-if="song_store.song" class="flex space_between gap_1">
+   <div v-if="song_store.song" class="song_ctrls flex space_between gap_1">
 
       <h3 class="m_1">{{  song_store.song.title }}</h3>
 
@@ -47,11 +41,18 @@ const props = defineProps(['apply_changes'])
 </template>
 
 <style scoped>
+.song_ctrls {
+   position:fixed;
+   top:30px;
+   right:0px;
+   width:100%;
+   background:white;
+   z-index:9999;
+}
 .selected_tab {
    background:hsl(0, 0%, 83%);
 }
 
-/* to do : duplicates code in SongSection */
 button {
    background:white;
 }
