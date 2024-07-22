@@ -28,7 +28,6 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  /* place-items: center; to do : review/familiarize */
   min-width: 320px;
   min-height: 100vh;
 }
@@ -81,12 +80,12 @@ button:focus-visible {
 .app {
    max-width: 1280px;
    margin: 0 auto;
+   margin-top:7rem; /* clear fixed menus */
    text-align: center;
-   width:100%;border:solid 1px orange;
+   width:100%;
    padding:0;
 }
 main {
-   border:solid 3px navy;
    width:100%;
 }
 ul {
@@ -130,6 +129,10 @@ ul {
 
 .m_1 {margin:1rem;}
 .mx_1 {margin-left:1rem;margin-right:1rem;}
+.mt_3 {margin-top:3rem;}
+.mt_4 {margin-top:4rem;}
+.mt_5 {margin-top:5rem;}
+.mt_7 {margin-top:7rem;}
 .p_1 {padding:1rem;}
 .p_0\.5 {padding:.5rem;}
 .py_0\.5 {padding-top:.5rem;padding-bottom:.5rem;}
@@ -138,4 +141,30 @@ ul {
 
 .relative {
    position:relative;
+}
+
+/* 
+   forms 
+*/
+form {
+   max-width:600px;
+   margin:1rem;
+   margin-left:auto;
+   margin-right:auto;
+   text-align:right;
+}
+.form_grid {
+   -ms-grid-columns: 1fr 4fr;
+   grid-template-columns: 1fr 4fr;
+   gap:1rem;
+}
+.form_ctrls {
+   width:100%;
+   background:yellow;
+}
+input {
+   padding:.25rem;
+}
+.readonly_input {
+   border:solid 1px lightgrey;
 }
