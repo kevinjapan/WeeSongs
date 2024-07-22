@@ -20,9 +20,6 @@ import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const app_store = useAppStore()
 
-
-// to do : capture all notes from here into a-vue-to-a-build
-
 // DECLARING REACTIVE STATE - primitives/arrays - ref()
 // In Composition API, the recommended way to declare reactive state in a component is using the ref() function:
 // ref() takes the argument and returns it wrapped within a ref object with a .value property:
@@ -322,7 +319,7 @@ watch(asc, async (new_page, old_page) => {
       see example in PaginationNav component
    -->
 
-   <PaginationNav title="PageNav for SongsList"
+   <PaginationNav title="PageNav for SongsList" class="mt_3"
       :page=page 
       :step_to_page="step_to_page" 
       :navigate_to_page="navigate_to_page" 
@@ -352,7 +349,7 @@ watch(asc, async (new_page, old_page) => {
 
       <!-- The directive v-if is used to conditionally render a block.-->
       <div v-if="has_error">
-         There was a problem loading data, please try again later.
+         There was a problem loading data from the server, please try again later.
       </div>
       <!-- the v-else directive indicates an "else block" for v-if: -->
       <div v-else>
@@ -414,7 +411,6 @@ watch(asc, async (new_page, old_page) => {
 <style scoped>
 .grid_list {
    width:100%;
-   border:solid 1px blue;
 }
 .grid_list li{
    display:-ms-grid;

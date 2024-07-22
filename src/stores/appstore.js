@@ -18,7 +18,7 @@ export const useAppStore = defineStore('app_store', () => {
    // getters
    const get_api = computed(() => app_api.value)
 
-   // to do : expand on using patterns,  persist some data
+   // to do : persist login / bearer_token for limited time
    const user = ref({
       name:"kev",
       email:"kev@weesongsvuebuild.com"
