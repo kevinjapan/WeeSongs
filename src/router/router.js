@@ -74,6 +74,11 @@ router.beforeEach((to,from,next) => {
    const song_store = useSongStore()
    if(song_store && !song_store.synched && app_store.bearer_token !== '') {
       if(window.confirm("You have not applied your changes, are you sure you want to leave the page?")) {
+
+         // we discard changes to store up to this point
+         song_store.discard_changes()
+
+         // go to selected route page / view
          next()
       }
    }

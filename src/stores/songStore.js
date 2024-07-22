@@ -40,6 +40,8 @@ export const useSongStore = defineStore('song_store', () => {
    }
 
    async function load_song(slug) {
+
+      console.log('load_song',slug)
    
       // to use another store, we 'use' it inside an action
       const app_store = useAppStore()
@@ -79,7 +81,7 @@ export const useSongStore = defineStore('song_store', () => {
                // handle response : 401
                // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
                if(data.message) {
-                  if(data.message === 'Unauthenticated.') throw 'You need to login before you can perform this action'
+                  if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
                }
                // note, there is inconsistency in packaging from server - cf w/ load_song api response
                song.value = data
@@ -97,7 +99,7 @@ export const useSongStore = defineStore('song_store', () => {
       synched.value = true
       return {
          outcome: 'success',
-         message: 'The song was saved successfully'
+         message: 'The song was updated successfully'
       }
    }
 
@@ -111,7 +113,7 @@ export const useSongStore = defineStore('song_store', () => {
                // handle response : 401
                // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
                if(data.message) {
-                  if(data.message === 'Unauthenticated.') throw 'You need to login before you can perform this action.'
+                  if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
                }
                song.value = data.song
             })
@@ -216,7 +218,6 @@ export const useSongStore = defineStore('song_store', () => {
             }
          }
          song.value.songsheet = modified
-         synched.value = false
       }
       catch(error) {
          return {
@@ -224,6 +225,7 @@ export const useSongStore = defineStore('song_store', () => {
             message: error
          }
       }
+      synched.value = false
       return {
          outcome: 'success',
          message: 'The section was moved successfully'
@@ -253,10 +255,20 @@ export const useSongStore = defineStore('song_store', () => {
       }
    }
 
+   // User has left page w/out applyig changes - we revert to last saved
+   function discard_changes() {
+
+      console.log('about to load_song in discard_changes',song)
+      load_song(song.value.slug)
+
+   }
+
+
    return {
       song, synched, load_song, 
       update_song, save, 
-      del_section, clone_section, move_section, update_section
+      del_section, clone_section, move_section, update_section,
+      discard_changes
    }
 
 })
