@@ -79,31 +79,8 @@ const patch_test = () => {
 </template>
 
 <style scoped>
-.grid {
-   display:grid;
-   gap:1rem;
-}
-form {
-   max-width:600px;
-   margin:1rem;
-   margin-left:auto;
-   margin-right:auto;
-   text-align:right;
-}
-.form_grid {
-   -ms-grid-columns: 1fr 4fr;
-   grid-template-columns: 1fr 4fr;
-}
-.form_ctrls {
-   width:100%;
-   background:yellow;
-}
-input {
-   padding:.25rem;
-}
-.readonly_input {
-   border:solid 1px lightgrey;
-}
+
+
 button {
    max-width:fit-content;
    border:solid 1px grey;
