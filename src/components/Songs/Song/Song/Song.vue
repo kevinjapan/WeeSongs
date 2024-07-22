@@ -31,10 +31,6 @@ const move_section = (section_id,direction) => {
    notify_msg.value = result.message
 }
 
-const change_num_bars = (num_bars) => {
-   // to do : remove this drill prop?
-}
-
 const update_section = (section_id,modified_section) => {
    const result = song_store.update_section(section_id,modified_section)
    notify_msg.value = result.message
@@ -51,7 +47,6 @@ const update_section = (section_id,modified_section) => {
       :clone_section="clone_section"
       :move_section="move_section"
       :update_section="update_section"
-      :change_num_bars="change_num_bars"
    />
   
    <AppStatus v-model="notify_msg" />
