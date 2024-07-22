@@ -39,8 +39,10 @@ const apply_changes = async() => {
 
    <section>
       
+      <SongCtrls :apply_changes="apply_changes"/>
+
       <div v-if="has_error">
-         There was a problem loading data, please try again later.
+         There was a problem loading data from the server, please try again later.
       </div>
       <div v-else>
 
@@ -49,11 +51,7 @@ const apply_changes = async() => {
          </div>
 
          <div v-else class="relative">
-
-            <SongCtrls :apply_changes="apply_changes"/>
-
             <Song :song="song_store.song" />
-
          </div>
       </div>
       
