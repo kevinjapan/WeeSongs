@@ -20,7 +20,6 @@ const last = (index) => {
       :clone_section="props.clone_section"
       :move_section="props.move_section"
       :update_section="props.update_section"
-      :change_num_bars="props.change_num_bars"
    />
 </template>
 
