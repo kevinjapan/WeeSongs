@@ -9,7 +9,7 @@ const app_store = useAppStore()
 </script>
 
 <template>
-   <nav>
+   <nav class="fixed">
       <RouterLink to="/" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
          Home</RouterLink>&nbsp;
       <RouterLink to="/songs" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
@@ -30,7 +30,16 @@ const app_store = useAppStore()
 
 <style scoped>
 nav {
-   height:30px;
+   height:40px;
+   width:100%;
+   text-align:right;
+   background:white;
+   z-index:9999;
+}
+.fixed {
+   position:fixed;
+   top:0;
+   left:0;
 }
 main {
    min-height:100vh;
