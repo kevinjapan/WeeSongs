@@ -1,8 +1,10 @@
 
-import { ref,computed,watch } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useAppStore } from './appStore'
 import reqInit from "../utilities/requestInit/RequestInit"
+import { get_new_song_template } from '../utilities/newSongTemplate/newSongTemplate'
+import { get_db_ready_datetime } from '../utilities/dates/dates'
 
 
 // SongStore
@@ -39,9 +41,44 @@ export const useSongStore = defineStore('song_store', () => {
        
    }
 
-   async function load_song(slug) {
+   async function create_song(title = 'hey assign me') {
 
-      console.log('load_song',slug)
+      const app_store = useAppStore()
+
+      const new_song = get_new_song_template()
+      const datetime = get_db_ready_datetime()
+      new_song.title = title
+      new_song.slug = title.replace(/ /g, '-')
+      new_song.songsheet.title = title
+      new_song.songsheet.made = datetime
+      new_song.songsheet.updated = datetime
+
+      try {
+         await fetch(`${app_store.app_api}/songs`,reqInit("POST",app_store.bearer_token,JSON.stringify(new_song)))
+            .then(response => response.json())
+            .then(data => {
+               if(data.outcome === 'success') {
+                  song.value = data.song
+               }
+            })
+            .catch((error) => {
+               console.log('ERR',error)
+            })
+      }
+      catch(error) {
+         return {
+            outcome: 'fail',
+            message: error
+         }
+      }
+      synched.value = true
+      return {
+         outcome: 'success',
+         message: ''   // we don't need notification, the song will appear!
+      }
+   }
+
+   async function load_song(slug) {
    
       // to use another store, we 'use' it inside an action
       const app_store = useAppStore()
@@ -266,7 +303,7 @@ export const useSongStore = defineStore('song_store', () => {
 
    return {
       song, synched, load_song, 
-      update_song, save, 
+      create_song, update_song, save, 
       del_section, clone_section, move_section, update_section,
       discard_changes
    }
