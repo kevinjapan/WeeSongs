@@ -1,6 +1,6 @@
 <script setup>
-import { ref, reactive } from 'vue'
-import { onBeforeMount, onMounted } from 'vue'
+import { ref } from 'vue'
+import { onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSongStore } from '@/stores/songStore'
 import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
@@ -10,6 +10,9 @@ import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
 
 // to do : changing slug
 // updating 'slug' needs redirect to new slug in url; note changing 'title' should auto-change 'slug'
+
+// to do : review accessing song properties - are we relying on accessing 
+//         children of 'props' incorrectly (analogous to props?)
 
 // pass route params as props
 defineProps({
@@ -74,13 +77,11 @@ const patch_test = () => {
 
    </form>
 
-   <AppStatus v-model="notify_msg" />   
+   <AppStatus v-model="notify_msg" />
 
 </template>
 
 <style scoped>
-
-
 button {
    max-width:fit-content;
    border:solid 1px grey;
