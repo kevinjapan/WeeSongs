@@ -17,7 +17,7 @@ const lingering_text = ref('')
 // assign msg then setTimeout to clear
 watch(notification_msg, () => {
    if(notification_msg.value !== '') lingering_text.value = notification_msg.value
-   setTimeout(() => {notification_msg.value = ''},3000)
+   setTimeout(() => {notification_msg.value = ''},2600)
 })
 </script>
 
