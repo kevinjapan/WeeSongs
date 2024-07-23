@@ -319,13 +319,6 @@ watch(asc, async (new_page, old_page) => {
       see example in PaginationNav component
    -->
 
-   <PaginationNav title="PageNav for SongsList" class="mt_3"
-      :page=page 
-      :step_to_page="step_to_page" 
-      :navigate_to_page="navigate_to_page" 
-      :page_links="page_links" 
-      long-property-name="this is a long property name's value"
-   />
    <!--
       any type of value can be passed to a prop.
       even if a static array, we need v-bind (:) to tell Vue that
@@ -357,6 +350,15 @@ watch(asc, async (new_page, old_page) => {
             Loading data...
          </div>
          <div v-else>
+         
+   <PaginationNav title="PageNav for SongsList" class="mt_3"
+      :page=page 
+      :step_to_page="step_to_page" 
+      :navigate_to_page="navigate_to_page" 
+      :page_links="page_links" 
+      long-property-name="this is a long property name's value"
+   />
+   
             <ul class="songs_list">
 
                <!-- TITLES -->
