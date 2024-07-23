@@ -54,6 +54,11 @@ const router = createRouter({
          component: () => import('../views/SongLyricsView.vue')
       },
       {
+         path: '/songs/create',
+         name: 'createsong',
+         component: () => import('../views/CreateSongView.vue')
+      },
+      {
          path: '/songs/:slug/print',
          name: 'songprint',
          component: () => import('../views/SongPrintView.vue')
