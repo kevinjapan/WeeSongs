@@ -13,6 +13,14 @@ const props = defineProps(['apply_changes'])
 
       <h3 class="m_1">{{  song_store.song.title }}</h3>
 
+      <ul>
+         <li>
+            <button v-if="app_store.bearer_token && !song_store.synched" @click="apply_changes">
+               Apply Changes</button>
+            <button v-else disabled>
+               Apply Changes</button>
+         </li></ul>
+
       <ul class="flex gap_1 align_items_center">
          <li>
             <RouterLink :to="{ name: 'songcontainer', params: { slug: song_store.song.slug }}"
@@ -29,12 +37,6 @@ const props = defineProps(['apply_changes'])
          <li>
             <RouterLink :to="{ name: 'songprint', params: { slug: song_store.song.slug }}"
                activeClass="selected_tab" exactActiveClass="selected_tab">print</RouterLink>
-         </li>
-         <li>
-            <button v-if="app_store.bearer_token && !song_store.synched" @click="apply_changes">
-               <img src="../../../../assets/icons/cloud-upload.svg"/></button>
-            <button v-else disabled>
-               <img src="../../../../assets/icons/cloud-upload.svg"/></button>
          </li>
       </ul>
    </div>
@@ -55,13 +57,19 @@ const props = defineProps(['apply_changes'])
 
 button {
    background:white;
+   border:solid 1px hsl(0, 0%, 83%);
+}
+button:hover {
+   background:hsl(0, 0%, 93%);
 }
 button:disabled {
    position:relative;
+   border:solid 1px hsl(0, 0%, 93%);
 }
 button:disabled:hover {
    border:solid 1px transparent;
    cursor:auto;
+   background:transparent;
 }
 /* grey out disabled btn */
 button:disabled::before {
