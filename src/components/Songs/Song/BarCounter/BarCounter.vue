@@ -4,9 +4,12 @@ import { ref } from 'vue'
 
 // BarCounter
 
-const props = defineProps(['bar','num_bars'])
+const props = defineProps(['bar','num_bars','editable'])
 const local_num_bars = ref(props.num_bars)
 
+// although not clear from docs, defining emits makes it function much more easily,
+// otherwise have a lot of probs getting this working w/ converting case btwn emit and @.
+// const emit = defineEmits(['barNumsChanged'])
 
 // v-model below is equivalent to:
 // <input
@@ -22,9 +25,13 @@ const local_num_bars = ref(props.num_bars)
       class="w-12 text-slate-400" 
       name="num_bars"  
       type="text"
+      :readonly="props.editable === false"
    />
 </template>
 
 <style scoped>
 
+input[readonly] {
+   background:pink;
+}
 </style>

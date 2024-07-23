@@ -8,7 +8,11 @@ import SongSectionTitles from './SongSectionTitles/SongSectionTitles.vue'
 // SongSection
 // single SongSection component within Song.aSections
 
-const props = defineProps(['section','index','update_song','del_section','clone_section','move_section','last','update_section'])
+const props = defineProps(
+   ['section','index','update_song','del_section','clone_section','move_section','last','update_section','editable']
+)
+
+// to do : use props.editable to only show lyrics  not edit sheet / sections etc.
 
 const app_store = useAppStore()
 
@@ -87,6 +91,7 @@ const change_num_bars = (num_bars) => {
          :section="section"
          :num_bars="num_bars"
          :notify_updated_titles="notify_updated_titles"
+         :editable="props.editable"
          @bar-nums-changed="change_num_bars"
          />
 
