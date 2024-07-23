@@ -18,22 +18,22 @@ const update_song = async() => {
 
 const del_section = (section_id) => {
    const result = song_store.del_section(section_id)
-   notify_msg.value = result.message
+   if(result.outcome === 'fail') notify_msg.value = result.message
 }
 
 const clone_section = (section_id) => {
    const result = song_store.clone_section(section_id)
-   notify_msg.value = result.message
+   if(result.outcome === 'fail') notify_msg.value = result.message
 }
 
 const move_section = (section_id,direction) => {
    const result = song_store.move_section(section_id,direction)
-   notify_msg.value = result.message
+   if(result.outcome === 'fail') notify_msg.value = result.message
 }
 
 const update_section = (section_id,modified_section) => {
    const result = song_store.update_section(section_id,modified_section)
-   notify_msg.value = result.message
+   if(result.outcome === 'fail') notify_msg.value = result.message
 }
 </script>
 
