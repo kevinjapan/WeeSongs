@@ -14,6 +14,8 @@ const app_store = useAppStore()
          Home</RouterLink>&nbsp;
       <RouterLink to="/songs" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
          Songs</RouterLink>&nbsp;
+      <RouterLink to="/songs/create" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
+         Create</RouterLink>&nbsp;
       <RouterLink to="/albums" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
          Albums</RouterLink>&nbsp;
       <RouterLink to="/search" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
