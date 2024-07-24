@@ -46,7 +46,7 @@ const failed = () => {
 const succeeded = () => {
    // we set a short delay to notify attempt succeeded
    has_success.value = true
-   setTimeout(() => router.push('/songs'),1600)
+   setTimeout(() => router.push('/songs'),1200)
 }
 </script>
 
