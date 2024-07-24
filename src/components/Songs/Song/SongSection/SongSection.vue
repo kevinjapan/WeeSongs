@@ -46,13 +46,26 @@ const move = (direction) => {
    props.move_section(props.section.id,direction)
 }
 
+const change_daw = (daw) => {
+   const modified = JSON.parse(JSON.stringify(props.section))
+   modified.daw = daw
+   props.update_section(modified.id,modified)
+   requires_update.value = true
+}
+
+const change_title = (title) => {
+   const modified = JSON.parse(JSON.stringify(props.section))
+   modified.title = title
+   props.update_section(modified.id,modified)
+   requires_update.value = true
+}
+
 const change_num_bars = (num_bars) => {
    
    if(!app_store.bearer_token) {
       notify_msg.value = 'You need to login to perform this action'
       return
    }
-
    const new_num_bars = parseInt(num_bars)
    if(!Number.isInteger(new_num_bars)) return
    if(new_num_bars < 1 || new_num_bars > max_bars) return
@@ -77,6 +90,7 @@ const change_num_bars = (num_bars) => {
       }
    }
    props.update_section(modified.id,modified)
+   requires_update.value = true
 }
 
 </script>
@@ -92,6 +106,8 @@ const change_num_bars = (num_bars) => {
          :num_bars="num_bars"
          :notify_updated_titles="notify_updated_titles"
          :editable="props.editable"
+         @section-daw-changed="change_daw"
+         @section-title-changed="change_title"
          @bar-nums-changed="change_num_bars"
          />
 

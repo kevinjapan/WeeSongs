@@ -278,7 +278,9 @@ export const useSongStore = defineStore('song_store', () => {
          })
          modified.aSections[target_index] = modified_section
          song.value.songsheet = modified
-         synched.value = false
+
+         // apply is enabled in the SongSection component
+         // synched.value = false
       }
       catch(error) {
          return {
@@ -294,10 +296,7 @@ export const useSongStore = defineStore('song_store', () => {
 
    // User has left page w/out applyig changes - we revert to last saved
    function discard_changes() {
-
-      console.log('about to load_song in discard_changes',song)
       load_song(song.value.slug)
-
    }
 
 

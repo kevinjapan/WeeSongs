@@ -1,17 +1,18 @@
 <script setup>
+import { ref } from 'vue'
 import BarCounter from '../../BarCounter/BarCounter.vue'
 
-const emit = defineEmits(['bar-nums-changed'])
 const props = defineProps(['section','num_bars','notify_updated_titles','editable'])
+const emit = defineEmits(['section-daw-changed','section-title-changed','bar-nums-changed'])
 
-// to do : we are mutating child properties of 'section' prop   
-//          see 'Binding Multiple Properties Using an Object' in components/props.html
+// local state - we don't want to mutate props child properties
+const daw = ref(props.section.daw)
+const title = ref(props.section.title)
 
-const update = () => props.notify_updated_titles()
-
-const change_num_bars = (num) => {
-   emit('bar-nums-changed',num)
-}
+// emit events
+const change_daw = () => emit('section-daw-changed',daw.value)
+const change_title = () => emit('section-title-changed',title.value)
+const change_num_bars = num => emit('bar-nums-changed',num)
 
 </script>
 
@@ -20,22 +21,22 @@ const change_num_bars = (num) => {
       edit {{ props.editable }}
 
       <input
-         v-model="props.section.daw"
+         v-model="daw"
          class="w-12 text-slate-400"
          name="daw"
          style="width:15%;"
          type="text"
-         @input="update"
+         @input="change_daw"
          :readonly="props.editable === false"
       />
 
       <input
-         v-model="props.section.title"
+         v-model="title"
          class="w-32 text-slate-400"
          name="title"
          style="width:85%;"
          type="text"
-         @input="update"
+         @input="change_title"
          :readonly="props.editable === false"
       />
       
