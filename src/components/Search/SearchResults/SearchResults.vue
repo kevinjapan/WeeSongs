@@ -9,7 +9,8 @@ const props = defineProps(['search_term'])
 const local_search_term = ref('')
 const results_list = ref(null)
 
-
+// we use a 'getter' to access the prop
+// The get syntax binds an object property to a function that will be called when that property is looked up.
 watch(() => props.search_term, async(newValue, oldValue) => {
    local_search_term.value = newValue
    const result = await get_search_results()
