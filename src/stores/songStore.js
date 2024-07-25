@@ -108,6 +108,40 @@ export const useSongStore = defineStore('song_store', () => {
       }
    }
 
+   async function save_song(modified_song) {
+
+      const app_store = useAppStore()
+      try {
+         await fetch(`${app_store.app_api}/songs/${modified_song.id}`,reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_song)))
+            .then(response => response.json())
+            .then(data => {           
+               // handle response : 401
+               // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
+               if(data.message) {
+                  if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
+               }
+               // refresh the local copy of song ('updated_at' will have changed)
+               song.value = data
+            })
+            .catch((error) => {
+               throw error
+            })
+      }
+      catch(error) {
+         return {
+            outcome: 'fail',
+            message: error
+         }
+      }
+      synched.value = true
+      return {
+         outcome: 'success',
+         message: 'The song was updated successfully'
+      }
+   }
+
+
+   // to do : legacy when we unwittingly relied on mutating prop children properties - use save_song() above now
    async function save() {
 
       const app_store = useAppStore()
@@ -302,7 +336,7 @@ export const useSongStore = defineStore('song_store', () => {
 
    return {
       song, synched, load_song, 
-      create_song, update_song, save, 
+      create_song, update_song, save, save_song,
       del_section, clone_section, move_section, update_section,
       discard_changes
    }
