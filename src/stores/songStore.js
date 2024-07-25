@@ -62,7 +62,7 @@ export const useSongStore = defineStore('song_store', () => {
                }
             })
             .catch((error) => {
-               console.log('ERR',error)
+               throw error
             })
       }
       catch(error) {
@@ -92,7 +92,7 @@ export const useSongStore = defineStore('song_store', () => {
                }
             })
             .catch((error) => {
-               console.log('ERR',error)
+               throw error
             })
       }
       catch(error) {
