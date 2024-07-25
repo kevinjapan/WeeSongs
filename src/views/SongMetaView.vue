@@ -7,12 +7,7 @@ import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
 
 
 // SongMetaView
-
-// to do : changing slug
-// updating 'slug' needs redirect to new slug in url; note changing 'title' should auto-change 'slug'
-
-// to do : review accessing song properties - are we relying on accessing 
-//         children of 'props' incorrectly (analogous to props?)
+// to do : updating 'slug' needs redirect to new slug in url
 
 // pass route params as props
 defineProps({
@@ -24,6 +19,12 @@ const songStore = useSongStore()
 const song = songStore.song
 const notify_msg = ref('')
 
+
+// local state - we don't want to mutate props child properties
+const title = ref(songStore.song.title)
+const slug = ref(songStore.song.slug)
+
+
 onBeforeMount(() => {
    // if user refreshes page, we lose current song, so return to songslist view
    if(!song) {
@@ -31,20 +32,19 @@ onBeforeMount(() => {
    }
 })
 
-const apply = async() => {
-   const result = await songStore.save()
-   notify_msg.value = result.message
+const change_title = () => {
+   slug.value = title.value.replaceAll(' ','-')
 }
 
-const patch_test = () => {
-   songStore.$patch({
-      // count: songStore.count + 1,
-      // age: 20,
-      my_object: {
-         name:'my_object_name_2',
-         code:'my_object_code_key_3'
-      }
-   })
+const apply = async() => {
+
+   // apply local changes
+   const modified_song = JSON.parse(JSON.stringify(songStore.song))
+   modified_song.title = title.value
+   modified_song.slug = slug.value
+   
+   const result = await songStore.save_song(modified_song)
+   if(result && result.message) notify_msg.value = result.message
 }
 </script>
 
@@ -55,22 +55,47 @@ const patch_test = () => {
    <form class="grid form_grid flex_col" @submit.prevent="apply">
 
       <label for="title">Title</label>
-      <input id="title" name="title" v-model="songStore.song.title" />
-      
+      <input 
+         v-model="title"
+         id="title"
+         name="title"
+         @input="change_title"
+      />
+
       <label for="slug">Slug</label>
-      <input id="slug" name="slug" v-model="songStore.song.slug" />
+      <input 
+         v-model="slug"
+         id="slug"
+         name="slug"
+         readonly
+      />
       
       <label for="id">id</label>
-      <input id="id" name="id" v-model="songStore.song.id" readonly 
-         class="readonly_input"/>
+      <input 
+         :value="songStore.song.id"
+         id="id"
+         name="id"
+         readonly
+         class="readonly_input"
+      />
       
       <label for="created_at">Created At</label>
-      <input id="created_at" name="created_at" v-model="songStore.song.created_at" readonly 
-         class="readonly_input"/>
+      <input 
+         :value="songStore.song.created_at"
+         id="created_at"
+         name="created_at"
+         readonly
+         class="readonly_input"
+      />
       
       <label for="updated_at">Updated At</label>
-      <input id="updated_at" name="updated_at" v-model="songStore.song.updated_at" readonly 
-         class="readonly_input"/>
+      <input 
+         :value="songStore.song.updated_at"
+         id="updated_at"
+         name="updated_at"
+         readonly
+         class="readonly_input"
+      />
       
       <div></div>
       <button type="submit">Apply</button>
