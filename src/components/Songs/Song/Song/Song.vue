@@ -13,27 +13,27 @@ const notify_msg = ref('')
 
 const update_song = async() => {
    const result = await song_store.save()
-   notify_msg.value = result.message
+   if(result && result.message) notify_msg.value = result.message
 }
 
 const del_section = (section_id) => {
    const result = song_store.del_section(section_id)
-   if(result.outcome === 'fail') notify_msg.value = result.message
+   if(result && result.message && result.outcome === 'fail') notify_msg.value = result.message
 }
 
 const clone_section = (section_id) => {
    const result = song_store.clone_section(section_id)
-   if(result.outcome === 'fail') notify_msg.value = result.message
+   if(result && result.message && result.outcome === 'fail') notify_msg.value = result.message
 }
 
 const move_section = (section_id,direction) => {
    const result = song_store.move_section(section_id,direction)
-   if(result.outcome === 'fail') notify_msg.value = result.message
+   if(result && result.message && result.outcome === 'fail') notify_msg.value = result.message
 }
 
 const update_section = (section_id,modified_section) => {
    const result = song_store.update_section(section_id,modified_section)
-   if(result.outcome === 'fail') notify_msg.value = result.message
+   if(result && result.message && result.outcome === 'fail') notify_msg.value = result.message
 }
 </script>
 
