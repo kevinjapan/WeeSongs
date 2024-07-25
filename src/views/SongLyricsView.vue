@@ -20,7 +20,7 @@ const has_error = computed(() => {
 
 const apply_changes = async() => {
    const result = await song_store.save()
-   notify_msg.value = result.message
+   if(result && result.message) notify_msg.value = result.message
 }
 </script>
 

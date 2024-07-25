@@ -12,7 +12,9 @@ const title = ref('')
 
 const apply = async() => {
    const result = await songStore.create_song(title.value)
-   notify_msg.value = result.outcome === 'success' ? 'The song was successfully created' : 'We were unable to create the song'
+   if(result && result.outcome) {
+      notify_msg.value = result.outcome === 'success' ? 'The song was successfully created' : 'We were unable to create the song'
+   }
 }
 
 // to do : handle if not logged in / disable apply if not logged in
