@@ -1,13 +1,12 @@
 <script setup>
 import { ref } from 'vue'
 import { onBeforeMount } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useSongStore } from '@/stores/songStore'
 import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
 
 
 // SongMetaView
-// to do : updating 'slug' needs redirect to new slug in url
 
 // pass route params as props
 defineProps({
@@ -15,22 +14,44 @@ defineProps({
 })
 
 const router = useRouter()
+const route = useRoute()
 const songStore = useSongStore()
-const song = songStore.song
 const notify_msg = ref('')
 
 
 // local state - we don't want to mutate props child properties
-const title = ref(songStore.song.title)
-const slug = ref(songStore.song.slug)
+// we also don't populate immediately, since eg on page refesh, we may not have store
+// we will hydrate onBeforeMount, where, if necessary, we will load_song into store
+const title = ref('')
+const slug = ref('')
+const id = ref(null)
+const created_at = ref('')
+const updated_at = ref('')
 
 
-onBeforeMount(() => {
-   // if user refreshes page, we lose current song, so return to songslist view
-   if(!song) {
+onBeforeMount(async() => {
+
+   // ensure song is loaded
+   if(!songStore.song) {
+      // there is an issue w/ server's handling of unknown slug - not clean, garbage returned (error reporting in php)
+      // so, for now, we will simply report first line of error in AppStatus notification until fix on server-side
+      const result = await songStore.load_song(route.params.slug)
+      if(result && result.outcome === 'fail') notify_msg.value = result.message      
+   }
+   // hydrate local state
+   title.value = songStore.song.title
+   slug.value = songStore.song.slug
+   id.value = songStore.song.id
+   created_at.value = songStore.song.created_at
+   updated_at.value = songStore.song.updated_at
+
+   // failsafe
+   if(!songStore) {
       router.push('/songs')
    }
 })
+
+
 
 const change_title = () => {
    slug.value = title.value.replaceAll(' ','-')
@@ -45,6 +66,9 @@ const apply = async() => {
    
    const result = await songStore.save_song(modified_song)
    if(result && result.message) notify_msg.value = result.message
+   
+   // reload w/ new slug in url
+   if(result.outcome === 'success') router.push(`/songs/${slug.value}/meta`)
 }
 </script>
 
@@ -72,7 +96,7 @@ const apply = async() => {
       
       <label for="id">id</label>
       <input 
-         :value="songStore.song.id"
+         :value="id"
          id="id"
          name="id"
          readonly
@@ -81,7 +105,7 @@ const apply = async() => {
       
       <label for="created_at">Created At</label>
       <input 
-         :value="songStore.song.created_at"
+         :value="created_at"
          id="created_at"
          name="created_at"
          readonly
@@ -90,7 +114,7 @@ const apply = async() => {
       
       <label for="updated_at">Updated At</label>
       <input 
-         :value="songStore.song.updated_at"
+         :value="updated_at"
          id="updated_at"
          name="updated_at"
          readonly
