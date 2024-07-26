@@ -1,7 +1,9 @@
 <script setup>
 import SongSection from '../SongSection/SongSection.vue'
 
-const props = defineProps(['song','update_song','del_section','clone_section','move_section','update_section','change_num_bars'])
+const props = defineProps([
+   'song','update_song','del_section','clone_section','move_section','update_section','change_num_bars'
+])
 
 
 const last = (index) => {
@@ -12,7 +14,8 @@ const last = (index) => {
 
 <template>
    <SongSection v-for="(section, index) in props.song.songsheet.aSections" 
-      :key="section.id" :section="section" 
+      :key="section.id" 
+      :section="section" 
       :update_song="props.update_song" 
       :index="index" 
       :last="last(index)"
