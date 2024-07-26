@@ -25,7 +25,6 @@ onMounted(() => {
    real_search_term.value = search_store.last_search_term
 })
 
-// to do : review - this work in all reasonable scenarios?
 onUnmounted(() => {
    search_store.set_last_search_term(real_search_term.value)
 })

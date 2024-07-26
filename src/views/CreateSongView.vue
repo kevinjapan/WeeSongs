@@ -17,8 +17,6 @@ const apply = async() => {
    }
 }
 
-// to do : handle if not logged in / disable apply if not logged in
-
 </script>
 
 <template>
