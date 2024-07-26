@@ -22,8 +22,8 @@ const change_num_bars = num => emit('bar-nums-changed',num)
 
       <input
          v-model="daw"
-         class="w-12 text-slate-400"
          name="daw"
+         class="w-12 text-slate-400"
          style="width:15%;"
          type="text"
          @input="change_daw"
@@ -32,8 +32,8 @@ const change_num_bars = num => emit('bar-nums-changed',num)
 
       <input
          v-model="title"
-         class="w-32 text-slate-400"
          name="title"
+         class="w-32 text-slate-400"
          style="width:85%;"
          type="text"
          @input="change_title"
