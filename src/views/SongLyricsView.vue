@@ -18,18 +18,13 @@ const has_error = computed(() => {
   return loading_error.is_error === true ? true : false
 })
 
-const apply_changes = async() => {
-   const result = await song_store.save()
-   if(result && result.message) notify_msg.value = result.message
-}
 </script>
 
 <template>
    
-
    <section>
       
-      <SongCtrls :apply_changes="apply_changes"/>
+      <SongCtrls />
 
       <div v-if="has_error">
          There was a problem loading data from the server, please try again later.
