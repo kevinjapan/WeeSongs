@@ -41,7 +41,7 @@ export const useSongStore = defineStore('song_store', () => {
        
    }
 
-   async function create_song(title = 'hey assign me') {
+   async function create_song(title) {
 
       const app_store = useAppStore()
 
@@ -108,6 +108,7 @@ export const useSongStore = defineStore('song_store', () => {
       }
    }
 
+   // save a modified copy of the song to the server (and replace copy in this store)
    async function save_song(modified_song) {
 
       const app_store = useAppStore()
@@ -141,7 +142,7 @@ export const useSongStore = defineStore('song_store', () => {
    }
 
 
-   // to do : legacy when we unwittingly relied on mutating prop children properties - use save_song() above now
+   // save this store local copy to server (after we have updated_sections etc)
    async function save() {
 
       const app_store = useAppStore()
