@@ -12,26 +12,16 @@ const props = defineProps(
    ['section','index','update_song','del_section','clone_section','move_section','last','update_section','editable']
 )
 
-// to do : use props.editable to only show lyrics  not edit sheet / sections etc.
-
 const app_store = useAppStore()
-
 const requires_update = ref(false)
 const notify_msg = ref('')
-
 const num_bars = ref(props.section.aBars.length)
 const max_bars = 32
 
-// child Bar handlers
-const notify_updated_bar = () => {
-   // we simply enable access on update btn - user can apply thereafter at any time
-   requires_update.value = true
-}
+
 const notify_updated_titles = () => {
    requires_update.value = true
 }
-
-// Section handlers
 const update_song = () => {
    props.update_song()
    requires_update.value = false
@@ -57,6 +47,28 @@ const change_title = (title) => {
    const modified = JSON.parse(JSON.stringify(props.section))
    modified.title = title
    props.update_section(modified.id,modified)
+   requires_update.value = true
+}
+
+const change_bar_chords = (bar_id,chords) => {
+
+   const modified_section = JSON.parse(JSON.stringify(props.section))
+   modified_section.aBars = modified_section.aBars.map((bar) => {
+      if(bar.id === bar_id) bar.chords = chords
+      return bar
+   })
+   props.update_section(modified_section.id,modified_section)
+   requires_update.value = true
+}
+
+const change_bar_txt = (bar_id,txt) => {
+
+   const modified_section = JSON.parse(JSON.stringify(props.section))
+   modified_section.aBars = modified_section.aBars.map((bar) => {
+      if(bar.id === bar_id) bar.txt = txt
+      return bar
+   })   
+   props.update_section(modified_section.id,modified_section)
    requires_update.value = true
 }
 
@@ -109,14 +121,15 @@ const change_num_bars = (num_bars) => {
          @section-daw-changed="change_daw"
          @section-title-changed="change_title"
          @bar-nums-changed="change_num_bars"
-         />
+      />
 
       <div class="grid section_grid w-full border-t border-l border-slate-400 text-slate-700">
          <Bar 
             v-for="bar in props.section.aBars" 
             :key="bar.id" 
             :bar="bar"
-            :notify_updated_bar="notify_updated_bar"
+            @bar-chords-changed="change_bar_chords"
+            @bar-txt-changed="change_bar_txt"
          />
       </div>
       

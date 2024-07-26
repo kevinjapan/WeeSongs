@@ -1,44 +1,40 @@
 <script setup>
 import { ref } from 'vue'
 
-//
+
 // Bar
 // single Bar component within Section.aBars
-//
-// v-model is equivalent to:
-// <input
-//   :value="text"
-//   @input="event => text = event.target.value">
-
 
 const props = defineProps(['bar','notify_updated_bar'])
+const emit = defineEmits(['bar-chords-changed','bar-txt-changed'])
 
-const update = () => props.notify_updated_bar()
+// local state - we don't want to mutate props child properties
+const chords = ref(props.bar.chords)
+const txt = ref(props.bar.txt)
 
-// to do : this is 'working', since JS permits us to 'mutate' this child nested members of 'bar' prop.
-//         docs recommend props should be one-way, use emit and propograte an event to the parent.. 
-//         see also SongSectionTitles
+// emit events
+const change_chords = () => emit('bar-chords-changed',props.bar.id,chords.value)
+const change_txt = () => emit('bar-txt-changed',props.bar.id,txt.value)
+
 </script>
-
-
 
 <template>
    <div class="bar_2 border-b border-slate-400 border-r w-1/4 p-0.5 pb-0" style="border:solid 1px lightgrey;">
       <input 
-         v-model="props.bar.chords"
-         @input="update"
+         v-model="chords"
+         name="chords"
+         @input="change_chords"
          type="text"
          class="w-full"
-         style="border:none;"
-         name="chords" 
+         style="border:none;" 
          />
       <input 
-         v-model="props.bar.txt"
-         @input="update"
+         v-model="txt"
+         name="txt" 
+         @input="change_txt"
          type="text"
          class="w-full " 
          style="border:none;"
-         name="txt" 
          />
    </div>
 </template>
