@@ -78,6 +78,41 @@ export const useSongStore = defineStore('song_store', () => {
       }
    }
 
+   async function delete_song(song_id) {
+
+      const app_store = useAppStore()
+   
+      try {
+         await fetch(`${app_store.app_api}/songs/${song_id}`,reqInit("DELETE",app_store.bearer_token,{}))
+            .then(response => response.json())
+            .then(data => {       
+               // handle response : 401
+               // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
+               if(data.message) {
+                  if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
+               }
+               if(data.outcome === 'success') {
+                  song.value = null
+                  // any redirection is carried out by client component (some eg lists may not want to)
+               }
+            })
+            .catch((error) => {
+               throw error
+            })
+      }
+      catch(error) {
+         return {
+            outcome: 'fail',
+            message: error
+         }
+      }
+      synched.value = true
+      return {
+         outcome: 'success',
+         message: 'The song was successfully deleted'
+      }
+   }
+
    async function load_song(slug) {
    
       // to use another store, we 'use' it inside an action
@@ -337,7 +372,7 @@ export const useSongStore = defineStore('song_store', () => {
 
    return {
       song, synched, load_song, 
-      create_song, update_song, save, save_song,
+      create_song, delete_song, update_song, save, save_song,
       del_section, clone_section, move_section, update_section,
       discard_changes
    }

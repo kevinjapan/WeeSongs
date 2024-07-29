@@ -70,11 +70,25 @@ const apply = async() => {
    // reload w/ new slug in url
    if(result.outcome === 'success') router.push(`/songs/${slug.value}/meta`)
 }
+
+
+// delete current songStore.song
+//
+const delete_song = async() => {
+   
+   if (window.confirm("Do you really want to delete this song?")) {
+      const result = await songStore.delete_song(songStore.song.id)
+      if(result) {
+         if(result.message) notify_msg.value = result.message
+         if(result.outcome === 'success') setTimeout(() => router.push('/songs'),3000)
+      }
+   }
+}
 </script>
 
 <template>
     
-   <SongCtrls  />
+   <SongCtrls />
 
    <form class="grid form_grid flex_col" @submit.prevent="apply">
 
@@ -123,6 +137,9 @@ const apply = async() => {
       
       <div></div>
       <button type="submit">Apply</button>
+
+      <div></div>
+      <button type="button" @click="delete_song">Delete this Song</button>
 
    </form>
 
