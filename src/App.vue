@@ -11,15 +11,15 @@ const app_store = useAppStore()
 <template>
    <nav class="fixed">
       <RouterLink to="/" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
-         Home</RouterLink>&nbsp;
+         Home</RouterLink>
       <RouterLink to="/songs" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
-         Songs</RouterLink>&nbsp;
+         Songs</RouterLink>
       <RouterLink to="/songs/create" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
-         Create</RouterLink>&nbsp;
+         Create</RouterLink>
       <RouterLink to="/albums" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
-         Albums</RouterLink>&nbsp;
+         Albums</RouterLink>
       <RouterLink to="/search" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
-         Search</RouterLink>&nbsp;
+         Search</RouterLink>
       <RouterLink v-if="!app_store.bearer_token" to="/login" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
          Login</RouterLink>
       <RouterLink v-else to="/login" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">

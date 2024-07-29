@@ -5,14 +5,11 @@ import { ref } from 'vue'
 // BarLyrics
 // single Bar component - only displays is contains lyrics (readonly)
 
-// to do : only display if bar includeds some 'txt' content
-
 const props = defineProps(['bar'])
 
 // local state - we don't want to mutate props child properties
 const chords = ref(props.bar.chords)
 const txt = ref(props.bar.txt)
-
 
 </script>
 

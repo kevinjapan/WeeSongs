@@ -18,9 +18,6 @@ const includes_text = computed(() =>
    bars.value.some((bar) => bar.txt !== null)
 )
 
-
-// to do : readonly view of lyrics for each section - if they exist
-
 </script>
 
 
