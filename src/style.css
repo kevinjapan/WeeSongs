@@ -80,7 +80,7 @@ button:focus-visible {
 .app {
    max-width: 1280px;
    margin: 0 auto;
-   margin-top:7rem; /* clear fixed menus */
+   margin-top:4.25rem; /* clear fixed menus */
    text-align: center;
    width:100%;
    padding:0;
@@ -102,6 +102,17 @@ ul {
    grid-template-columns: repeat(4, 1fr);
 }
 
+
+/* position */
+.fixed {
+   position:fixed;
+}
+.relative {
+   position:relative;
+}
+
+
+/* flex utility */
 .flex {
    display:flex;
 }
@@ -127,21 +138,25 @@ ul {
    align-items:center;
 }
 
+.m_0 {margin:0;}
 .m_1 {margin:1rem;}
 .mx_1 {margin-left:1rem;margin-right:1rem;}
 .mt_3 {margin-top:3rem;}
 .mt_4 {margin-top:4rem;}
 .mt_5 {margin-top:5rem;}
 .mt_7 {margin-top:7rem;}
+
+.p_0 {padding:0;}
 .p_1 {padding:1rem;}
 .p_0\.5 {padding:.5rem;}
 .py_0\.5 {padding-top:.5rem;padding-bottom:.5rem;}
 
-.bordered {border:solid 1px lightgrey;}
 
-.relative {
-   position:relative;
-}
+.border {border:solid 1px lightgrey;}
+
+.bg_yellow {background:yellow;}
+
+
 
 /* 
    forms 
@@ -167,4 +182,23 @@ input {
 }
 .readonly_input {
    border:solid 1px lightgrey;
+}
+
+
+
+.loading {
+   margin-left:auto;
+   margin-right:auto;
+   margin-top:5rem;
+   width:20px;
+   height:20px;
+   border:5px solid lightgrey;
+   border-radius:50%;
+   border-top-color:white;
+   animation:spin .7s ease-in infinite;
+}
+@keyframes spin {
+   to {
+      transform: rotate(360deg);
+   }
 }

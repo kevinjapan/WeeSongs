@@ -344,20 +344,21 @@ watch(asc, async (new_page, old_page) => {
       <div v-if="has_error">
          There was a problem loading data from the server, please try again later.
       </div>
+
       <!-- the v-else directive indicates an "else block" for v-if: -->
       <div v-else>
-         <div v-if="loading">
-            Loading data...
-         </div>
+         
+         <div v-if="loading" class="loading"></div>
+      
          <div v-else>
          
-   <PaginationNav title="PageNav for SongsList" class="mt_3"
-      :page=page 
-      :step_to_page="step_to_page" 
-      :navigate_to_page="navigate_to_page" 
-      :page_links="page_links" 
-      long-property-name="this is a long property name's value"
-   />
+            <PaginationNav title="PageNav for SongsList" class="mt_3"
+               :page=page 
+               :step_to_page="step_to_page" 
+               :navigate_to_page="navigate_to_page" 
+               :page_links="page_links" 
+               long-property-name="this is a long property name's value"
+            />
    
             <ul class="songs_list">
 
