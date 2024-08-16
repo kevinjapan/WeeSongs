@@ -62,9 +62,10 @@ const page = ref(app_store.current_songs_page)
 
 
 // order
-const order_by = ref('made')
+const order_by = ref(app_store.current_order_by)   // 'made')
+
 // asc
-const asc = ref(false)
+const asc = ref(app_store.current_asc)
 
 // last page
 const last_page = ref(1)
@@ -176,12 +177,23 @@ const clicked_title = (song_slug) => {
 }
 
 const order_songs_by = (col_title) => {
+
    // start @ page 1
    page.value = 1
+
    // set order_by col
    order_by.value = col_title
+   app_store.current_order_by = col_title
+
    // toggle asc
-   asc.value = asc.value ? false : true
+   if(asc.value) {
+      asc.value = false
+      app_store.current_asc = false
+   }
+   else {
+      asc.value = true
+      app_store.current_asc = true
+   }
 }
 
 // watch works directly on a ref

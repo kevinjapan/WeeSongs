@@ -21,6 +21,12 @@ export const useAppStore = defineStore('app_store', () => {
    // current Songs List page
    const current_songs_page = ref(1)
 
+   // current Songs List order_by
+   const current_order_by = ref('made')
+
+   // current Songs List order asc flag
+   const current_asc = ref(false)
+
    // getters
    const get_api = computed(() => app_api.value)
 
@@ -48,7 +54,9 @@ export const useAppStore = defineStore('app_store', () => {
       app_api, get_api, set_api,
       bearer_token,username,
       display_nav,
-      current_songs_page
+      current_songs_page,
+      current_order_by,
+      current_asc
    }
  })
 
