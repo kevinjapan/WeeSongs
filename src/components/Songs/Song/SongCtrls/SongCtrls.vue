@@ -1,54 +1,35 @@
 <script setup>
 import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
+import SongCtrlsTitle from './SongCtrlsTitle/SongCtrlsTitle.vue'
+import SongCtrlsNav from './SongCtrlsNav/SongCtrlsNav.vue'
 import SongOutline from './SongOutline/SongOutline.vue'
 
 const app_store = useAppStore()
 const song_store = useSongStore()
-
 const props = defineProps(['apply_changes'])
+
+
+
 </script>
 
 <template>
+   <Transition>
    <section v-if="song_store.song" class="song_ctrls flex space_between ">
 
       <div class="song_ctrls_bar">
 
-         <h1 class="m_1">{{ song_store.song.title }}</h1>
+         <SongCtrlsTitle :title="song_store.song.title" />
 
-         <ul class="flex gap_1 align_items_center m_0 p_0 mr_2 border ">
-            <li>
-               <button v-if="app_store.bearer_token && !song_store.synched" @click="apply_changes">
-                  Apply Changes</button>
-               <button v-else disabled>
-                  Apply Changes</button>
-            </li>
-            <li>
-               <RouterLink :to="{ name: 'songcontainer', params: { slug: song_store.song.slug }}"
-                  activeClass="selected_tab" exactActiveClass="selected_tab">edit</RouterLink>
-            </li>
-            <li>
-               <RouterLink :to="{ name: 'songmeta', params: { slug: song_store.song.slug }}"
-                  activeClass="selected_tab" exactActiveClass="selected_tab">meta</RouterLink>
-            </li>
-            <li>
-               <RouterLink :to="{ name: 'songlyrics', params: { slug: song_store.song.slug }}"
-                  activeClass="selected_tab" exactActiveClass="selected_tab">lyrics</RouterLink>
-            </li>
-            <li>
-               <RouterLink :to="{ name: 'songprint', params: { slug: song_store.song.slug }}"
-                  activeClass="selected_tab" exactActiveClass="selected_tab">print</RouterLink>
-            </li>
-         </ul>
+         <SongCtrlsNav :song="song_store.song" :apply_changes="props.apply_changes" />
 
-         <div>
-            menu
-         </div>
+         
       </div>
          
       <SongOutline :song="song_store.song" />
 
    </section>
+</Transition>
 </template>
 
 <style scoped>
@@ -122,5 +103,12 @@ li {
    padding:0;
 }
 
-
+/* configure Vue Transition component for app_nav slide-in*/
+.v-enter-active,.v-leave-active {
+   transition: opacity .5s ease-in-out;
+   
+}
+.v-enter-from,.v-leave-to {
+   opacity: 0;
+}
 </style>
