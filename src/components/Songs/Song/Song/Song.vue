@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 import { useSongStore } from '@/stores/songStore'
-import SongOutline from '../SongOutline/SongOutline.vue'
 import SongSections from '../SongSections/SongSections.vue'
 
 
@@ -39,20 +38,26 @@ const update_section = (section_id,modified_section) => {
 
 <template>
 
-   <SongOutline :song="song" />
+   <section class="song_wrapper">
 
-   <SongSections :song="song" 
-      :update_song="update_song" 
-      :del_section="del_section"
-      :clone_section="clone_section"
-      :move_section="move_section"
-      :update_section="update_section"
-   />
-  
-   <AppStatus v-model="notify_msg" />
+
+      <SongSections :song="song" 
+         :update_song="update_song" 
+         :del_section="del_section"
+         :clone_section="clone_section"
+         :move_section="move_section"
+         :update_section="update_section"
+      />
+   
+      <AppStatus v-model="notify_msg" />
+
+   </section>
 
 </template>
 
 <style scoped>
-
+.song_wrapper {
+   margin-top:7rem;
+   margin-bottom:10rem;
+}
 </style>
