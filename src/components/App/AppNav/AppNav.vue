@@ -76,9 +76,10 @@ nav.app_nav > div {
    border:solid 1px lightgrey;
 }
 .app_nav_hamburger {
-   position:absolute;
+   position:fixed;
    top:0;
    right:0;
+   z-index:999999999999999;
    width:100px;
    height:100px;
    background:white;
