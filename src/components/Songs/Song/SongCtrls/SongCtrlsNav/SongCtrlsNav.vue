@@ -11,7 +11,7 @@ const props = defineProps(['apply_changes'])
 </script>
 
 <template>
-   <ul class="flex gap_1 align_items_center m_0 p_0 mr_2 border ">
+   <ul class="ctrls_nav flex gap_1 align_items_center m_0 p_0 mr_5 border ">
       <li>
          <button v-if="app_store.bearer_token && !song_store.synched" @click="apply_changes">
             Apply Changes</button>
@@ -38,5 +38,8 @@ const props = defineProps(['apply_changes'])
 </template>
 
 <style scoped>
-
+ul.ctrls_nav {
+   margin:0;
+   margin-right:3rem;
+}
 </style>

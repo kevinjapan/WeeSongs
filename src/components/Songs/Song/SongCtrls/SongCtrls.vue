@@ -1,11 +1,9 @@
 <script setup>
-import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
 import SongCtrlsTitle from './SongCtrlsTitle/SongCtrlsTitle.vue'
 import SongCtrlsNav from './SongCtrlsNav/SongCtrlsNav.vue'
 import SongOutline from './SongOutline/SongOutline.vue'
 
-const app_store = useAppStore()
 const song_store = useSongStore()
 const props = defineProps(['apply_changes'])
 
@@ -35,7 +33,7 @@ const props = defineProps(['apply_changes'])
 <style scoped>
 .song_ctrls {
    position:fixed;
-   top:25px;
+   top:0;
    right:0px;
    max-width:100%;
    display:flex;
