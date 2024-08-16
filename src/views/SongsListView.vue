@@ -4,7 +4,7 @@ import { useAppStore } from '@/stores/appStore'
 import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
 import reqInit from "../utilities/requestInit/RequestInit"
 import get_ui_ready_date from "../utilities/dates/dates"
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 //
 // SongsListView
@@ -58,7 +58,8 @@ const has_error = computed(() => {
 const loading = ref(true)
 
 // pagination
-const page = ref(1)
+const page = ref(app_store.current_songs_page)
+
 
 // order
 const order_by = ref('made')
@@ -95,6 +96,8 @@ const myObject = reactive({
   author: 'Jane Doe',
   publishedAt: '2016-04-10'
 })
+
+
 
 
 const get_list =async() => {
@@ -135,21 +138,23 @@ When listening for keyboard events, we often need to check for specific keys. Vu
 */
 
 const get_new_page_num = (step) => {
-   const new_page_num = page.value + step
+   const new_page_num = parseInt(page.value) + step
    if(new_page_num < 1) return 1
    // if(new_page_num > total_pages) return total_pages // future : check we don't exceed
    return new_page_num
 } 
 
 const step_to_page = (step) => {   
-   const new_page_num = get_new_page_num(parseInt(step))
+   const new_page_num = get_new_page_num(step)
    if(new_page_num) {
+      app_store.current_songs_page = new_page_num
       page.value = new_page_num
       get_list()
    }
 }
 
 const navigate_to_page = (selected_page) => {
+   app_store.current_songs_page = selected_page
    page.value = parseInt(selected_page)
    get_list()
 }
@@ -199,6 +204,17 @@ watch(order_by, async (new_page, old_page) => {
 watch(asc, async (new_page, old_page) => {
    get_list()
 })
+
+
+
+
+
+
+
+// app_store.current_songs_page
+
+
+
 
 </script>
 

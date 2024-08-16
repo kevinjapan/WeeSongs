@@ -1,6 +1,10 @@
 <script setup>
+import { useAppStore } from '@/stores/appStore'
 
 defineEmits(['test-prop-method'])   // permits eg emit('test-prop-method') calls within script
+
+
+const app_store = useAppStore()
 
 
 // -----------------------------------------------------------
@@ -48,8 +52,9 @@ const go_to_page = (selected_page) => {
    props.navigate_to_page(selected_page)
 }
 
+
 const is_selected_link = (link_label => {
-   return parseInt(link_label) === props.page
+   return parseInt(link_label) === parseInt(props.page)
 })
 
 /*

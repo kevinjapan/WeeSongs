@@ -18,6 +18,9 @@ export const useAppStore = defineStore('app_store', () => {
    // app nav
    const display_nav = ref(false)
 
+   // current Songs List page
+   const current_songs_page = ref(1)
+
    // getters
    const get_api = computed(() => app_api.value)
 
@@ -44,7 +47,8 @@ export const useAppStore = defineStore('app_store', () => {
    return { 
       app_api, get_api, set_api,
       bearer_token,username,
-      display_nav
+      display_nav,
+      current_songs_page
    }
  })
 
