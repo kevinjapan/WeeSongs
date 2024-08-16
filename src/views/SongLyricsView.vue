@@ -31,11 +31,9 @@ const has_error = computed(() => {
       </div>
       <div v-else>
 
-         <div v-if="loading">
-            Loading data...
-         </div>
+         <div v-if="loading" class="loading"></div>
 
-         <div v-else class="relative">
+         <div v-else class="relative lyrics_wrapper">
             <SongLyrics :song="song_store.song" />
          </div>
       </div>
@@ -48,4 +46,11 @@ const has_error = computed(() => {
 
 <style scoped>
 
+section {
+   width:100%;
+}
+.lyrics_wrapper {
+   margin-top:10rem;
+   margin-bottom:10rem;
+}
 </style>

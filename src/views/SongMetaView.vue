@@ -88,6 +88,7 @@ const delete_song = async() => {
 
 <template>
     
+   <section class="meta_wrapper">
    <SongCtrls />
 
    <form class="grid form_grid flex_col" @submit.prevent="apply">
@@ -143,11 +144,21 @@ const delete_song = async() => {
 
    </form>
 
+   </section>
+   
+
    <AppStatus v-model="notify_msg" />
 
 </template>
 
 <style scoped>
+section {
+   width:100%;
+}
+.meta_wrapper {
+   margin-top:10rem;
+   margin-bottom:10rem;
+}
 button {
    max-width:fit-content;
    border:solid 1px grey;

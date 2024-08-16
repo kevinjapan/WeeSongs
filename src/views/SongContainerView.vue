@@ -37,6 +37,7 @@ const apply_changes = async() => {
 
 <template>
 
+   <Transition>
    <section>
       
       <SongCtrls :apply_changes="apply_changes"/>
@@ -55,6 +56,7 @@ const apply_changes = async() => {
       
    </section>
    
+</Transition>
    <AppStatus v-model="notify_msg" />
 
 </template>
@@ -62,5 +64,14 @@ const apply_changes = async() => {
 <style scoped>
 section {
    width:100%;
+}
+
+/* configure Vue Transition component for app_nav slide-in*/
+.v-enter-active,.v-leave-active {
+   transition: opacity .5s ease-in-out;
+   
+}
+.v-enter-from,.v-leave-to {
+   opacity: 0;
 }
 </style>

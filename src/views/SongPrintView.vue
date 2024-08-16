@@ -13,12 +13,14 @@ const song_store = useSongStore()
 </script>
 
 <template>
-   
-   <SongCtrls :song=song_store.song />
-
-  
+   <section class="print_wrapper">
+      <SongCtrls :song=song_store.song />
+   </section>
 </template>
 
 <style scoped>
 
+section {
+   width:100%;
+}
 </style>
