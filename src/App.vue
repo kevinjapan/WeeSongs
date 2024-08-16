@@ -1,33 +1,20 @@
 <script setup>
+import AppNav from './components/App/AppNav/AppNav.vue'
 
-// App, Root Component
 
-import { useAppStore } from '@/stores/appStore'
 
-const app_store = useAppStore()
+// App Root Component
+
 
 </script>
 
 <template>
-   <nav class="fixed">
-      <RouterLink to="/" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
-         Home</RouterLink>
-      <RouterLink to="/songs" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
-         Songs</RouterLink>
-      <RouterLink to="/songs/create" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
-         Create</RouterLink>
-      <RouterLink to="/albums" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
-         Albums</RouterLink>
-      <RouterLink to="/search" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
-         Search</RouterLink>
-      <RouterLink v-if="!app_store.bearer_token" to="/login" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
-         Login</RouterLink>
-      <RouterLink v-else to="/login" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">
-         {{ app_store.username }}</RouterLink>
-   </nav>
    <main>
       <RouterView />
    </main>
+
+   <AppNav />
+
 </template>
 
 <style scoped>
@@ -44,7 +31,7 @@ nav {
    left:0;
 }
 main {
-   min-height:100vh;
+   min-height:120vh;
 }
 .logo {
   height: 6em;

@@ -78,9 +78,9 @@ button:focus-visible {
 
 
 .app {
-   max-width: 1280px;
-   margin: 0 auto;
-   margin-top:4.25rem; /* clear fixed menus */
+   position:relative;
+   width: 100%;
+   margin: 0;
    text-align: center;
    width:100%;
    padding:0;
@@ -131,8 +131,11 @@ ul {
 .space_between {
    justify-content:space-between;
 }
-.justify-end {
+.justify_end {
    justify-content:end;
+}
+.justify_center {
+   justify-content:center;
 }
 .align_items_center {
    align-items:center;
@@ -141,6 +144,7 @@ ul {
 .m_0 {margin:0;}
 .m_1 {margin:1rem;}
 .mx_1 {margin-left:1rem;margin-right:1rem;}
+.mr_2 {margin-right:2rem;}
 .mt_3 {margin-top:3rem;}
 .mt_4 {margin-top:4rem;}
 .mt_5 {margin-top:5rem;}
@@ -148,6 +152,7 @@ ul {
 
 .p_0 {padding:0;}
 .p_1 {padding:1rem;}
+.px_1 {padding-left:1rem;padding-right:1rem;}
 .p_0\.5 {padding:.5rem;}
 .py_0\.5 {padding-top:.5rem;padding-bottom:.5rem;}
 
@@ -155,7 +160,7 @@ ul {
 .border {border:solid 1px lightgrey;}
 
 .bg_yellow {background:yellow;}
-
+.bg_lightblue {background:lightblue;}
 
 
 /* 

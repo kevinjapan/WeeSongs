@@ -15,6 +15,9 @@ export const useAppStore = defineStore('app_store', () => {
    const bearer_token = ref('')
    const username = ref('')
 
+   // app nav
+   const display_nav = ref(false)
+
    // getters
    const get_api = computed(() => app_api.value)
 
@@ -40,8 +43,8 @@ export const useAppStore = defineStore('app_store', () => {
 
    return { 
       app_api, get_api, set_api,
-      bearer_token,
-      username
+      bearer_token,username,
+      display_nav
    }
  })
 
