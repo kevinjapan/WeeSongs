@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 import { useSongStore } from '@/stores/songStore'
-import SongOutline from '../SongOutline/SongOutline.vue'
 import SongSectionLyrics from './SongSectionLyrics/SongSectionLyrics.vue'
 
 
@@ -19,8 +18,6 @@ const last = (index) => {
 </script>
 
 <template>
-
-   <SongOutline :song="song" />
 
    <SongSectionLyrics v-for="(section, index) in song_store.song.songsheet.aSections" 
       :key="section.id" 
