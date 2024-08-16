@@ -134,7 +134,7 @@ const change_num_bars = (num_bars) => {
       </div>
       
 
-      <div className="flex justify-end gap-3">
+      <div className="flex justify_end gap-3">
 
          <button @click="move('down')" :disabled="app_store.bearer_token === '' || props.last">
             <img src="../../../../assets/icons/arrow-down-circle.svg" />
