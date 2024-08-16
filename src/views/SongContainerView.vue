@@ -46,11 +46,9 @@ const apply_changes = async() => {
       </div>
       <div v-else>
 
-         <div v-if="loading">
-            Loading data...
-         </div>
+         <div v-if="loading" class="loading"></div>
 
-         <div v-else class="relative">
+         <div v-else class="relative m_0 p_0">
             <Song :song="song_store.song" />
          </div>
       </div>
@@ -62,5 +60,7 @@ const apply_changes = async() => {
 </template>
 
 <style scoped>
-
+section {
+   width:100%;
+}
 </style>
