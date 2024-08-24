@@ -51,15 +51,13 @@ onBeforeMount(async() => {
    }
 })
 
-
-
 const change_title = () => {
    slug.value = title.value.replaceAll(' ','-')
 }
 
+// apply local changes
 const apply = async() => {
 
-   // apply local changes
    const modified_song = JSON.parse(JSON.stringify(songStore.song))
    modified_song.title = title.value
    modified_song.slug = slug.value
@@ -72,10 +70,7 @@ const apply = async() => {
 }
 
 
-// delete current songStore.song
-//
 const delete_song = async() => {
-   
    if (window.confirm("Do you really want to delete this song?")) {
       const result = await songStore.delete_song(songStore.song.id)
       if(result) {
@@ -84,68 +79,70 @@ const delete_song = async() => {
       }
    }
 }
+
 </script>
 
-<template>
-    
-   <section class="meta_wrapper">
-   <SongCtrls />
+<template>    
+   <Transition>
+      <section class="meta_wrapper">
 
-   <form class="grid form_grid flex_col" @submit.prevent="apply">
+         <SongCtrls />
 
-      <label for="title">Title</label>
-      <input 
-         v-model="title"
-         id="title"
-         name="title"
-         @input="change_title"
-      />
+         <form class="grid form_grid flex_col" @submit.prevent="apply">
 
-      <label for="slug">Slug</label>
-      <input 
-         v-model="slug"
-         id="slug"
-         name="slug"
-         readonly
-      />
-      
-      <label for="id">id</label>
-      <input 
-         :value="id"
-         id="id"
-         name="id"
-         readonly
-         class="readonly_input"
-      />
-      
-      <label for="created_at">Created At</label>
-      <input 
-         :value="created_at"
-         id="created_at"
-         name="created_at"
-         readonly
-         class="readonly_input"
-      />
-      
-      <label for="updated_at">Updated At</label>
-      <input 
-         :value="updated_at"
-         id="updated_at"
-         name="updated_at"
-         readonly
-         class="readonly_input"
-      />
-      
-      <div></div>
-      <button type="submit">Apply</button>
+            <label for="title">Title</label>
+            <input 
+               v-model="title"
+               id="title"
+               name="title"
+               @input="change_title"
+            />
 
-      <div></div>
-      <button type="button" @click="delete_song">Delete this Song</button>
+            <label for="slug">Slug</label>
+            <input 
+               v-model="slug"
+               id="slug"
+               name="slug"
+               readonly
+            />
+            
+            <label for="id">id</label>
+            <input 
+               :value="id"
+               id="id"
+               name="id"
+               readonly
+               class="readonly_input"
+            />
+            
+            <label for="created_at">Created At</label>
+            <input 
+               :value="created_at"
+               id="created_at"
+               name="created_at"
+               readonly
+               class="readonly_input"
+            />
+            
+            <label for="updated_at">Updated At</label>
+            <input 
+               :value="updated_at"
+               id="updated_at"
+               name="updated_at"
+               readonly
+               class="readonly_input"
+            />
+            
+            <div></div>
+            <button type="submit">Apply</button>
 
-   </form>
+            <div></div>
+            <button type="button" @click="delete_song">Delete this Song</button>
 
-   </section>
-   
+         </form>
+
+      </section>
+   </Transition>
 
    <AppStatus v-model="notify_msg" />
 
@@ -165,5 +162,15 @@ button {
    padding:.5rem;
    margin-left:auto;
    margin-right:auto;
+}
+/* configure Vue Transition component for app_nav slide-in*/
+.v-enter-active,.v-leave-active {
+   -webkit-transition: opacity .5s ease-in-out;  
+   -o-transition: opacity .5s ease-in-out;
+   transition: opacity .5s ease-in-out;
+   
+}
+.v-enter-from,.v-leave-to {
+   opacity: 0;
 }
 </style>
