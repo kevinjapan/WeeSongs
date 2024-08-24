@@ -19,23 +19,21 @@ const change_txt = () => emit('bar-txt-changed',props.bar.id,txt.value)
 </script>
 
 <template>
-   <div class="bar_2 border-b border-slate-400 border-r w-1/4 p-0.5 pb-0" style="border:solid 1px lightgrey;">
+   <div class="bar_2">
       <input 
          v-model="chords"
          name="chords"
          @input="change_chords"
          type="text"
-         class="w-full"
-         style="border:none;" 
-         />
+         class="chord_input w-full" 
+      />
       <input 
          v-model="txt"
          name="txt" 
          @input="change_txt"
          type="text"
-         class="w-full " 
-         style="border:none;"
-         />
+         class="w-full "
+      />
    </div>
 </template>
 
@@ -43,24 +41,43 @@ const change_txt = () => emit('bar-txt-changed',props.bar.id,txt.value)
 .bar_2 {
    float:left;
    display:flex;
+
+   -webkit-box-orient:vertical;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:column;
    flex-direction:column;
-   justify-content:space-between;   
-   margin-bottom:.25rem;
-   width:100%;background:yellow;
+
+   -webkit-box-pack:justify;
+   -ms-flex-pack:justify;
+   justify-content:space-between;
+
+   margin-bottom:0;
+   width:100%;
+   border:1px solid lightgrey;
+   border-top:none;
 }
-.bar_chord {
-   border-left:solid 1px lightgrey;
-   margin-bottom:3px;
-}
-.bar_lyrics_only {
+
+
+div.bar_lyrics_only {
    width:fit-content;
 }
 .bar_lyrics_only .lyric_line {
    white-space: pre; 
 }
-.edit_bar {
-   padding:.3rem;
-   border:solid 1px lightgrey;
-   border-left:solid 1px lightgrey;
+
+input {
+   outline:none;
+   border:none;
+   padding-left:.5rem;
+}
+input:focus {
+   border:solid 1px hsl(0, 0%, 33%);
+   background:hsl(0, 0%, 92%);
+}
+input[readonly] {
+   background:pink;
+}
+.chord_input {
+   color:hsl(0, 0%, 45%);
 }
 </style>

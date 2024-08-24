@@ -23,21 +23,22 @@ const go_section = daw => {
 
 <style scoped>
 .song_outline {
+   display:-webkit-box;
+   display:-ms-flexbox;
    display:flex;
+   gap:.25rem;
    width:100%;
    margin:0;
    padding:.5rem;
    padding-left:2rem;
    padding-right:1rem;
-   background:yellow;
-   gap:.25rem;
    border-bottom:solid 1px lightgrey;
 }
 .outline_section {
    border-radius:.5rem;
 }
 .outline_section:hover {
-   background:lightgrey;
+   background:hsl(0, 0%, 93%);
 }
 
 .l_0 {left:0;}

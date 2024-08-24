@@ -369,7 +369,7 @@ watch(asc, async (new_page, old_page) => {
    <section class="grid_list">
 
       <!-- The directive v-if is used to conditionally render a block.-->
-      <div v-if="has_error">
+      <div v-if="has_error" class="notify_error">
          There was a problem loading data from the server, please try again later.
       </div>
 
@@ -444,11 +444,15 @@ watch(asc, async (new_page, old_page) => {
    width:100%;
 }
 .grid_list li{
+
    display:-ms-grid;
    display:grid;
+
    -ms-grid-columns: 1fr 1fr 1fr;
    grid-template-columns: 1fr 1fr 1fr;
-   grid-gap:.7rem;
+
+   gap:.7rem;
+   
    text-align:left;
 }
 .songs_list {

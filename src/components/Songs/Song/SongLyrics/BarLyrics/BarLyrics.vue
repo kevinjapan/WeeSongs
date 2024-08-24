@@ -23,10 +23,24 @@ const txt = ref(props.bar.txt)
 <style scoped>
 .bar_2 {
    float:left;
+   
+   display:-webkit-box;
+   display:-ms-flexbox;
    display:flex;
+
+   -webkit-box-orient:vertical;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:column;
    flex-direction:column;
+
+   -webkit-box-pack:justify;
+   -ms-flex-pack:justify;
    justify-content:space-between;
+
+   -webkit-box-align:start;
+   -ms-flex-align:start;
    align-items:flex-start;
+
    margin-bottom:.25rem;
    padding-left:1rem;
    padding-right:1rem;

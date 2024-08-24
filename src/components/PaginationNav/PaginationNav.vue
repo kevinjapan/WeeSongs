@@ -82,15 +82,21 @@ const is_selected_link = (link_label => {
 
 <style scoped>
 .nav_bar {
-  display:flex;
-  max-width:600px;
-  margin-left:auto;
-  margin-right:auto;
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   max-width:600px;
+   margin-left:auto;
+   margin-right:auto;
 }
 .flex {
+   display:-webkit-box;
+   display:-ms-flexbox;
    display:flex;
 }
 .justify_between {
+   -webkit-box-pack:justify;
+   -ms-flex-pack:justify;
    justify-content:space-between;
 }
 .nav_bar li {

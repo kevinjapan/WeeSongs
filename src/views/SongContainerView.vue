@@ -33,30 +33,31 @@ const apply_changes = async() => {
    const result = await song_store.save()
    notify_msg.value = result.message
 }
+
 </script>
 
 <template>
 
    <Transition>
-   <section>
-      
-      <SongCtrls :apply_changes="apply_changes"/>
+      <section>
+         
+         <SongCtrls :apply_changes="apply_changes"/>
 
-      <div v-if="has_error">
-         There was a problem loading data from the server, please try again later.
-      </div>
-      <div v-else>
-
-         <div v-if="loading" class="loading"></div>
-
-         <div v-else class="relative m_0 p_0">
-            <Song :song="song_store.song" />
+         <div v-if="has_error">
+            There was a problem loading data from the server, please try again later.
          </div>
-      </div>
-      
-   </section>
-   
-</Transition>
+         <div v-else>
+
+            <div v-if="loading" class="loading"></div>
+
+            <div v-else class="relative m_0 p_0">
+               <Song :song="song_store.song" />
+            </div>
+         </div>
+         
+      </section>      
+   </Transition>
+
    <AppStatus v-model="notify_msg" />
 
 </template>
@@ -68,7 +69,9 @@ section {
 
 /* configure Vue Transition component for app_nav slide-in*/
 .v-enter-active,.v-leave-active {
-   transition: opacity .5s ease-in-out;
+   -webkit-transition: opacity 2.5s ease-in-out;  
+   -o-transition: opacity 2.5s ease-in-out;
+   transition: opacity 2.5s ease-in-out;
    
 }
 .v-enter-from,.v-leave-to {

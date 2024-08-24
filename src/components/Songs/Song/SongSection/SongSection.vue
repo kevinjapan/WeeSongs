@@ -109,9 +109,8 @@ const change_num_bars = (num_bars) => {
 
 
 <template>
-   <div :id="props.section.daw"
-      style="display:flex;justify-content:flex-start;flex-direction:column;
-      margin:1rem;margin-top:2rem;">
+   
+   <div :id="props.section.daw" class="song_section_wrap">
 
       <SongSectionTitles 
          :section="section"
@@ -164,6 +163,29 @@ const change_num_bars = (num_bars) => {
 
 
 <style scoped>
+
+.song_section_wrap {
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+
+   -webkit-box-pack:start;
+   -ms-flex-pack:start;
+   justify-content:flex-start;
+
+   -webkit-box-orient:vertical;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:column;
+   flex-direction:column;
+
+   margin:1rem;
+   margin-top:2rem;
+}
+
+/* prevent double-thick borders on adjoining - top border only on first grid row */
+div.bar_2:nth-child(-n + 4) {
+    border-top:solid 1px lightgrey;
+}
 button {
    background:white;
 }

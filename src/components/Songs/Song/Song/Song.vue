@@ -40,7 +40,6 @@ const update_section = (section_id,modified_section) => {
 
    <section class="song_wrapper">
 
-
       <SongSections :song="song" 
          :update_song="update_song" 
          :del_section="del_section"
@@ -57,7 +56,8 @@ const update_section = (section_id,modified_section) => {
 
 <style scoped>
 .song_wrapper {
-   margin-top:7rem;
+   margin-top:10rem;
    margin-bottom:10rem;
 }
+
 </style>

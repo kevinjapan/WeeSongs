@@ -23,7 +23,9 @@ const includes_text = computed(() =>
 
 <template>
    <div v-if="includes_text">
-      <div style="text-align:left;font-size:.9rem;color:grey;padding-left:1rem;margin-top:1rem;">{{ section.daw }} / {{ section.title }}</div>
+      <div class="section_lyrics_titles">
+         {{ section.daw }} / {{ section.title }}
+      </div>
       <div class="grid section_grid_2 w-full border-t border-l border-slate-400 text-slate-700">
          <BarLyrics
             v-for="bar in bars" 
@@ -36,6 +38,13 @@ const includes_text = computed(() =>
 
 
 <style scoped>
+.section_lyrics_titles {
+   text-align:left;
+   font-size:.9rem;
+   color:grey;
+   padding-left:1rem;
+   margin-top:1rem;
+}
 
 /* 
 future : review fit-content arg in this context: 

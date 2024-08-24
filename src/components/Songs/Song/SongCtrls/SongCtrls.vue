@@ -36,18 +36,37 @@ const props = defineProps(['apply_changes'])
    top:0;
    right:0px;
    max-width:100%;
+
+   display:-webkit-box;
+   display:-ms-flexbox;
    display:flex;
+
+   -webkit-box-orient:vertical;
+  -webkit-box-direction:normal;
+   -ms-flex-direction:column;
    flex-direction:column;
+
+   -ms-flex-pack:distribute;
    justify-content:space-around;
+
    padding:0;
    padding-bottom:0.5rem;
    z-index:9999;
    background:white;
 }
 .song_ctrls_bar {
+   display:-webkit-box;
+   display:-ms-flexbox;
    display:flex;
+
+   -webkit-box-pack:justify;
+   -ms-flex-pack:justify;
    justify-content:space-between;
+
+   -webkit-box-align:center;
+   -ms-flex-align:center;
    align-items:center;
+
    margin-right:5rem;
    max-width:100%;
 }
@@ -97,14 +116,16 @@ ul {
    padding:0;
 }
 li {
-   margin:0;border:solid 1px navy;
+   margin:0;
+   border:solid 1px navy;
    padding:0;
 }
 
 /* configure Vue Transition component for app_nav slide-in*/
 .v-enter-active,.v-leave-active {
+   -webkit-transition: opacity .5s ease-in-out;  
+   -o-transition: opacity .5s ease-in-out;
    transition: opacity .5s ease-in-out;
-   
 }
 .v-enter-from,.v-leave-to {
    opacity: 0;

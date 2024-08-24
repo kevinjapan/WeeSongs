@@ -17,14 +17,13 @@ const change_num_bars = num => emit('bar-nums-changed',num)
 </script>
 
 <template>
-   <div style="display:flex;justify-content:start;max-width:500px;gap:0.5rem;" class="p_0.5">
-      edit {{ props.editable }}
+
+   <div class="song_section_titles">
 
       <input
          v-model="daw"
          name="daw"
-         class="w-12 text-slate-400"
-         style="width:15%;"
+         class="daw_input w-12 text-slate-400"
          type="text"
          @input="change_daw"
          :readonly="props.editable === false"
@@ -33,8 +32,7 @@ const change_num_bars = num => emit('bar-nums-changed',num)
       <input
          v-model="title"
          name="title"
-         class="w-32 text-slate-400"
-         style="width:85%;"
+         class="title_input w-32 text-slate-400"
          type="text"
          @input="change_title"
          :readonly="props.editable === false"
@@ -51,8 +49,36 @@ const change_num_bars = num => emit('bar-nums-changed',num)
 </template>
 
 <style scoped>
+.song_section_titles {
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
 
+   -webkit-box-pack:start;
+   -ms-flex-pack:start;
+   justify-content:start;
+
+   max-width:300px;
+   gap:0.25rem;
+   padding:0 0 .25rem 0;
+}
+input {
+   outline:none;
+   border:solid 1px hsl(0, 0%, 83%);
+   border-radius:.5rem;
+   padding-left:.5rem;
+}
+input:focus {
+   border:solid 1px hsl(0, 0%, 33%);
+   background:hsl(0, 0%, 92%);
+}
 input[readonly] {
    background:pink;
+}
+.title_input {
+   width:85%;
+}
+.daw_input {
+   width:15%;
 }
 </style>
