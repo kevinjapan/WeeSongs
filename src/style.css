@@ -47,6 +47,9 @@ button {
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
+
+  -webkit-transition: border-color 0.25s;
+  -o-transition: border-color 0.25s;
   transition: border-color 0.25s;
 }
 button:hover {
@@ -96,6 +99,7 @@ ul {
 }
 
 .grid {
+   display:-ms-grid;
    display:grid;
 }
 .section_grid {
@@ -114,12 +118,20 @@ ul {
 
 /* flex utility */
 .flex {
+   display:-webkit-box;
+   display:-ms-flexbox;
    display:flex;
 }
 .flex_col {
+   -webkit-box-orient:vertical;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:column;
    flex-direction:column;
 }
-.flex_row {
+.flex_row {  
+   -webkit-box-orient:horizontal;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:row;
    flex-direction:row;
 }
 .flex_wrap {
@@ -129,15 +141,23 @@ ul {
    gap:1rem;
 }
 .space_between {
+   -webkit-box-pack:justify;
+   -ms-flex-pack:justify;
    justify-content:space-between;
 }
 .justify_end {
+   -webkit-box-pack:end;
+   -ms-flex-pack:end;
    justify-content:end;
 }
 .justify_center {
+   -webkit-box-pack:center;
+   -ms-flex-pack:center;
    justify-content:center;
 }
 .align_items_center {
+   -webkit-box-align:center;
+   -ms-flex-align:center;
    align-items:center;
 }
 
@@ -145,6 +165,7 @@ ul {
 .m_1 {margin:1rem;}
 .mx_1 {margin-left:1rem;margin-right:1rem;}
 .mr_2 {margin-right:2rem;}
+.mr_5 {margin-right:5rem;border:solid 2px orange;}
 .mt_3 {margin-top:3rem;}
 .mt_4 {margin-top:4rem;}
 .mt_5 {margin-top:5rem;}
@@ -152,10 +173,16 @@ ul {
 
 .p_0 {padding:0;}
 .p_1 {padding:1rem;}
+.pl_0 {padding-left:0;}
+.pb_0\.5,.pb_\.5 {padding-bottom:.5rem;}
 .px_1 {padding-left:1rem;padding-right:1rem;}
 .p_0\.5 {padding:.5rem;}
 .py_0\.5 {padding-top:.5rem;padding-bottom:.5rem;}
 
+.fit_content {
+   width:fit-content;
+   height:fit-content;
+}
 
 .border {border:solid 1px lightgrey;}
 
@@ -190,20 +217,30 @@ input {
 }
 
 
-
 .loading {
-   margin-left:auto;
-   margin-right:auto;
-   margin-top:5rem;
+   margin:auto;
+   margin-top:30vh;
    width:20px;
    height:20px;
    border:5px solid lightgrey;
    border-radius:50%;
    border-top-color:white;
+
+   -webkit-animation:spin .7s ease-in infinite;
    animation:spin .7s ease-in infinite;
 }
 @keyframes spin {
    to {
+      -webkit-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
       transform: rotate(360deg);
    }
+}
+
+.notify_error {
+   width:fit-content;
+   margin:auto;
+   margin-top:30vh;
+   padding:1rem;
+   border:solid 1px lightgrey;
 }
