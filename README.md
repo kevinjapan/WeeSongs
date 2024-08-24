@@ -12,5 +12,5 @@ Manage your individual Songs and the whole Catalog from an intuitive UI.
 
 ### Technologies
 WeeSongs is built on the Vue.js JavaScript framework. It was ported from
-an original early React project as a mid-sized project for learning Vue. 
-This is my first Vue.js project.
+an original early React project as a mid-sized project for learning Vue,
+and connects to a Laravel PHP backend. This is my first Vue.js project.
