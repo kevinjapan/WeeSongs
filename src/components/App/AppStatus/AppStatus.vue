@@ -44,9 +44,9 @@ watch(notification_msg, () => {
    border-radius:.5rem;
 
    /* transitions */
-   -webkit-transform: translateY(-200%);
-   -ms-transform: translateY(-200%);
-   transform: translateY(-200%);
+   -webkit-transform: translateY(-400%);
+   -ms-transform: translateY(-400%);
+   transform: translateY(-400%);
    opacity:0;
 
    -webkit-transition:opacity .35s ease-in-out,-webkit-transform .75s ease-in-out;
