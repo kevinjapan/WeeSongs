@@ -18,12 +18,20 @@ const open_nav_link = route => {
 }
 
 
+// to do : if user is scrolled down page, opening the AppNav places
+//         the links above the fold.
+//          deploy location of links has to be dynamic - 
+
 </script>
 
 
 <template>
    <Transition>
-      <nav v-if="app_store.display_nav === true" class="flex flex_col align_items_center app_nav">
+
+      <nav v-if="app_store.display_nav === true" class="flex flex_col align_items_end app_nav">
+
+         <button @click="close_app_nav" class="close_app_nav mt_3 fit_content">X</button>
+
          <a @click="open_nav_link('/')">Home</a>
          <a @click="open_nav_link('/songs')">Songs</a>
          <a @click="open_nav_link('/songs/create')">Create</a>
@@ -34,11 +42,12 @@ const open_nav_link = route => {
          <!-- to do : user account? -->
          <a  v-else  @click="open_nav_link('/account')">{{ pp_store.username }}</a>
 
-         <button @click="close_app_nav" class="mt_3">X</button>
       </nav>
-      <div v-else class="app_nav_hamburger">
-         <button @click="app_store.display_nav = true">M E N U 2</button>
+
+      <div v-else >
+         <button @click="app_store.display_nav = true" class="app_nav_hamburger">M E N U 2</button>
       </div>
+
    </Transition>
 </template>
 
@@ -49,11 +58,12 @@ nav.app_nav {
    top:0;
    right:0;
    z-index:90000;    /* to do : review all layering */
+   text-align:right;
 
-   width:100%;   /* modify width of nav to affect extent of slide */
-   height:100%;
+   width:fit-content;   /* to do : set media query w/ 100% width for sm */
+   height:fit-content;
 
-   padding-top:5rem;
+   padding:2rem;
    font-size:1.5rem;
    font-weight:300;
    color:white;
@@ -61,13 +71,18 @@ nav.app_nav {
 }
 /* configure Vue Transition component for app_nav slide-in*/
 .v-enter-active,.v-leave-active {
-   /*transition: opacity .5s ease-in-out;*/
+   -webkit-transition: opacity .5s ease-in-out;  
+   -o-transition: opacity .5s ease-in-out;
    transition: .5s ease-in-out;
+   
+   -webkit-transform: translate(0, 0);
+   -ms-transform: translate(0, 0);
    transform: translate(0, 0);
 }
 .v-enter-from,.v-leave-to {
-   /*opacity: 0;*/
-   transform: translate(100%, 0);
+   -webkit-transform: translate(0, -100%);  
+   -ms-transform: translate(0, -100%);
+   transform: translate(0, -100%);
 }
 
 nav.app_nav > div {
@@ -81,12 +96,22 @@ nav.app_nav > div {
    right:0;
    z-index:999999999999999;
    width:100px;
-   height:100px;
+   height:fit-content;
    background:white;
 }
 a {
    color:inherit;
    cursor:pointer;
 }
-
+button {
+   width:fit-content;
+   height:fit-content;
+   padding:0;
+   padding-left:.5rem;
+   padding-right:.5rem;
+}
+.close_app_nav {
+   margin-left:auto;
+   margin-right:0;
+}
 </style>
