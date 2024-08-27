@@ -1,0 +1,79 @@
+<script setup>
+import { ref, computed, reactive, onBeforeMount } from 'vue'
+import { useRoute } from 'vue-router'
+import { useAlbumStore } from '@/stores/albumStore'
+import Album from '../components/Albums/Album/Album/Album.vue'
+
+
+// AlbumContainerView
+
+const route = useRoute()
+const album_store = useAlbumStore()
+const notify_msg = ref('')
+
+// custom suspense flag
+const loading = ref(true)
+const loading_error = reactive({is_error:false})
+const has_error = computed(() => {
+  return loading_error.is_error === true ? true : false
+})
+
+// future : access slug from params
+// console.log( 'params', route.params )
+
+onBeforeMount(async() => {
+   // load selected song into store (from 'slug' route param)
+   const result = await album_store.load_album(route.params.slug)
+   if(result && result.message) notify_msg.value = result.message
+   loading.value = false   
+})
+
+const apply_changes = async() => {
+   const result = await album_store.save()
+   notify_msg.value = result.message
+}
+
+</script>
+
+<template>
+
+   <Transition>
+      <section>
+         
+         <!--SongCtrls :apply_changes="apply_changes"/-->
+
+         <div v-if="has_error">
+            There was a problem loading data from the server, please try again later.
+         </div>
+         <div v-else>
+
+            <div v-if="loading" class="loading"></div>
+
+            <div v-else class="relative m_0 p_0">
+               <Album :song="album_store.album" />
+            </div>
+         </div>
+         
+      </section>      
+   </Transition>
+
+   <AppStatus v-model="notify_msg" />
+
+</template>
+
+<style scoped>
+section {
+   width:100%;
+}
+
+/* configure Vue Transition component for app_nav slide-in*/
+.v-enter-active,.v-leave-active {
+   -webkit-transition: opacity 2.5s ease-in-out;  
+   -o-transition: opacity 2.5s ease-in-out;
+   transition: opacity 2.5s ease-in-out;
+   
+}
+.v-enter-from,.v-leave-to {
+   opacity: 0;
+}
+</style>
