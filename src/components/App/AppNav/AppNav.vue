@@ -17,11 +17,6 @@ const open_nav_link = route => {
    router.push(route)
 }
 
-
-// to do : if user is scrolled down page, opening the AppNav places
-//         the links above the fold.
-//          deploy location of links has to be dynamic - 
-
 </script>
 
 
@@ -40,7 +35,7 @@ const open_nav_link = route => {
 
          <a v-if="!app_store.bearer_token" @click="open_nav_link('/login')">Login</a>
          <!-- to do : user account? -->
-         <a  v-else  @click="open_nav_link('/account')">{{ pp_store.username }}</a>
+         <a  v-else  @click="open_nav_link('/account')">{{ app_store.username }}</a>
 
       </nav>
 
@@ -54,7 +49,7 @@ const open_nav_link = route => {
 
 <style scoped>
 nav.app_nav {
-   position:absolute;
+   position:fixed;
    top:0;
    right:0;
    z-index:90000;    /* to do : review all layering */
@@ -71,18 +66,20 @@ nav.app_nav {
 }
 /* configure Vue Transition component for app_nav slide-in*/
 .v-enter-active,.v-leave-active {
-   -webkit-transition: opacity .5s ease-in-out;  
-   -o-transition: opacity .5s ease-in-out;
-   transition: .5s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;  
+   -o-transition: opacity .25s ease-in-out;
+   transition: .25s ease-in-out;
+   opacity:1;
    
    -webkit-transform: translate(0, 0);
    -ms-transform: translate(0, 0);
    transform: translate(0, 0);
 }
 .v-enter-from,.v-leave-to {
-   -webkit-transform: translate(0, -100%);  
-   -ms-transform: translate(0, -100%);
-   transform: translate(0, -100%);
+   -webkit-transform: translate(100%, 0);  
+   -ms-transform: translate(100%, 0);
+   transform: translate(100%, 0);
+   opacity:0;
 }
 
 nav.app_nav > div {
