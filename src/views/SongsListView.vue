@@ -1,10 +1,11 @@
 <script setup>
-import { ref, reactive, computed, watch } from 'vue'
-import { useAppStore } from '@/stores/appStore'
-import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
-import reqInit from "../utilities/requestInit/RequestInit"
-import get_ui_ready_date from "../utilities/dates/dates"
+import { ref, reactive, computed, watch, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAppStore } from '@/stores/appStore'
+import { useSongStore } from '@/stores/songStore'
+import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
+import reqInit from '../utilities/requestInit/RequestInit'
+import get_ui_ready_date from '../utilities/dates/dates'
 
 //
 // SongsListView
@@ -17,8 +18,15 @@ import { useRouter } from 'vue-router'
 // WILL GRADUALLY REDUCE AS WE GET FAMILIAR WITH THE FRAMEWORK
 // -----------------------------------------------------------
 
+// note : future :
+// inconsistency btwn 'created_at' on titles and 'made' on row value
+// we are using non-json 'created_at' col server-side to order results,
+// while we are accessing json field inside Song in the row to display.
+
+
 const router = useRouter()
 const app_store = useAppStore()
+const song_store = useSongStore()
 
 // DECLARING REACTIVE STATE - primitives/arrays - ref()
 // In Composition API, the recommended way to declare reactive state in a component is using the ref() function:
@@ -58,14 +66,13 @@ const has_error = computed(() => {
 const loading = ref(true)
 
 // pagination
-const page = ref(app_store.current_songs_page)
-
+const page = ref(song_store.current_songs_page)
 
 // order
-const order_by = ref(app_store.current_order_by)   // 'made')
+const order_by = ref(song_store.current_order_by)   // 'made')
 
 // asc
-const asc = ref(app_store.current_asc)
+const asc = ref(song_store.current_asc)
 
 // last page
 const last_page = ref(1)
@@ -99,7 +106,18 @@ const myObject = reactive({
 })
 
 
+onBeforeMount( () => {
+   get_list()
+})
 
+// watch works directly on a ref
+watch(order_by, async (new_page, old_page) => {
+   get_list()
+})
+
+watch(asc, async (new_page, old_page) => {
+   get_list()
+})
 
 const get_list =async() => {
    
@@ -117,7 +135,7 @@ const get_list =async() => {
          loading_error.is_error = true
       })
 }
-get_list()
+
 
 
 /*  Event Modifiers 
@@ -148,14 +166,14 @@ const get_new_page_num = (step) => {
 const step_to_page = (step) => {   
    const new_page_num = get_new_page_num(step)
    if(new_page_num) {
-      app_store.current_songs_page = new_page_num
+      song_store.current_songs_page = new_page_num
       page.value = new_page_num
       get_list()
    }
 }
 
 const navigate_to_page = (selected_page) => {
-   app_store.current_songs_page = selected_page
+   song_store.current_songs_page = selected_page
    page.value = parseInt(selected_page)
    get_list()
 }
@@ -183,47 +201,18 @@ const order_songs_by = (col_title) => {
 
    // set order_by col
    order_by.value = col_title
-   app_store.current_order_by = col_title
+   song_store.current_order_by = col_title
 
    // toggle asc
    if(asc.value) {
       asc.value = false
-      app_store.current_asc = false
+      song_store.current_asc = false
    }
    else {
       asc.value = true
-      app_store.current_asc = true
+      song_store.current_asc = true
    }
 }
-
-// watch works directly on a ref
-watch(order_by, async (new_page, old_page) => {
-   // if (newQuestion.includes('?')) {
-   //    loading.value = true
-   //    answer.value = 'Thinking...'
-   //    try {
-   //       const res = await fetch('https://yesno.wtf/api')
-   //       answer.value = (await res.json()).answer
-   //    } catch (error) {
-   //       answer.value = 'Error! Could not reach the API. ' + error
-   //    } finally {
-   //       loading.value = false
-   //    }
-   // }
-   get_list()
-})
-
-watch(asc, async (new_page, old_page) => {
-   get_list()
-})
-
-
-
-
-
-
-
-// app_store.current_songs_page
 
 
 
@@ -390,7 +379,7 @@ watch(asc, async (new_page, old_page) => {
    
             <ul class="songs_list">
 
-               <!-- TITLES -->
+               <!-- TITLES -->               
                <li>
                   <div @click="order_songs_by('title')" class="cursor_pointer">title</div>
                   <div @click="order_songs_by('created_at')" class="cursor_pointer text_right">made</div>
