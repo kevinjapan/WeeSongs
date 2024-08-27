@@ -44,8 +44,11 @@ export const useAppStore = defineStore('app_store', () => {
    }
 
    return { 
-      app_api, get_api, set_api,
-      bearer_token,username,
+      app_api, 
+      get_api, 
+      set_api,
+      bearer_token,
+      username,
       display_nav
    }
  })
