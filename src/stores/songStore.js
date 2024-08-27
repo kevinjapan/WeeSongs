@@ -360,7 +360,7 @@ export const useSongStore = defineStore('song_store', () => {
       }
    }
 
-   // User has left page w/out applyig changes - we revert to last saved
+   // User has left page w/out applying changes - we revert to last saved
    function discard_changes() {
       load_song(song.value.slug)
    }
