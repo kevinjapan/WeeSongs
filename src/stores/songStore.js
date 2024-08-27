@@ -1,7 +1,7 @@
 
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useAppStore } from './appStore'
+import { useAppStore } from '@/stores/appStore'
 import reqInit from "../utilities/requestInit/RequestInit"
 import { get_new_song_template } from '../utilities/newSongTemplate/newSongTemplate'
 import { get_db_ready_datetime } from '../utilities/dates/dates'
@@ -14,32 +14,29 @@ import { get_db_ready_datetime } from '../utilities/dates/dates'
 // always fetching from db on startup. Any differences caused by interruption 
 // (cancel,refresh etc) will be discarded on view opening.
 
+
 export const useSongStore = defineStore('song_store', () => {
 
-   //
-   // state props
-   //
 
    // The current song
    const song = ref(null)
+
+
+   // Songs List page
+   const current_songs_page = ref(1)
+   const current_order_by = ref('made')
+   const current_asc = ref(false)
+
 
    // We follow state of local copy to server copy
    // Components can enable their 'apply' ctrls on this flag
    const synched = ref(true)
 
    // getters
-   // const load_song = computed(() => app_api) - only for getting stuff!
+   // const load_song = computed(() => app_api)
 
    // actions
    // change and rely on reactivity to update components
-   function change_my_object() {
-      // store.$patch({
-      //    count: store.count + 1,
-      //    age: 120,
-      //    name: 'DIO',
-      //  })
-       
-   }
 
    async function create_song(title) {
 
@@ -139,7 +136,7 @@ export const useSongStore = defineStore('song_store', () => {
       synched.value = true
       return {
          outcome: 'success',
-         message: ''   // we don't need notification, the song will appear!
+         message: ''   // we don't need notification, the song will appear
       }
    }
 
@@ -175,7 +172,6 @@ export const useSongStore = defineStore('song_store', () => {
          message: 'The song was updated successfully'
       }
    }
-
 
    // save this store local copy to server (after we have updated_sections etc)
    async function save() {
@@ -371,10 +367,14 @@ export const useSongStore = defineStore('song_store', () => {
 
 
    return {
-      song, synched, load_song, 
+      song, synched, 
+      current_songs_page,
+      current_order_by,
+      current_asc,
+      load_song, 
       create_song, delete_song, update_song, save, save_song,
       del_section, clone_section, move_section, update_section,
-      discard_changes
+      discard_changes,
    }
 
 })
