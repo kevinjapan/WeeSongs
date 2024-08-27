@@ -22,6 +22,11 @@ const router = createRouter({
          component: () => import('../views/AlbumsView.vue') 
       },
       {
+         path: '/albums/:slug',
+         name: 'albumcontainer',
+         component: () => import('../views/AlbumContainerView.vue') 
+      },
+      {
          path: '/search',
          name: 'search',
          component: () => import('../views/SearchView.vue')
