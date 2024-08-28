@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
 import { useAlbumStore } from '@/stores/albumStore'
+import AlbumTracksList from '../../AlbumTracksList/AlbumTracksList.vue';
 
 
 // Album
@@ -45,8 +46,23 @@ onBeforeMount(async() => {
    }
 })
 
-const update_album_meta = () => {
-   
+const change_title = () => {
+   slug.value = title.value.replaceAll(' ','-')
+}
+
+
+// apply local changes
+const apply = async() => {
+
+   const modified_album = JSON.parse(JSON.stringify(album_store.album))
+   modified_album.title = title.value
+   modified_album.slug = slug.value
+
+   const result = await album_store.save_album(modified_album)
+   if(result && result.message) notify_msg.value = result.message
+
+   // reload w/ new slug in url
+   if(result.outcome === 'success') router.push(`/albums/${slug.value}`)
 }
 
 
@@ -65,6 +81,7 @@ const update_album_meta = () => {
             name="id"
             readonly
             class="readonly_input"
+            @input="change_title"
          />
 
          <label for="title">Title</label>
@@ -88,7 +105,6 @@ const update_album_meta = () => {
             v-model="outline"
             id="outline"
             name="outline"
-            readonly
          />
 
          <label for="created_at">Created At</label>
@@ -126,14 +142,8 @@ const update_album_meta = () => {
 
       </form>
 
-      <ul>
+      <AlbumTracksList :songs="album_store.album.songs"/>
 
-         <li v-for="song in album_store.album.songs" :key="song.id">
-            {{ song.title }} / {{ song.slug }}
-         </li>
-
-      </ul>
-   
       <AppStatus v-model="notify_msg" />
 
    </section>
@@ -142,9 +152,20 @@ const update_album_meta = () => {
 
 <style scoped>
 .album_wrapper {
+
+   display:grid;
+   grid-template-columns:1fr;
+   /* to do : webkit */
+
+   max-width:100%;
    margin-top:10rem;
    margin-bottom:10rem;
 }
+@media (min-width: 768px) {
 
+   .album_wrapper {
+   grid-template-columns:1fr 1fr;
+   }
+}
 
 </style>
