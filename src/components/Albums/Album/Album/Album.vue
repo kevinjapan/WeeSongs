@@ -153,9 +153,11 @@ const apply = async() => {
 <style scoped>
 .album_wrapper {
 
+   display:-ms-grid;
    display:grid;
+
+   -ms-grid-columns: 1fr;
    grid-template-columns:1fr;
-   /* to do : webkit */
 
    max-width:100%;
    margin-top:10rem;
@@ -164,7 +166,8 @@ const apply = async() => {
 @media (min-width: 768px) {
 
    .album_wrapper {
-   grid-template-columns:1fr 1fr;
+      -ms-grid-columns: 1fr 1fr;
+      grid-template-columns:1fr 1fr;
    }
 }
 

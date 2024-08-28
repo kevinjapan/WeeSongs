@@ -51,6 +51,7 @@ future : review fit-content arg in this context:
 4 bars covers 90% of songs lyrics - so good enough
 */
 .section_grid_2 {
+   -ms-grid-columns: fit-content(40%) fit-content(40%) fit-content(40%) fit-content(40%);
    grid-template-columns: fit-content(40%) fit-content(40%) fit-content(40%) fit-content(40%);
 }
 
