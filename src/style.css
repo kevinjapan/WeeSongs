@@ -12,7 +12,12 @@
   -moz-osx-font-smoothing: grayscale;
   
   --status-msg-top: 160px;
-  --app-status-z-index:9999;
+
+  --app_nav_height:30px;
+  
+  /* z-index layers */
+  --nav_layer:900;
+  --app-status-z-index:1000;
 }
 
 html {
