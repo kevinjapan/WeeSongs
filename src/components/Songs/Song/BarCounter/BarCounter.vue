@@ -49,7 +49,7 @@ input {
    margin-left:.5rem;
 }
 .num_bars_input {
-   max-width:1rem;
+   max-width:2rem;
    text-align:center;
 }
 input:focus {
@@ -62,6 +62,6 @@ input[readonly] {
 .local_num_label {
    font-size:.9rem;
    color:grey;
-   padding-top:.05rem;
+   padding-top:.25rem;
 }
 </style>
