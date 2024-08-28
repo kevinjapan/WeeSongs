@@ -9,27 +9,17 @@ import AppNav from './components/App/AppNav/AppNav.vue'
 </script>
 
 <template>
+
+   <AppNav />
+   
    <main>
       <RouterView />
    </main>
 
-   <AppNav />
 
 </template>
 
 <style scoped>
-nav {
-   height:40px;
-   width:100%;
-   text-align:right;
-   background:white;
-   z-index:9999;
-}
-.fixed {
-   position:fixed;
-   top:0;
-   left:0;
-}
 main {
    min-height:120vh;
 }
