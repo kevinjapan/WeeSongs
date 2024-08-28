@@ -7,55 +7,36 @@ import SongOutline from './SongOutline/SongOutline.vue'
 const song_store = useSongStore()
 const props = defineProps(['apply_changes'])
 
-
-
 </script>
 
 <template>
    <Transition>
-   <section v-if="song_store.song" class="song_ctrls flex space_between ">
+      <section v-if="song_store.song" class="song_ctrls">
 
-      <div class="song_ctrls_bar">
 
          <SongCtrlsTitle :title="song_store.song.title" />
 
+         <SongOutline :song="song_store.song" />
+
          <SongCtrlsNav :song="song_store.song" :apply_changes="props.apply_changes" />
+                    
 
-         
-      </div>
-         
-      <SongOutline :song="song_store.song" />
-
-   </section>
-</Transition>
+      </section>
+   </Transition>
 </template>
 
 <style scoped>
+
 .song_ctrls {
    position:fixed;
-   top:0;
+   top:var(--app_nav_height);
    right:0px;
-   max-width:100%;
+   z-index:var(--nav_layer);
+   
+   display:grid;
+   grid-template-columns: 2fr 1fr;
 
-   display:-webkit-box;
-   display:-ms-flexbox;
-   display:flex;
-
-   -webkit-box-orient:vertical;
-  -webkit-box-direction:normal;
-   -ms-flex-direction:column;
-   flex-direction:column;
-
-   -ms-flex-pack:distribute;
-   justify-content:space-around;
-
-   padding:0;
-   padding-bottom:0.5rem;
-   z-index:9999;
-   background:white;
-}
-.song_ctrls_bar {
-   display:-webkit-box;
+   /*display:-webkit-box;
    display:-ms-flexbox;
    display:flex;
 
@@ -65,18 +46,29 @@ const props = defineProps(['apply_changes'])
 
    -webkit-box-align:center;
    -ms-flex-align:center;
-   align-items:center;
+   align-items:center;*/
 
-   margin-right:5rem;
    max-width:100%;
+   padding-left:1rem;
+   padding-right:1rem;
+
+   background:white;
 }
+
+@media (min-width: 1110px) {
+   .song_ctrls {
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+   }
+}
+
 h1 {
-   font-size:3rem;
+   font-size:2.5rem;
    font-weight:400;
-   /*color:lightgrey;*/
    margin:0;
    padding-left:1rem;
    padding-bottom:.35rem;
+   text-align:left;
 }
 .selected_tab {
    background:hsl(0, 0%, 83%);

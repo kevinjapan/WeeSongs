@@ -11,12 +11,12 @@ const props = defineProps(['apply_changes'])
 </script>
 
 <template>
-   <ul class="ctrls_nav flex gap_1 align_items_center m_0 pr_1 mr_5 border ">
+   <ul class="ctrls_nav flex gap_1 align_items_center m_0 pr_1 mr_1 border ">
       <li>
          <button v-if="app_store.bearer_token && !song_store.synched" @click="apply_changes">
-            Apply Changes</button>
+            Apply</button>
          <button v-else disabled>
-            Apply Changes</button>
+            Apply</button>
       </li>
       <li>
          <RouterLink :to="{ name: 'songcontainer', params: { slug: song_store.song.slug }}"
@@ -40,6 +40,11 @@ const props = defineProps(['apply_changes'])
 <style scoped>
 ul.ctrls_nav {
    margin:0;
-   margin-right:3rem;
+   order:2;
+}
+@media (min-width: 1110px) {
+   ul.ctrls_nav {
+      order:3;
+   }
 }
 </style>
