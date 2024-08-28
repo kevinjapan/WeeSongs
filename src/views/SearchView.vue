@@ -23,6 +23,7 @@ const submit_search_term = () => {
 // future : distinguish from 'back' and navigation to Search page
 onMounted(() => {
    real_search_term.value = search_store.last_search_term
+   window.scroll(0,0)
 })
 
 onUnmounted(() => {
