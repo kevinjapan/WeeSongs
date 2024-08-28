@@ -56,8 +56,14 @@ const update_section = (section_id,modified_section) => {
 
 <style scoped>
 .song_wrapper {
-   margin-top:10rem;
-   margin-bottom:10rem;
+
+   /* leave plenty space to scroll bottom section from outline */
+   margin-top:8rem; 
+   margin-bottom:8rem;
+
+   padding-top:0;
+
+   border:solid 2px orange;
 }
 
 </style>
