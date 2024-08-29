@@ -34,7 +34,7 @@ watch(notification_msg, () => {
    top:var(--status-msg-top);
    left:0;
    right:0;
-   z-index:var(--app-status-z-index);
+   z-index:var(--app_status_z-index);
    width:fit-content;
    margin-left:auto;
    margin-right:auto;
