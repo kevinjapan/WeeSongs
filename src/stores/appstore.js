@@ -15,15 +15,17 @@ export const useAppStore = defineStore('app_store', () => {
    const bearer_token = ref('')
    const username = ref('')
 
-   // app nav
-   const display_nav = ref(false)
-
-
 
    // getters
    const get_api = computed(() => app_api.value)
 
+
    // to do : persist login / bearer_token for limited time
+   //   our server is a stateless rest model, so we need to save client-side
+   //   and attempt to re-hydrate session...
+   //   server-side, we need to verify correctly expiring tokens
+
+
    const user = ref({
       name:"kev",
       email:"kev@weesongsvuebuild.com"
@@ -48,8 +50,7 @@ export const useAppStore = defineStore('app_store', () => {
       get_api, 
       set_api,
       bearer_token,
-      username,
-      display_nav
+      username
    }
  })
 
