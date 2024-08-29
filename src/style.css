@@ -14,10 +14,13 @@
   --status-msg-top: 160px;
 
   --app_nav_height:30px;
+
+  --app_nav_dropdown_top:60px;
   
   /* z-index layers */
+  --app_status_z-index:1000;
+  --over_nav_layer:999;
   --nav_layer:900;
-  --app-status-z-index:1000;
 }
 
 html {
