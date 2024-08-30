@@ -62,17 +62,30 @@ const clicked_bg = () => {
 
 
 <style scoped>
-nav.app_nav {
 
+nav.app_nav {
    position:fixed;
    top:var(--app_nav_dropdown_top);
    right:0;
    z-index:var(--nav_layer);
 
+   display:-webkit-box;
+   display:-ms-flexbox;
    display:flex;
+   
+   -webkit-box-orient:horizontal;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:row;
    flex-direction:column;
+   
+   -webkit-box-pack:flex-start;
+   -ms-flex-pack:flex-start;
    justify-content:flex-start;
+   
+   -webkit-box-align:flex-end;
+   -ms-flex-align:flex-end;
    align-items:flex-end;
+
    gap:1rem;
 
    width:100%;
@@ -96,16 +109,18 @@ nav.app_nav {
    transition:opacity 2.35s ease-in-out .25s,transform .75s ease-in-out .25s;
    transition:opacity 2.35s ease-in-out .25s,transform .75s ease-in-out,-webkit-transform .75s ease-in-out .25s;
 }
+
 nav.app_nav > div.app_nav_dimmer {
    content:'';
+
    position:absolute;
    top:0;
    left:0;
+   z-index:-1;
+
    width:100%;
    height:100%;
    background:grey;
-   opacity:.35;
-   z-index:-1;
    
    opacity:0;
    -webkit-transition:opacity .35s ease-in-out;
@@ -138,10 +153,23 @@ nav.app_nav.opened > div.app_nav_dimmer {
 }
 
 .app_nav_links {
+   
+   display:-webkit-box;
+   display:-ms-flexbox;
    display:flex;
+
+   -webkit-box-orient:vertical;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:column;
    flex-direction:column;
+
+   -webkit-box-pack:flex-start;
+   -ms-flex-pack:flex-start;
    justify-content:flex-start;
+
+   -ms-flex-item-align:end;
    align-self:flex-end;
+
    width:fit-content;
    margin-right:.5rem;
    padding:1rem 2rem 1rem 2rem;
@@ -156,8 +184,12 @@ nav.app_nav.opened > div.app_nav_dimmer {
    right:0;
    z-index:var(--over_nav_layer);
 
+   display:-webkit-box;
+   display:-ms-flexbox;
    display:flex;
 
+   -webkit-box-pack:flex-end;
+   -ms-flex-pack:flex-end;
    justify-content:flex-end;
 
    width:100%;
@@ -173,6 +205,7 @@ nav.app_nav.opened > div.app_nav_dimmer {
 }
 /* grey-out opened dropdown ctrl */
 .app_nav_hamburger button.opened {
+   -webkit-filter: invert(15%) sepia(61%) saturate(5216%) hue-rotate(180deg) brightness(227%) contrast(105%);
    filter: invert(15%) sepia(61%) saturate(5216%) hue-rotate(180deg) brightness(227%) contrast(105%);
 }
 .app_nav_hamburger img {
@@ -187,8 +220,15 @@ nav.app_nav.opened > div.app_nav_dimmer {
 
       top:0;
 
-      flex-direction:row; /* to do : webkit this file */
+      -webkit-box-orient:horizontal;
+      -webkit-box-direction:normal;
+      -ms-flex-direction:row;
+      flex-direction:row;
+      
+      -webkit-box-pack:end;
+      -ms-flex-pack:end;
       justify-content:flex-end;
+
       text-align:right;
 
       width:100%;
@@ -220,9 +260,17 @@ nav.app_nav.opened > div.app_nav_dimmer {
    }
    
    .app_nav_links {
+      -webkit-box-orient:horizontal;
+      -webkit-box-direction:normal;
+      -ms-flex-direction:row;
       flex-direction:row;
+
+      -webkit-box-pack:flex-end;
+      -ms-flex-pack:flex-end;
       justify-content:flex-end;
+
       gap:1rem;
+
       width:100%;
       padding:0 1rem 0 1rem;
    }
@@ -258,8 +306,7 @@ button {
       -webkit-transition: opacity .25s ease-in-out;  
       -o-transition: opacity .25s ease-in-out;
       transition: .25s ease-in-out;
-      opacity:1;
-      
+      opacity:1;      
       -webkit-transform: translate(0, 0);
       -ms-transform: translate(0, 0);
       transform: translate(0, 0);
