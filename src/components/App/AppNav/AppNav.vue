@@ -20,26 +20,40 @@ const clicked_bg = () => {
    display.value = false
 }
 
+
+// AppNav CSS Transitions : 
+// - 'app_nav' slides down and fades in - but we delay to allow dimmer to fade in
+// - 'app_nav_links' appearance is determined by it's parent 'app_nav'
+// - 'app_nav_dimmer' adds it's own transitions and fades in before
+//    thus we hide dimmer bg sliding down.
+
 </script>
 
 
 <template>
 
-   <button @click="display = display === true ? false : true" class="app_nav_hamburger">
-      <img src="../../../assets/icons/list.svg" alt="open nav menu"/>
-   </button>
+   <div class="app_nav_hamburger">
+      <button @click="display = display === true ? false : true"  :class="{opened : display === true}">
+         <img src="../../../assets/icons/list.svg" alt="open nav menu"/>
+      </button>
+   </div>
 
    <Transition>
 
-      <nav class="app_nav flex" :class="{opened : display === true}" @click="clicked_bg">
-         <a @click.stop="open_nav_link('/')">Home</a>
-         <a @click.stop="open_nav_link('/songs')">Songs</a>
-         <a @click.stop="open_nav_link('/songs/create')">Create</a>
-         <a @click.stop="open_nav_link('/albums')">Albums</a>
-         <a @click.stop="open_nav_link('/search')">Search</a>
-         <a v-if="!app_store.bearer_token" @click.stop="open_nav_link('/login')">Login</a>
-         <!-- to do : user account? -->
-         <a  v-else  @click.stop="open_nav_link('/account')">{{ app_store.username }}</a>
+      <nav class="app_nav" :class="{opened : display === true}" @click="clicked_bg">
+
+         <div class="app_nav_links">
+            <a @click.stop="open_nav_link('/')">Home</a>
+            <a @click.stop="open_nav_link('/songs')">Songs</a>
+            <a @click.stop="open_nav_link('/songs/create')">Create</a>
+            <a @click.stop="open_nav_link('/albums')">Albums</a>
+            <a @click.stop="open_nav_link('/search')">Search</a>
+            <a v-if="!app_store.bearer_token" @click.stop="open_nav_link('/login')">Login</a>
+            <!-- to do : user account? -->
+            <a  v-else  @click.stop="open_nav_link('/account')">{{ app_store.username }}</a>
+         </div>
+         <div class="app_nav_dimmer"></div>
+
       </nav>
 
    </Transition>
@@ -47,38 +61,42 @@ const clicked_bg = () => {
 </template>
 
 
-// Goodfood100
-
 <style scoped>
 nav.app_nav {
+
    position:fixed;
    top:var(--app_nav_dropdown_top);
    right:0;
-   z-index:var(--over_nav_layer);
+   z-index:var(--nav_layer);
+
+   display:flex;
+   flex-direction:column;
+   justify-content:flex-start;
+   align-items:flex-end;
+   gap:1rem;
 
    width:100%;
    height:100%;
-   padding-right:2rem;
+   margin:0;
    overflow:hidden;
-   flex-direction:column;
-   justify-content:flex-start;
-   gap:1rem;
+
    font-size:1.1rem;
-   /*background:black;*/
 
-   /* transitions */
-   -webkit-transform: translateY(-200%);
-   -ms-transform: translateY(-200%);
-   transform: translateY(-200%);
+   /* 
+   transitions
+   we fade app_nav_dimmer first and delay transition on app_nav so background does not visibly slide w/ dropdown
+   */
+   -webkit-transform: translateY(-100%);
+   -ms-transform: translateY(-100%);
+   transform: translateY(-100%);
    opacity:0;
-   -webkit-transition:opacity .35s ease-in-out,-webkit-transform .75s ease-in-out;
-   transition:opacity .35s ease-in-out,-webkit-transform .75s ease-in-out;
-   -o-transition:opacity .35s ease-in-out,transform .75s ease-in-out;
-   transition:opacity .35s ease-in-out,transform .75s ease-in-out;
-   transition:opacity .35s ease-in-out,transform .75s ease-in-out,-webkit-transform .75s ease-in-out;
+   -webkit-transition:opacity 2.35s ease-in-out .25s,-webkit-transform .75s ease-in-out .25s;
+   transition:opacity 2.35s ease-in-out .25s,-webkit-transform .75s ease-in-out .25s;
+   -o-transition:opacity 2.35s ease-in-out .25s,transform .75s ease-in-out .25s;
+   transition:opacity 2.35s ease-in-out .25s,transform .75s ease-in-out .25s;
+   transition:opacity 2.35s ease-in-out .25s,transform .75s ease-in-out,-webkit-transform .75s ease-in-out .25s;
 }
-
-nav.app_nav::before {
+nav.app_nav > div.app_nav_dimmer {
    content:'';
    position:absolute;
    top:0;
@@ -86,10 +104,16 @@ nav.app_nav::before {
    width:100%;
    height:100%;
    background:grey;
-   opacity:.5;
+   opacity:.35;
    z-index:-1;
+   
+   opacity:0;
+   -webkit-transition:opacity .35s ease-in-out;
+   transition:opacity .35s ease-in-out;
+   -o-transition:opacity .35s ease-in-out;
+   transition:opacity .35s ease-in-out;
+   transition:opacity .35s ease-in-out;
 }
-
 
 nav.app_nav.opened {
 
@@ -98,16 +122,31 @@ nav.app_nav.opened {
    -ms-transform: translateY(0);
    transform: translateY(0);
    opacity:1;
-   -webkit-transition:opacity 1s ease-in-out,-webkit-transform .75s ease-in-out;
-   transition:opacity 1s ease-in-out,-webkit-transform .75s ease-in-out;
-   -o-transition:opacity 1s ease-in-out,transform .75s ease-in-out;
-   transition:opacity 1s ease-in-out,transform .75s ease-in-out;
-   transition:opacity 1s ease-in-out,transform .75s ease-in-out,-webkit-transform .75s ease-in-out;
+   -webkit-transition:opacity .5s ease-in-out,-webkit-transform .35s ease-in-out;
+   transition:opacity .5s ease-in-out,-webkit-transform .35s ease-in-out;
+   -o-transition:opacity .5s ease-in-out,transform .35s ease-in-out;
+   transition:opacity .5s ease-in-out,transform .35s ease-in-out;
+   transition:opacity .5s ease-in-out,transform .35s ease-in-out,-webkit-transform .35s ease-in-out;
+}
+nav.app_nav.opened > div.app_nav_dimmer {
+   opacity:.4;
+   -webkit-transition:opacity 1s ease-in-out .35s;
+   transition:opacity 1s ease-in-out .35s;
+   -o-transition:opacity 1s ease-in-out .35s;
+   transition:opacity 1s ease-in-out .35s;
+   transition:opacity 1s ease-in-out .35s;
 }
 
-nav.app_nav > div {
-   cursor:pointer;
-   border:solid 1px lightgrey;
+.app_nav_links {
+   display:flex;
+   flex-direction:column;
+   justify-content:flex-start;
+   align-self:flex-end;
+   width:fit-content;
+   margin-right:.5rem;
+   padding:1rem 2rem 1rem 2rem;
+   background: white;
+   border-radius:0 0 .5rem .5rem;
 }
 
 .app_nav_hamburger {
@@ -125,22 +164,31 @@ nav.app_nav > div {
    height:fit-content;
    margin:0;
    color:white;
+   background:white;
+}
+.app_nav_hamburger button {
+   background:white;
+   border:none;
+   outline:none;
+}
+/* grey-out opened dropdown ctrl */
+.app_nav_hamburger button.opened {
+   filter: invert(15%) sepia(61%) saturate(5216%) hue-rotate(180deg) brightness(227%) contrast(105%);
 }
 .app_nav_hamburger img {
    width:32px;
    height:32px;
+   background:white;
 }
 
 @media (min-width: 768px) {
    
-   nav.app_nav {      
-      position:fixed;
-      top:0;
-      right:0;
-      z-index:var(--nav_layer);
+   nav.app_nav {
 
-      display:flex;
-      flex-direction:row;
+      top:0;
+
+      flex-direction:row; /* to do : webkit this file */
+      justify-content:flex-end;
       text-align:right;
 
       width:100%;
@@ -156,13 +204,34 @@ nav.app_nav > div {
       transform: unset;
       opacity:1;
    }
+   nav.app_nav > div.app_nav_dimmer {
+      display:none;
+   }
+
+   nav.app_nav.opened {
+      /* nullify transitions */
+      -webkit-transform: unset;
+      -ms-transform: unset;
+      transform: unset;
+      opacity:1;
+   }
+   nav.app_nav.opened > div.app_nav_dimmer {
+      display:none;
+   }
+   
+   .app_nav_links {
+      flex-direction:row;
+      justify-content:flex-end;
+      gap:1rem;
+      width:100%;
+      padding:0 1rem 0 1rem;
+   }
+
    .app_nav_hamburger {
       display:none;
    }
 }
-/* 
-we stack <a> elements rather than include yet another wrapper
-*/
+
 a {
    width:fit-content;
    margin:0;
@@ -171,7 +240,6 @@ a {
    cursor:pointer;
    font-weight:400;
    background:white;
-   align-self:flex-end;
 }
 button {
    width:fit-content;
@@ -179,10 +247,6 @@ button {
    padding:0;
    padding-left:.5rem;
    padding-right:.5rem;
-}
-.close_app_nav {
-   margin-left:auto;
-   margin-right:0;
 }
 
 
