@@ -4,33 +4,34 @@ import { ref } from 'vue'
 
 // BarCounter
 
+
 const props = defineProps(['bar','num_bars','editable'])
+
+// we assign $attrs to <input> to enable emit to work w/ parent handler change_num_bars()
+// since we have no single root element in template.
+// event listeners (barNumsChanged) is passed to component and is now inherited by <input>
+defineOptions({
+   inheritAttrs: false
+})
+
+// previously, although not clear from docs, defining emits makes it function much more easily,
+// otherwise have a lot of probs getting this working w/ converting case btwn emit and @.
+const emit = defineEmits(['bar-nums-changed'])
 
 // local state
 const local_num_bars = ref(props.num_bars)
 
-// although not clear from docs, defining emits makes it function much more easily,
-// otherwise have a lot of probs getting this working w/ converting case btwn emit and @.
-// const emit = defineEmits(['bar-nums-changed'])
-
-// --------------------------------------------------------------------------------------------
-// v-model
-//
-// 'v-model' is equivalent to:
-//
-//   <input
-//      :value="text"
-//      @input="event => text = event.target.value">
-//
+// we declare v-model on <input> below
+// 'v-model' is equivalent to: <input :value="text" @input="event => text = event.target.value">
 //  - wires up value bindings and change event listeners - 2-way binding w/ js variable
-//  - we want to bind to state within this component - not to props or props child properties
-// --------------------------------------------------------------------------------------------
 
 </script>
+
 
 <template>
    <input 
       v-model="local_num_bars"
+      v-bind="$attrs"
       @keyup.enter="$emit('bar-nums-changed',local_num_bars)"
       name="num_bars"  
       type="text"
@@ -39,6 +40,7 @@ const local_num_bars = ref(props.num_bars)
    />
    <span class="local_num_label">bars</span>
 </template>
+
 
 <style scoped>
 
