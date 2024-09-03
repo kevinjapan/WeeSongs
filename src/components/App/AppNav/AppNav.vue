@@ -49,8 +49,7 @@ const clicked_bg = () => {
             <a @click.stop="open_nav_link('/albums')">Albums</a>
             <a @click.stop="open_nav_link('/search')">Search</a>
             <a v-if="!app_store.bearer_token" @click.stop="open_nav_link('/login')">Login</a>
-            <!-- to do : user account? -->
-            <a  v-else  @click.stop="open_nav_link('/account')">{{ app_store.username }}</a>
+            <a v-else  @click.stop="open_nav_link('/account')">{{ app_store.username }}</a>
          </div>
          <div class="app_nav_dimmer"></div>
 
