@@ -1,6 +1,6 @@
 
 import { ref } from 'vue'
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useAppStore } from './appStore'
 import reqInit from "../utilities/requestInit/RequestInit"
 import { get_new_album_template } from '../utilities/newAlbumTemplate/newAlbumTemplate'
@@ -247,3 +247,9 @@ export const useAlbumStore = defineStore('album_store', () => {
    }
 
 })
+
+
+// hot module replacement for pinia
+if (import.meta.hot) {
+   import.meta.hot.accept(acceptHMRUpdate(useAlbumStore, import.meta.hot))
+}
