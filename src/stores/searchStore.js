@@ -1,5 +1,5 @@
 import { ref, computed, watch } from 'vue'
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 
 
 
@@ -24,3 +24,8 @@ export const useSearchStore = defineStore('search_store', () => {
    }
  })
 
+
+// hot module replacement for pinia
+if (import.meta.hot) {
+   import.meta.hot.accept(acceptHMRUpdate(useSearchStore, import.meta.hot))
+}

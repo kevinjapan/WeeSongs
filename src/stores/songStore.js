@@ -1,6 +1,6 @@
 
 import { ref } from 'vue'
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useAppStore } from '@/stores/appStore'
 import reqInit from "../utilities/requestInit/RequestInit"
 import { get_new_song_template } from '../utilities/newSongTemplate/newSongTemplate'
@@ -378,3 +378,9 @@ export const useSongStore = defineStore('song_store', () => {
    }
 
 })
+
+
+// hot module replacement for pinia
+if (import.meta.hot) {
+   import.meta.hot.accept(acceptHMRUpdate(useSongStore, import.meta.hot))
+}
