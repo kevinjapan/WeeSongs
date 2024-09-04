@@ -34,6 +34,14 @@ const update_section = (section_id,modified_section) => {
    const result = song_store.update_section(section_id,modified_section)
    if(result && result.message && result.outcome === 'fail') notify_msg.value = result.message
 }
+
+// to do : bug - incorrectly overwrites bar lyrics
+// replicate:
+// - on 'Imperfect World' verse 4
+// - edit bar 7
+// - apply
+// - incorrectly writes the edited text to several other bars (why those ones?)
+
 </script>
 
 <template>
