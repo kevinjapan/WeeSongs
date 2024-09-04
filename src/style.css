@@ -297,6 +297,9 @@ input[readonly] {
    border:solid 1px lightgrey;
 }
 
+.text_center {text-align:center;}
+.text_left {text-align:left;}
+.text_grey {color:grey;}
 
 
 .bg_yellow {background:yellow;}
