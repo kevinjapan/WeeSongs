@@ -367,13 +367,21 @@ export const useSongStore = defineStore('song_store', () => {
 
 
    return {
-      song, synched, 
+      song, 
+      synched, 
       current_songs_page,
       current_order_by,
       current_asc,
       load_song, 
-      create_song, delete_song, update_song, save, save_song,
-      del_section, clone_section, move_section, update_section,
+      create_song, 
+      delete_song, 
+      update_song, 
+      save, 
+      save_song,
+      del_section, 
+      clone_section, 
+      move_section, 
+      update_section,
       discard_changes,
    }
 
