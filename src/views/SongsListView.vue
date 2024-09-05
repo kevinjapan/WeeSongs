@@ -3,9 +3,11 @@ import { ref, reactive, computed, watch, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
-import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
+import useData from '../utilities/useData/useData'
 import reqInit from '../utilities/requestInit/RequestInit'
+import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
 import get_ui_ready_date from '../utilities/dates/dates'
+
 
 //
 // SongsListView
@@ -119,21 +121,27 @@ watch(asc, async (new_page, old_page) => {
    get_list()
 })
 
-const get_list =async() => {
+const get_list = async() => {
+
+   const query_params = {
+      order_by:order_by.value,
+      asc:asc.value,
+      page:page.value
+   }
    
-   await fetch(`${app_store.app_api}/songs?order_by=${order_by.value}&asc=${asc.value}&page=${page.value}`,reqInit())
-      .then(response => response.json())
-      .then(data => {
-         songs_list.value = data
-         last_page.value = data.songs_list.last_page
-         loading.value = false         
-         page_links.value = data.songs_list.links.filter((element, index,array) => { 
-            return index !== 0 && index !== array.length - 1 // we remove server-provided 'prev' and 'next' (unpredictable)
-         })
+   const { data, error } = await useData('songs_list',query_params,reqInit())
+
+   if(data) {
+      songs_list.value = data
+      last_page.value = data.songs_list.last_page
+      loading.value = false         
+      page_links.value = data.songs_list.links.filter((element, index,array) => { 
+         return index !== 0 && index !== array.length - 1 // we remove server-provided 'prev' and 'next' (unpredictable)
       })
-      .catch((error) => {
-         loading_error.is_error = true
-      })
+   }
+   else {
+      loading_error.is_error = true
+   }
 }
 
 

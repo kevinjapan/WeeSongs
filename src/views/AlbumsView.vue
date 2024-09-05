@@ -3,6 +3,7 @@ import { ref, reactive, computed, watch, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import { useAlbumStore } from '@/stores/albumStore'
+import useData from '../utilities/useData/useData'
 import reqInit from '../utilities/requestInit/RequestInit'
 import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
 import get_ui_ready_date from '../utilities/dates/dates'
@@ -54,19 +55,25 @@ watch(asc, async (new_page, old_page) => {
 
 const get_list =async() => {
    
-   await fetch(`${app_store.app_api}/albums?order_by=${order_by.value}&asc=${asc.value}&page=${page.value}`,reqInit())
-      .then(response => response.json())
-      .then(data => {
-         albums_list.value = data
-         last_page.value = data.albums_list.last_page
-         loading.value = false         
-         page_links.value = data.albums_list.links.filter((element, index,array) => { 
-            return index !== 0 && index !== array.length - 1 // we remove server-provided 'prev' and 'next' (unpredictable)
-         })
+   const query_params = {
+      order_by:order_by.value,
+      asc:asc.value,
+      page:page.value
+   }
+
+   const { data, error } = await useData('albums_list',query_params,reqInit())
+
+   if(data) {
+      albums_list.value = data
+      last_page.value = data.albums_list.last_page
+      loading.value = false         
+      page_links.value = data.albums_list.links.filter((element, index,array) => { 
+         return index !== 0 && index !== array.length - 1 // we remove server-provided 'prev' and 'next' (unpredictable)
       })
-      .catch((error) => {
-         loading_error.is_error = true
-      })
+   }
+   else {
+      loading_error.is_error = true
+   }
 }
 
 const get_new_page_num = (step) => {
