@@ -38,6 +38,38 @@ export const useSongStore = defineStore('song_store', () => {
    // actions
    // change and rely on reactivity to update components
 
+
+
+   async function load_song(slug) {
+   
+      // to use another store, we 'use' it inside an action
+      const app_store = useAppStore()
+
+      try {
+         await fetch(`${app_store.app_api}/songs/${slug}`,reqInit())
+            .then(response => response.json())
+            .then(data => {
+               if(data.outcome === 'success') {
+                  song.value = data.song
+               }
+            })
+            .catch((error) => {
+               throw error
+            })
+      }
+      catch(error) {
+         return {
+            outcome: 'fail',
+            message: error
+         }
+      }
+      synched.value = true
+      return {
+         outcome: 'success',
+         message: ''   // we don't need notification, the song will appear
+      }
+   }
+
    async function create_song(title) {
 
       const app_store = useAppStore()
@@ -107,36 +139,6 @@ export const useSongStore = defineStore('song_store', () => {
       return {
          outcome: 'success',
          message: 'The song was successfully deleted'
-      }
-   }
-
-   async function load_song(slug) {
-   
-      // to use another store, we 'use' it inside an action
-      const app_store = useAppStore()
-
-      try {
-         await fetch(`${app_store.app_api}/songs/${slug}`,reqInit())
-            .then(response => response.json())
-            .then(data => {
-               if(data.outcome === 'success') {
-                  song.value = data.song
-               }
-            })
-            .catch((error) => {
-               throw error
-            })
-      }
-      catch(error) {
-         return {
-            outcome: 'fail',
-            message: error
-         }
-      }
-      synched.value = true
-      return {
-         outcome: 'success',
-         message: ''   // we don't need notification, the song will appear
       }
    }
 
