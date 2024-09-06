@@ -72,7 +72,7 @@ const apply = async() => {
 
    <section class="album_wrapper">
 
-      <form class="grid form_grid flex_col" @submit.prevent="apply">
+      <form class="grid form_grid flex_col border rounded m_1" @submit.prevent="apply">
 
          <label for="id">id</label>
          <input 
@@ -84,11 +84,12 @@ const apply = async() => {
             @input="change_title"
          />
 
-         <label for="title">Title</label>
+         <label for="title album_title">Title</label>
          <input 
             v-model="title"
             id="title"
             name="title"
+            class="album_title"
             @input="change_title"
          />
 
@@ -142,7 +143,7 @@ const apply = async() => {
 
       </form>
 
-      <AlbumTracksList :songs="album_store.album.songs"/>
+      <AlbumTracksList :album_id="id" :songs="album_store.album.songs"/>
 
       <AppStatus v-model="notify_msg" />
 
@@ -152,7 +153,6 @@ const apply = async() => {
 
 <style scoped>
 .album_wrapper {
-
    display:-ms-grid;
    display:grid;
 
@@ -160,15 +160,17 @@ const apply = async() => {
    grid-template-columns:1fr;
 
    max-width:100%;
-   margin-top:10rem;
+   margin-top:5rem;
    margin-bottom:10rem;
 }
 @media (min-width: 768px) {
-
    .album_wrapper {
       -ms-grid-columns: 1fr 1fr;
       grid-template-columns:1fr 1fr;
    }
+}
+.album_title {
+   font-size:1.5rem;
 }
 
 </style>
