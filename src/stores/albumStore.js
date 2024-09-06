@@ -2,9 +2,10 @@
 import { ref } from 'vue'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useAppStore } from './appStore'
-import reqInit from "../utilities/requestInit/RequestInit"
+import { useSongStore } from '@/stores/songStore'
 import { get_new_album_template } from '../utilities/newAlbumTemplate/newAlbumTemplate'
 import { get_db_ready_datetime } from '../utilities/dates/dates'
+import reqInit from "../utilities/requestInit/RequestInit"
 
 
 
@@ -91,8 +92,8 @@ export const useAlbumStore = defineStore('album_store', () => {
       }
    }
 
-     // save a modified copy of the song to the server (and replace copy in this store)
-     async function save_album(modified_album) {
+   // save a modified copy of the song to the server (and replace copy in this store)
+   async function save_album(modified_album) {
 
       const app_store = useAppStore()
       try {
@@ -189,6 +190,54 @@ export const useAlbumStore = defineStore('album_store', () => {
       }
    }
 
+
+   async function add_album_tracks(album_id,tracks_slugs_list) {
+
+      const song_store = useSongStore()
+
+      for (const song_slug of tracks_slugs_list) {
+
+         const song_obj = await song_store.get_song(song_slug)
+         if(song_obj.outcome === 'success') {
+            // to do : we don't need to update if album_id is already the same..
+            const modified_song = song_obj.song
+            if(modified_song.song && modified_song.song.album) delete modified_song.song.album
+            modified_song.album_id = album_id
+            await song_store.update_song(modified_song)
+         }
+         else {
+            console.log('ERR',song_obj.message)    // to do : handle this / notify user?
+         }
+      }
+      console.log('albumStore.add_album_tracks(',album_id,',',tracks_slugs_list,')')
+      return tracks_slugs_list      // to do : error handling etc.
+      // to do : save server-side and update UI as required.
+   }
+
+   async function remove_album_tracks(album_id,tracks_slugs_list) {
+
+      const song_store = useSongStore()
+
+      for (const song_slug of tracks_slugs_list) {
+
+         const song_obj = await song_store.get_song(song_slug)
+         if(song_obj.outcome === 'success') {
+            // to do : we don't need to update if album_id is already the same..
+            const modified_song = song_obj.song
+            if(modified_song.song && modified_song.song.album) delete modified_song.song.album
+            modified_song.album_id = null
+            await song_store.update_song(modified_song)
+         }
+         else {
+            console.log('ERR',song_obj.message)    // to do : handle this / notify user?
+         }
+      }
+      console.log('albumStore.add_album_tracks(',album_id,',',tracks_slugs_list,')')
+      return tracks_slugs_list      // to do : error handling etc.
+      // to do : save server-side and update UI as required.
+
+   }
+
    
    async function delete_album(album_id) {
 
@@ -226,7 +275,6 @@ export const useAlbumStore = defineStore('album_store', () => {
    }
 
 
-
    // User has left page w/out applying changes - we revert to last saved
    function discard_changes() {
       load_album(album.value.slug)
@@ -240,6 +288,8 @@ export const useAlbumStore = defineStore('album_store', () => {
       save,
       update_album,
       delete_album,
+      add_album_tracks,
+      remove_album_tracks,
       discard_changes,
       curr_albums_page,
       curr_albums_order_by,
