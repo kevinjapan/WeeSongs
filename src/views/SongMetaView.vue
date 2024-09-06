@@ -22,9 +22,10 @@ const notify_msg = ref('')
 // local state - we don't want to mutate props child properties
 // we also don't populate immediately, since eg on page refesh, we may not have store
 // we will hydrate onBeforeMount, where, if necessary, we will load_song into store
+const id = ref(null)
 const title = ref('')
 const slug = ref('')
-const id = ref(null)
+const album_id = ref('')
 const created_at = ref('')
 const updated_at = ref('')
 
@@ -42,6 +43,7 @@ onBeforeMount(async() => {
    title.value = songStore.song.title
    slug.value = songStore.song.slug
    id.value = songStore.song.id
+   album_id.value = songStore.song.album_id
    created_at.value = songStore.song.created_at
    updated_at.value = songStore.song.updated_at
 
@@ -90,6 +92,16 @@ const delete_song = async() => {
 
          <form class="grid form_grid flex_col" @submit.prevent="apply">
 
+            
+            <label for="id">ID</label>
+            <input 
+               :value="id"
+               id="id"
+               name="id"
+               readonly
+               class="readonly_input"
+            />
+
             <label for="title">Title</label>
             <input 
                v-model="title"
@@ -105,15 +117,18 @@ const delete_song = async() => {
                name="slug"
                readonly
             />
+
+
+            <!-- to do : resolve to album titles / album selector here? (analogous to AllTracksSelector )-->
             
-            <label for="id">id</label>
+            <label for="slug">Album IDs</label>
             <input 
-               :value="id"
-               id="id"
-               name="id"
+               v-model="album_id"
+               id="album_id"
+               name="album_id"
                readonly
-               class="readonly_input"
             />
+            
             
             <label for="created_at">Created At</label>
             <input 
