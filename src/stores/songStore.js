@@ -39,10 +39,30 @@ export const useSongStore = defineStore('song_store', () => {
    // change and rely on reactivity to update components
 
 
-
+   // we load the song into the store's Song slot
    async function load_song(slug) {
    
-      // to use another store, we 'use' it inside an action
+      const result = await get_song(slug)
+      
+      if(result.outcome === 'success') {
+         song.value = result.song
+         delete result.song
+         // result.message = 'song successfully loaded into store'
+      }
+
+      synched.value = true
+      return result
+   }
+
+   // utility function, we get the song, but don't 'store' it
+   async function get_song(slug) {
+
+      if(!slug || slug === '') return {
+         outcome: 'fail',
+         message: 'No valid resource slug was provided.'
+      }
+   
+      let retrieved_song = null
       const app_store = useAppStore()
 
       try {
@@ -50,7 +70,7 @@ export const useSongStore = defineStore('song_store', () => {
             .then(response => response.json())
             .then(data => {
                if(data.outcome === 'success') {
-                  song.value = data.song
+                  retrieved_song = data.song
                }
             })
             .catch((error) => {
@@ -66,7 +86,7 @@ export const useSongStore = defineStore('song_store', () => {
       synched.value = true
       return {
          outcome: 'success',
-         message: ''   // we don't need notification, the song will appear
+         song: retrieved_song
       }
    }
 
@@ -146,6 +166,7 @@ export const useSongStore = defineStore('song_store', () => {
    async function save_song(modified_song) {
 
       const app_store = useAppStore()
+      
       try {
          await fetch(`${app_store.app_api}/songs/${modified_song.id}`,reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_song)))
             .then(response => response.json())
@@ -220,6 +241,7 @@ export const useSongStore = defineStore('song_store', () => {
                if(data.message) {
                   if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
                }
+               console.log('update_song',data)
                song.value = data.song
             })
             .catch((error) => {
@@ -375,6 +397,7 @@ export const useSongStore = defineStore('song_store', () => {
       current_order_by,
       current_asc,
       load_song, 
+      get_song,
       create_song, 
       delete_song, 
       update_song, 
