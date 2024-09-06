@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onBeforeMount, onUpdated } from 'vue'
 import { useAppStore } from '@/stores/appStore'
+import useData from '../../../utilities/useData/useData'
 import reqInit from '../../../utilities/requestInit/RequestInit'
 import init_infinite_scroll from '../../../utilities/intersections/intersections'
 
@@ -49,23 +50,29 @@ onUpdated(() => {
 const get_list = async() => {
 
    if(curr_page.value + 1 > last_page.value) return
+   
+   const query_params = {
+      order_by:'title',
+      asc:true,
+      page:curr_page.value + 1
+   }
+      
+   const { data, error } = await useData('songs_list',query_params,reqInit())
 
-   await fetch(`${app_store.app_api}/songs?order_by=title&asc=true&page=${curr_page.value + 1}`,reqInit())
-      .then(response => response.json())
-      .then(data => {
-         curr_page.value = curr_page.value + 1
-         last_page.value = data.songs_list.last_page
-         is_last_page.value = curr_page.value >= last_page.value ? true : false         
-         all_tracks_list.value = [...all_tracks_list.value,...data.songs_list.data]
+   if(data) {
+      curr_page.value = curr_page.value + 1
+      last_page.value = data.songs_list.last_page
+      is_last_page.value = curr_page.value >= last_page.value ? true : false         
+      all_tracks_list.value = [...all_tracks_list.value,...data.songs_list.data]
 
-         check_curr_tracks_list()
+      check_curr_tracks_list()
 
-         // to do : loading.value = false
-      })
-      .catch((error) => {
-         console.log('ERR',error)
-         // to do : loading_error.is_error = true
-      })
+      // to do : loading.value = false
+   }
+   else {
+      console.log('ERR',error)
+      // to do : loading_error.is_error = true
+   }
 }
 
 const check_curr_tracks_list = () => {
