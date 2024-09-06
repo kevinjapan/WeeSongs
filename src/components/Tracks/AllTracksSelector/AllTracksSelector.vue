@@ -14,6 +14,7 @@ const props = defineProps({
   client_track_list: Array
 })
 
+console.log('client_track_list:',props.client_track_list)
 const emit = defineEmits(['update-track-list'])
 
 const app_store = useAppStore()
@@ -39,7 +40,7 @@ const is_last_page = ref(false)
 onBeforeMount(() => {
    get_list()
    slugs_only.value = props.client_track_list.map(track => {
-      return track.slug
+      return track
    })
 })
 
