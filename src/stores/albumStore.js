@@ -199,7 +199,6 @@ export const useAlbumStore = defineStore('album_store', () => {
 
          const song_obj = await song_store.get_song(song_slug)
          if(song_obj.outcome === 'success') {
-            // to do : we don't need to update if album_id is already the same..
             const modified_song = song_obj.song
             if(modified_song.song && modified_song.song.album) delete modified_song.song.album
             modified_song.album_id = album_id
@@ -209,12 +208,10 @@ export const useAlbumStore = defineStore('album_store', () => {
             console.log('ERR',song_obj.message)    // to do : handle this / notify user?
          }
       }
-      console.log('albumStore.add_album_tracks(',album_id,',',tracks_slugs_list,')')
-      return tracks_slugs_list      // to do : error handling etc.
-      // to do : save server-side and update UI as required.
+      return tracks_slugs_list
    }
 
-   async function remove_album_tracks(album_id,tracks_slugs_list) {
+   async function remove_album_tracks(tracks_slugs_list) {
 
       const song_store = useSongStore()
 
@@ -222,7 +219,6 @@ export const useAlbumStore = defineStore('album_store', () => {
 
          const song_obj = await song_store.get_song(song_slug)
          if(song_obj.outcome === 'success') {
-            // to do : we don't need to update if album_id is already the same..
             const modified_song = song_obj.song
             if(modified_song.song && modified_song.song.album) delete modified_song.song.album
             modified_song.album_id = null
@@ -232,10 +228,7 @@ export const useAlbumStore = defineStore('album_store', () => {
             console.log('ERR',song_obj.message)    // to do : handle this / notify user?
          }
       }
-      console.log('albumStore.add_album_tracks(',album_id,',',tracks_slugs_list,')')
-      return tracks_slugs_list      // to do : error handling etc.
-      // to do : save server-side and update UI as required.
-
+      return tracks_slugs_list
    }
 
    
