@@ -176,9 +176,9 @@ ul {
    -ms-flex-align:center;
    align-items:center;
 }
-.gap_1 {
-   gap:1rem;
-}
+.gap_0\.5,
+.gap_\.5    {gap:.5rem;}
+.gap_1      {gap:1rem;}
 
 
 /* 
@@ -200,6 +200,7 @@ ul {
 .p_1     {padding:1rem;}
 .pl_0    {padding-left:0;}
 .pr_1    {padding-right:1rem;}
+.pt_1    {padding-top:1rem;}
 .pb_0\.5,
 .pb_\.5  {padding-bottom:.5rem;}
 .px_1    {padding-left:1rem;padding-right:1rem;}
@@ -299,7 +300,7 @@ input[readonly] {
 
 .text_center {text-align:center;}
 .text_left {text-align:left;}
-.text_grey {color:grey;}
+.text_grey {color:hsl(0, 0%, 50%);}
 
 
 .bg_yellow {background:yellow;}

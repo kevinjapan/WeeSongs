@@ -84,7 +84,7 @@ const apply = async() => {
             @input="change_title"
          />
 
-         <label for="title album_title">Title</label>
+         <label for="title">Title</label>
          <input 
             v-model="title"
             id="title"

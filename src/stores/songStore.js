@@ -241,7 +241,6 @@ export const useSongStore = defineStore('song_store', () => {
                if(data.message) {
                   if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
                }
-               console.log('update_song',data)
                song.value = data.song
             })
             .catch((error) => {

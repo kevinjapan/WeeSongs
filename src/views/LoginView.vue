@@ -46,8 +46,10 @@ const failed = () => {
 const succeeded = () => {
    // we set a short delay to notify attempt succeeded
    has_success.value = true
-   // setTimeout(() => router.push('/songs'),1200)    // to do : disable while fixing Albums navigation
+   // setTimeout(() => router.push('/songs'),1200)    // to do : disabled while fixing Albums navigation - single destination ok?
 }
+
+// to do : loading spinner while waiting for server response..
 </script>
 
 

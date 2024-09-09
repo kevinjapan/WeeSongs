@@ -18,30 +18,19 @@ const has_error = computed(() => {
   return loading_error.is_error === true ? true : false
 })
 
-// future : access slug from params
-// console.log( 'params', route.params )
-
 onBeforeMount(async() => {
    // load selected song into store (from 'slug' route param)
    const result = await album_store.load_album(route.params.slug)
    if(result && result.message) notify_msg.value = result.message
    loading.value = false   
 })
-
-const apply_changes = async() => {
-   const result = await album_store.save()
-   notify_msg.value = result.message
-}
-
 </script>
 
-<template>
 
+<template>
    <Transition>
       <section>
          
-         <!--SongCtrls :apply_changes="apply_changes"/-->
-
          <div v-if="has_error">
             There was a problem loading data from the server, please try again later.
          </div>
@@ -56,9 +45,7 @@ const apply_changes = async() => {
          
       </section>      
    </Transition>
-
    <AppStatus v-model="notify_msg" />
-
 </template>
 
 <style scoped>

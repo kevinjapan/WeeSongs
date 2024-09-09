@@ -51,7 +51,7 @@ const get_search_results = async() => {
 <template>
 
    <ul v-if="results_list">      
-      <li v-for="song in results_list.songs_list" :key="song.id">      
+      <li v-for="song in results_list.songs_list" :key="song.id">
          <RouterLink :to="{name:'songcontainer',params: {slug:song.slug}}">
             {{ song.title }}
          </RouterLink>

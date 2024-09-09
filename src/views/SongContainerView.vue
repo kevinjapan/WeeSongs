@@ -19,14 +19,13 @@ const has_error = computed(() => {
   return loading_error.is_error === true ? true : false
 })
 
-// future : access slug from params
-// console.log( 'params', route.params )
-
 onBeforeMount(async() => {
    // load selected song into store (from 'slug' route param)
    const result = await song_store.load_song(route.params.slug)
    if(result && result.message) notify_msg.value = result.message
    loading.value = false
+
+
 })
 
 const apply_changes = async() => {
