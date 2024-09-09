@@ -12,41 +12,42 @@ const props = defineProps(['album_id','songs'])
 
 const album_store = useAlbumStore()
 
+
+// tracks list
 const tracks = ref([])
+
+// display flag for AllTracksSelector
 const show_all_tracks_list = ref(false)
+
 
 const add_track = () => {
    show_all_tracks_list.value = show_all_tracks_list.value ? false : true
 }
 
 onBeforeMount(() => {
-   tracks.value = props.songs.map(track => track.slug)
-   console.log('tracks',tracks.value)
+   tracks.value = props.songs.map(track => track.slug).sort()
 })
 
-
-// to do : close dialog on 'apply' tracks changes
-
-// to do : order initial tracks list alphabetically?
-
-// currently, we only support one album per song.
-// future : change album_id to contain a string / array of ids ?
+// currently, we support one album per song.
 // we only map one album per song and laravel is set up to rely on 
 // relationships on this one-to-many orm - so not a trivial change.
 
 const update_track_list = async(new_track_list) => {
 
-   const removed_tracks_slugs = tracks.value.filter(i => !new_track_list.some(j => j == i))
-   await album_store.remove_album_tracks(props.album_id,removed_tracks_slugs)
+   // determine which tracks have been removed
+   const removed_tracks_slugs = tracks.value.filter(prev_track_slug => !new_track_list.some(slug => slug == prev_track_slug))
+   await album_store.remove_album_tracks(removed_tracks_slugs)
 
-   const added_tracks = await album_store.add_album_tracks(props.album_id,new_track_list)
-   tracks.value = [...added_tracks]
+   // determine which tracks have been added
+   const added_tracks_slugs = new_track_list.filter(prev_track_slug => !tracks.value.some(slug => slug == prev_track_slug))
+   await album_store.add_album_tracks(props.album_id,added_tracks_slugs)
+
+   // update component state
+   tracks.value = [...new_track_list.sort()]
+
+   // close dlg
+   show_all_tracks_list.value = false
 }
-
-console.log('props.songs',tracks.value)
-
-
-
 
 </script>
 
@@ -55,7 +56,7 @@ console.log('props.songs',tracks.value)
    <section class="relative mt_2 text_left">
 
       <nav class="flex gap_1">
-         <h3>Tracks</h3>
+         <div class="flex align_center gap_.5"><h3>Tracks </h3><span class="text_grey">[{{ tracks.length }}]</span></div>
          <button @click="add_track">+</button>
       </nav>
 
