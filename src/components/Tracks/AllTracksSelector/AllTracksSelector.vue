@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount, onUpdated } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import { useAppStore } from '@/stores/appStore'
 import useData from '../../../utilities/useData/useData'
 import reqInit from '../../../utilities/requestInit/RequestInit'
@@ -14,10 +14,8 @@ const props = defineProps({
   client_track_list: Array
 })
 
-console.log('client_track_list:',props.client_track_list)
 const emit = defineEmits(['update-track-list'])
 
-const app_store = useAppStore()
 
 // augment this array as more 'pages' arrive
 const all_tracks_list = ref([])
@@ -39,13 +37,9 @@ const is_last_page = ref(false)
 
 onBeforeMount(() => {
    get_list()
-   slugs_only.value = props.client_track_list.map(track => {
-      return track
-   })
-})
-
-onUpdated(() => {
-   init_infinite_scroll(get_list)
+   slugs_only.value = props.client_track_list.map(track => track)
+   init_checked_tracks()
+   init_infinite_scroll()
 })
 
 const get_list = async() => {
@@ -57,18 +51,16 @@ const get_list = async() => {
       asc:true,
       page:curr_page.value + 1
    }
-      
    const { data, error } = await useData('songs_list',query_params,reqInit())
 
    if(data) {
       curr_page.value = curr_page.value + 1
       last_page.value = data.songs_list.last_page
-      is_last_page.value = curr_page.value >= last_page.value ? true : false         
+      is_last_page.value = curr_page.value >= last_page.value ? true : false  
       all_tracks_list.value = [...all_tracks_list.value,...data.songs_list.data]
 
-      check_curr_tracks_list()
-
-      // to do : loading.value = false
+      // only reset intersection observer upon loading new page
+      init_infinite_scroll(get_list)
    }
    else {
       console.log('ERR',error)
@@ -76,7 +68,7 @@ const get_list = async() => {
    }
 }
 
-const check_curr_tracks_list = () => {
+const init_checked_tracks = () => {
    selected_tracks.value = [...slugs_only.value]
 }
 
@@ -87,7 +79,6 @@ const apply = () => {
    // we pass a copy of the list, not a ref
    emit('update-track-list',[...selected_tracks.value])
 }
-
 </script>
 
 <template>
@@ -98,7 +89,6 @@ const apply = () => {
          <li v-for="track in all_tracks_list" :key="track.id">            
             <input type="checkbox" :id="track.id" :name="track.slug" v-model="selected_tracks" 
                :value="track.slug"
-
             />
             <label :for="track.slug">{{ track.title }}</label>
          </li>
