@@ -61,10 +61,15 @@ const change_bar_chords = (bar_id,chords) => {
    requires_update.value = true
 }
 
+// future : review : currently, we are reacting to every text entry into input -
+//          more efficient to only update on 'apply' ?
 const change_bar_txt = (bar_id,txt) => {
 
    const modified_section = JSON.parse(JSON.stringify(props.section))
    modified_section.aBars = modified_section.aBars.map((bar) => {
+
+      // future : handle if no id is present - ensure any bar added/saved has a valid id
+
       if(bar.id === bar_id) bar.txt = txt
       return bar
    })   
@@ -98,7 +103,8 @@ const change_num_bars = (num_bars) => {
       let max_id = bar_ids.reduce((a,b) => Math.max(a,b),-Infinity)
 
       for(let j = 0; j < (num_bars - current_len); j++) {
-         modified.aBars.push({id:max_id++, text:"", mods:"", chords:""})
+         max_id++
+         modified.aBars.push({id:max_id, text:"", mods:"", chords:""})
       }
    }
    props.update_section(modified.id,modified)

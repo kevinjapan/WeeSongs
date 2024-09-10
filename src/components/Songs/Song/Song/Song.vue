@@ -35,12 +35,20 @@ const update_section = (section_id,modified_section) => {
    if(result && result.message && result.outcome === 'fail') notify_msg.value = result.message
 }
 
-// to do : bug - incorrectly overwrites bar lyrics
-// replicate:
-// - on 'Imperfect World' verse 4
-// - edit bar 7
-// - apply
-// - incorrectly writes the edited text to several other bars (why those ones?)
+const add_section = () => {
+   const result = song_store.add_section()
+   if(result && result.message && result.outcome === 'fail') notify_msg.value = result.message
+}
+
+
+// future : we currently rely on ref in store being changed by changing it directly reactively
+//          work w/ this while ok (small scale etc so prob. ok)
+//          but review - should we change this to emit() and handle..?
+
+// to do : bug : clone a section, then try to move that section - it retains reference to and moves original section
+
+// to do : we want to be able to access Song in store and display all parts (rather than go to database)
+
 
 </script>
 
@@ -48,13 +56,16 @@ const update_section = (section_id,modified_section) => {
 
    <section class="song_wrapper">
 
-      <SongSections :song="song" 
+      <SongSections 
+         :song="props.song" 
          :update_song="update_song" 
          :del_section="del_section"
          :clone_section="clone_section"
          :move_section="move_section"
          :update_section="update_section"
       />
+
+      <button @click="add_section">add</button>
    
       <AppStatus v-model="notify_msg" />
 
@@ -68,10 +79,6 @@ const update_section = (section_id,modified_section) => {
    /* leave plenty space to scroll bottom section from outline */
    margin-top:8rem; 
    margin-bottom:8rem;
-
    padding-top:0;
-
-   border:solid 2px orange;
 }
-
 </style>

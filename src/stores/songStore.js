@@ -4,6 +4,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useAppStore } from '@/stores/appStore'
 import reqInit from "../utilities/requestInit/RequestInit"
 import { get_new_song_template } from '../utilities/newSongTemplate/newSongTemplate'
+import { get_new_section_template } from '../utilities/newSectionTemplate/newSectionTemplate'
 import { get_db_ready_datetime } from '../utilities/dates/dates'
 
 
@@ -327,6 +328,47 @@ export const useSongStore = defineStore('song_store', () => {
       }
    }
 
+   function add_section() {
+      
+      let new_section = get_new_section_template()
+
+      try {
+         let modified = {...song.value.songsheet}
+
+         // calc id by incrementing current highest
+         const ids = modified.aSections.map(section => parseInt(section.id))
+
+         // we sort numerically
+         ids.sort((a, b) => a - b)
+
+         // assign new id
+         const last_id = parseInt(ids[ids.length - 1])
+         new_section.id = last_id + 1
+
+         // calc next DAW char
+         const daws = modified.aSections.map(section => section.daw)
+         daws.sort()
+         const next_daw = String.fromCharCode(daws[daws.length -1].charCodeAt(0) + 1)
+         if(next_daw > 'Z'.charCodeAt(0)) next_daw = 'Z'.charCodeAt(0)
+         new_section.daw = next_daw
+
+         modified.aSections.push(new_section)
+         song.value.songsheet = modified
+         synched.value = false
+      }
+      catch(error){
+         return {
+            outcome: 'fail',
+            message: error
+         }
+      }
+      return {
+         outcome: 'success',
+         message: 'The section was cloned successfully'
+      }
+
+   }
+
    function move_section(section_id,direction) {
          
       try {
@@ -404,6 +446,7 @@ export const useSongStore = defineStore('song_store', () => {
       save_song,
       del_section, 
       clone_section, 
+      add_section,
       move_section, 
       update_section,
       discard_changes,
