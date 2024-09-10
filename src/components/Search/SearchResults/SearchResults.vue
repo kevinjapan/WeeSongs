@@ -26,9 +26,10 @@ watch(() => props.search_term, async(newValue, oldValue) => {
    no_matches.value = false
    loading.value = true
 
+   // delay for perceived 'workings'
    setTimeout(async() => {
       const result = await get_search_results()
-   },1000)
+   },500)
 })
 
 
