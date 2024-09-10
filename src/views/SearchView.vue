@@ -9,6 +9,7 @@ import SearchResults from '../components/Search/SearchResults/SearchResults.vue'
 
 const search_store = useSearchStore()
 
+
 // building search_term w/ SearchForm
 const search_term = ref(search_store.last_search_term)
 
@@ -30,12 +31,18 @@ onUnmounted(() => {
    search_store.set_last_search_term(real_search_term.value)
 })
 
+// to do : spinner while waiting for results..
+
 </script>
 
 <template>
+
    <h1>Search</h1>
+
    <SearchForm v-model="search_term" @submit-search-term="submit_search_term" />
+   
    <SearchResults :search_term="real_search_term"/>
+
 </template>
 
 <style scoped>

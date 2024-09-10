@@ -24,8 +24,6 @@ onBeforeMount(async() => {
    const result = await song_store.load_song(route.params.slug)
    if(result && result.message) notify_msg.value = result.message
    loading.value = false
-
-
 })
 
 const apply_changes = async() => {

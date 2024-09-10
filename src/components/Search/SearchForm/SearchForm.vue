@@ -14,17 +14,24 @@ const emit = defineEmits(['submit-search-term'])
 <template>
 
    <form class="grid form_grid flex_col" @submit.prevent="apply">
+
       <label for="title">Search</label>
       <input id="title" name="title" v-model="search_term" />
-      <div></div>
-      <button @click="$emit('submit-search-term')">Search</button>
+      
+      <div class="btn_row">
+         <button @click="$emit('submit-search-term')">Search</button>
+      </div>
+      
    </form>
 
 </template>
 
 
 <style scoped>
-
+.btn_row {
+   grid-column: 1 / 3;
+   text-align:center;
+}
 </style>
 
 

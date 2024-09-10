@@ -1,13 +1,13 @@
 <script setup>
-import { ref,reactive,computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue'
+// import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import reqInit from '../utilities/requestInit/RequestInit'
 
 
 // LoginView
 
-const router = useRouter()
+// const router = useRouter()
 const app_store = useAppStore()
 const email = ref('')
 const password = ref('')
@@ -15,6 +15,7 @@ const password = ref('')
 const login_error = ref(false)
 const has_success = ref(false)
 
+const loading = ref(false)
 
 const authenticate = (credentials,cb_fail,cb_success) => {
 
@@ -28,6 +29,7 @@ const authenticate = (credentials,cb_fail,cb_success) => {
          app_store.bearer_token = jsonDataSet.token
          app_store.username = jsonDataSet.user.name
          cb_success()
+         loading.value = false 
       })
       .catch(error => {
          cb_fail()
@@ -36,17 +38,22 @@ const authenticate = (credentials,cb_fail,cb_success) => {
 
 const login = () => {
    login_error.value = false
+   loading.value = true 
    authenticate({email:email.value,password:password.value},() => failed(),() => succeeded())
 }
 
 const failed = () => {
    // we set a short delay to clearly empty and fill notification btwn attempts
-   setTimeout(() => login_error.value = true,500)
+   setTimeout(() => {
+      login_error.value = true
+      loading.value = false 
+   },500)
+      
 }
 const succeeded = () => {
    // we set a short delay to notify attempt succeeded
    has_success.value = true
-   // setTimeout(() => router.push('/songs'),1200)    // to do : disabled while fixing Albums navigation - single destination ok?
+   // setTimeout(() => router.push('/songs'),1200)    // to do : temp disabled while fixing Albums navigation - single destination ok?
 }
 
 // to do : loading spinner while waiting for server response..
@@ -80,14 +87,15 @@ const succeeded = () => {
             class="border border-slate-200"
             maxLength="36"/>
 
-         <div></div>
-         <button type="submit">Login</button>
+         <div class="btn_row">
+            <button type="submit">Login</button>
+         </div>
 
       </form>
 
-      <div v-if="login_error">
-         We were unable to login.
-      </div>
+      <div v-if="loading" class="loading mt_1"></div>
+
+      <div v-if="login_error">We were unable to login.</div>
 
       <div v-if="has_success">
          <p>You were logged in successfully.</p>
@@ -105,5 +113,9 @@ button {
    padding:.5rem;
    margin-left:auto;
    margin-right:auto;
+}
+.btn_row {
+   grid-column: 1 / 3;
+   text-align:center;
 }
 </style>
