@@ -242,9 +242,9 @@ input[readonly] {
 .loading {
    margin:auto;
    margin-top:30vh;
-   width:20px;
-   height:20px;
-   border:5px solid lightgrey;
+   width:30px;
+   height:30px;
+   border:3px solid hsl(0, 0%, 75%);
    border-radius:50%;
    border-top-color:white;
 
