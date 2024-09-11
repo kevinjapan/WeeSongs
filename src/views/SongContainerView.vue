@@ -66,9 +66,9 @@ section {
 
 /* configure Vue Transition component for app_nav slide-in*/
 .v-enter-active,.v-leave-active {
-   -webkit-transition: opacity 2.5s ease-in-out;  
-   -o-transition: opacity 2.5s ease-in-out;
-   transition: opacity 2.5s ease-in-out;
+   -webkit-transition: opacity 1s ease-in-out;  
+   -o-transition: opacity 1s ease-in-out;
+   transition: opacity 1s ease-in-out;
    
 }
 .v-enter-from,.v-leave-to {
