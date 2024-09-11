@@ -290,6 +290,8 @@ export const useSongStore = defineStore('song_store', () => {
 
    function clone_section(section_id) {
 
+      let next_daw = 'Z'
+
       try {
          let modified = {...song.value.songsheet}
          const target_section = modified.aSections.find(section => {
@@ -305,7 +307,7 @@ export const useSongStore = defineStore('song_store', () => {
          // calc next DAW char
          const daws = modified.aSections.map(section => section.daw)
          daws.sort()
-         const next_daw = String.fromCharCode(daws[daws.length -1].charCodeAt(0) + 1)
+         next_daw = String.fromCharCode(daws[daws.length -1].charCodeAt(0) + 1)
          if(next_daw > 'Z'.charCodeAt(0)) next_daw = 'Z'.charCodeAt(0)
          copy_section.daw = next_daw
 
@@ -324,7 +326,8 @@ export const useSongStore = defineStore('song_store', () => {
       }
       return {
          outcome: 'success',
-         message: 'The section was cloned successfully'
+         message: 'The section was cloned successfully',
+         daw: next_daw
       }
    }
 
@@ -371,14 +374,19 @@ export const useSongStore = defineStore('song_store', () => {
 
    function move_section(section_id,direction) {
          
+      let moved_daw = 'Z'
+
       try {
          let modified = {...song.value.songsheet}
+
          const target_index = modified.aSections.findIndex(section => {
             return section.id === section_id
          })
+
          const swap_to_index = direction === "down" ? target_index + 1 :  target_index - 1
          if(swap_to_index > -1 && swap_to_index < modified.aSections.length) {
             const target_section = modified.aSections[target_index]
+            moved_daw = target_section.daw
             const swap_section = modified.aSections[swap_to_index]
             if(swap_section) {
                   modified.aSections[swap_to_index] = target_section
@@ -396,7 +404,8 @@ export const useSongStore = defineStore('song_store', () => {
       synched.value = false
       return {
          outcome: 'success',
-         message: 'The section was moved successfully'
+         message: 'The section was moved successfully',
+         daw: moved_daw
       }
    }
 
