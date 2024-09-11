@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
-import { useAppStore } from '@/stores/appStore'
 import useData from '../../../utilities/useData/useData'
 import reqInit from '../../../utilities/requestInit/RequestInit'
 import init_infinite_scroll from '../../../utilities/intersections/intersections'
@@ -9,31 +8,35 @@ import init_infinite_scroll from '../../../utilities/intersections/intersections
 
 // AllTracksSelector
 
+// 'infinite_scroll_trigger' has potential to spam server, so we provide failsafes
+// we rely on 'last_page' to remove 'infinite_scroll_trigger' and hence stop requests
+// this should always work, but there are two failsafes to prevent endless loop if
+// server fails to return this parameter
+
 
 const props = defineProps({
   client_track_list: Array
 })
-
-const emit = defineEmits(['update-track-list'])
-
+const emit = defineEmits(
+   ['update-track-list']
+)
 
 // augment this array as more 'pages' arrive
 const all_tracks_list = ref([])
+ 
+// 'abs_pages_failsafe' : stops endless loop but limits total songs to (max_last_page x records_per_page)
+const max_last_page = 100
 
 // list slugs of checked tracks
 const selected_tracks = ref([])
 
-// list of slugs for existing track list (we should check these)
+// list of slugs for existing track list (we should 'check' checkbox for these)
 const slugs_only = ref([])
 
 // manage 'page' arrivals / intersection observer
 const curr_page = ref(0)
 const last_page = ref(1)
 const is_last_page = ref(false)
-
-
-// to do : set a fail-safe - so we stop after x pages
-
 
 onBeforeMount(() => {
    get_list()
@@ -44,19 +47,30 @@ onBeforeMount(() => {
 
 const get_list = async() => {
 
-   if(curr_page.value + 1 > last_page.value) return
+   const next_page = curr_page.value + 1
+
+   if(next_page > last_page.value) return
+   if(next_page > max_last_page) return
    
    const query_params = {
       order_by:'title',
       asc:true,
-      page:curr_page.value + 1
+      page:next_page
    }
    const { data, error } = await useData('songs_list',query_params,reqInit())
 
    if(data) {
-      curr_page.value = curr_page.value + 1
+
+      curr_page.value = next_page
       last_page.value = data.songs_list.last_page
-      is_last_page.value = curr_page.value >= last_page.value ? true : false  
+      is_last_page.value = curr_page.value >= last_page.value ? true : false
+         
+      // 'no_data_failsafe' : if we have gone too far w/ page num and no data is returned
+      // this failsafe enforces no limit on the num of songs
+      if(data.songs_list.data.length === 0) { is_last_page.value = true
+         console.log('no data failsafe')
+      }
+
       all_tracks_list.value = [...all_tracks_list.value,...data.songs_list.data]
 
       // only reset intersection observer upon loading new page
