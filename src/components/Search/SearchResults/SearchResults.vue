@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
-import useData from '../utilities/useData/useData'
+import useData from '../../../utilities/useData/useData'
 import reqInit from '../../../utilities/requestInit/RequestInit'
 import { useAppStore } from '@/stores/appStore'
 
