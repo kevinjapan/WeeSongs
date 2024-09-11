@@ -1,10 +1,19 @@
 <script setup>
 
-const props = defineProps(['song'])
 
+// SongOutline
+
+const props = defineProps(
+   ['song','selected_section_daw']
+)
+const emit = defineEmits(
+   ['set-selected-section-daw']
+)
 
 const go_section = daw => {
-   console.log('go_section',daw)
+   
+   emit('set-selected-section-daw',daw)
+
    let target = document.getElementById(daw)
    if(target !== null) target.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
 }
@@ -13,22 +22,29 @@ const is_section_type = (target_type,actual_type) => {
    return actual_type.toUpperCase().indexOf(target_type.toUpperCase()) >= 0 ? 'verse' : ''
 }
 
+// to do : highlight current 'selected' section (scrolled to)
+//           first - just highlight when select in this component
+const is_selected_section = (daw) => daw === props.selected_section_daw
+
+
 </script>
 
 <template>
    <div v-if="song" class="song_outline">
       <div v-for="section in song.songsheet.aSections" :key="section.id" :data-section-type="section.title"
          :class="{
-            intro : is_section_type('intro',section.title),
-            verse : is_section_type('verse',section.title),
-            pre_chorous : is_section_type('pre',section.title),
-            post_chorous : is_section_type('post',section.title),
-            chorous : is_section_type('chorous',section.title),
-            bridge : is_section_type('bridge',section.title),
-            outro : is_section_type('outro',section.title)
-         }"
+               intro : is_section_type('intro',section.title),
+               verse : is_section_type('verse',section.title),
+               pre_chorous : is_section_type('pre',section.title),
+               post_chorous : is_section_type('post',section.title),
+               chorous : is_section_type('chorous',section.title),
+               bridge : is_section_type('bridge',section.title),
+               outro : is_section_type('outro',section.title),
+               is_selected : is_selected_section(section.daw)
+            }"
          class="outline_section border border_radius_.5 cursor_pointer px_2_" 
-         @click="go_section(section.daw)" >
+         @click="go_section(section.daw)"
+      >
          {{ section.daw }}
       </div>
    </div>
@@ -91,4 +107,5 @@ const is_section_type = (target_type,actual_type) => {
 .break         {background:hsl(0, 0%, 98%);}
 .outro         {background:hsl(0, 0%, 95%);}
 
+.is_selected {border:solid 1px hsl(240, 100%, 70%);}
 </style>

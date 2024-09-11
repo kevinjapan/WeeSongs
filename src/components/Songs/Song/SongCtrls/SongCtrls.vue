@@ -5,7 +5,20 @@ import SongCtrlsNav from './SongCtrlsNav/SongCtrlsNav.vue'
 import SongOutline from './SongOutline/SongOutline.vue'
 
 const song_store = useSongStore()
-const props = defineProps(['apply_changes'])
+const props = defineProps(
+   ['apply_changes','selected_section_daw']
+)
+
+// to do : review - do we need this intermediate - passing emit?
+// can't we just emit from SongOutline and consume in Song ?
+
+const emit = defineEmits(
+   ['set-selected-section-daw']
+)
+
+const test = (daw) => {
+   emit('set-selected-section-daw',daw)
+}
 
 </script>
 
@@ -13,13 +26,20 @@ const props = defineProps(['apply_changes'])
    <Transition>
       <section v-if="song_store.song" class="song_ctrls">
 
+         <SongCtrlsTitle 
+            :title="song_store.song.title" 
+         />
 
-         <SongCtrlsTitle :title="song_store.song.title" />
+         <SongOutline 
+            :song="song_store.song"
+            :selected_section_daw="props.selected_section_daw"
+            @set-selected-section-daw="test"
+         />
 
-         <SongOutline :song="song_store.song" />
-
-         <SongCtrlsNav :song="song_store.song" :apply_changes="props.apply_changes" />
-                    
+         <SongCtrlsNav 
+            :song="song_store.song" 
+            :apply_changes="props.apply_changes" 
+         />                    
 
       </section>
    </Transition>

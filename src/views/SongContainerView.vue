@@ -12,6 +12,8 @@ const route = useRoute()
 const song_store = useSongStore()
 const notify_msg = ref('')
 
+const selected_section_daw = ref('A')
+
 // custom suspense flag
 const loading = ref(true)
 const loading_error = reactive({is_error:false})
@@ -31,6 +33,10 @@ const apply_changes = async() => {
    notify_msg.value = result.message
 }
 
+const test_this = (daw) => {
+   selected_section_daw.value = daw
+}
+
 </script>
 
 <template>
@@ -38,7 +44,11 @@ const apply_changes = async() => {
    <Transition>
       <section>
          
-         <SongCtrls :apply_changes="apply_changes"/>
+         <SongCtrls 
+            :selected_section_daw="selected_section_daw"
+            :apply_changes="apply_changes"
+            @set-selected-section-daw="test_this"
+         />
 
          <div v-if="has_error">
             There was a problem loading data from the server, please try again later.
@@ -48,7 +58,10 @@ const apply_changes = async() => {
             <div v-if="loading" class="loading"></div>
 
             <div v-else class="relative m_0 p_0">
-               <Song :song="song_store.song" />
+               <Song 
+                  :song="song_store.song" 
+                  :selected_section_daw="selected_section_daw"
+               />
             </div>
          </div>
          

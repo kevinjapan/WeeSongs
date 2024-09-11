@@ -13,17 +13,19 @@ const last = (index) => {
 </script>
 
 <template>
-   <SongSection v-for="(section, index) in props.song.songsheet.aSections" 
-      :key="section.id" 
-      :section="section" 
-      :update_song="props.update_song" 
-      :index="index" 
-      :last="last(index)"
-      :del_section="props.del_section"
-      :clone_section="props.clone_section"
-      :move_section="props.move_section"
-      :update_section="props.update_section"
-   />
+   <section class="pt_1">
+      <SongSection v-for="(section, index) in props.song.songsheet.aSections" 
+         :key="section.id" 
+         :section="section" 
+         :update_song="props.update_song" 
+         :index="index" 
+         :last="last(index)"
+         :del_section="props.del_section"
+         :clone_section="props.clone_section"
+         :move_section="props.move_section"
+         :update_section="props.update_section"
+      />
+   </section>
 </template>
 
 <style scoped>
