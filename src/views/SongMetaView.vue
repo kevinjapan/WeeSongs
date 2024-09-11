@@ -1,6 +1,5 @@
 <script setup>
-import { ref } from 'vue'
-import { onBeforeMount } from 'vue'
+import { ref, onBeforeMount, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useSongStore } from '@/stores/songStore'
 import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
@@ -53,6 +52,10 @@ onBeforeMount(async() => {
    }
 })
 
+onMounted(() => {
+   window.scroll(0,0)
+})
+
 const change_title = () => {
    slug.value = title.value.replaceAll(' ','-')
 }
@@ -80,6 +83,10 @@ const delete_song = async() => {
          if(result.outcome === 'success') setTimeout(() => router.push('/songs'),3000)
       }
    }
+}
+
+const open_album = () => {
+   router.push(`/albums/${songStore.song.album.slug}`)
 }
 
 </script>
@@ -118,17 +125,19 @@ const delete_song = async() => {
                readonly
             />
 
-
-            <!-- to do : resolve to album titles / album selector here? (analogous to AllTracksSelector )-->
-            
-            <label for="slug">Album IDs</label>
-            <input 
-               v-model="album_id"
-               id="album_id"
-               name="album_id"
-               readonly
-            />
-            
+            <label for="album_id">Album</label>
+            <div class="combo_field">
+               <input 
+                  v-model="album_id"
+                  id="album_id"
+                  name="album_id"
+                  readonly
+               />               
+               <a 
+                  id="album_id"
+                  name="album_id"
+                  @click="open_album">{{ songStore.song?.album.title }}</a>
+            </div>
             
             <label for="created_at">Created At</label>
             <input 
@@ -178,6 +187,27 @@ button {
    margin-left:auto;
    margin-right:auto;
 }
+.combo_field {
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   -webkit-box-align:center;
+   -ms-flex-align:center;
+   align-items:center;
+}
+.combo_field > * {
+   max-width:fit-content;
+}
+.combo_field > input[readonly] {
+   max-width:60px;
+   min-width:60px;
+}
+.combo_field > a {
+   padding-top:0;
+   padding-bottom:.25rem;
+}
+
+
 /* configure Vue Transition component for app_nav slide-in*/
 .v-enter-active,.v-leave-active {
    -webkit-transition: opacity .5s ease-in-out;  
