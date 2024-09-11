@@ -1,5 +1,5 @@
 <script setup>
-import { ref,computed } from 'vue'
+import { ref,computed, onMounted } from 'vue'
 import { useSongStore } from '@/stores/songStore'
 import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
 import SongLyrics from '../components/Songs/Song/SongLyrics/SongLyrics.vue'
@@ -16,6 +16,10 @@ const loading = ref(false)
 const loading_error = ref({is_error:false})
 const has_error = computed(() => {
   return loading_error.is_error === true ? true : false
+})
+
+onMounted(() => {
+   window.scroll(0,0)
 })
 
 </script>

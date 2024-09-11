@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, reactive, onBeforeMount } from 'vue'
+import { ref, computed, reactive, onBeforeMount,onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSongStore } from '@/stores/songStore'
 import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
@@ -27,13 +27,16 @@ onBeforeMount(async() => {
    if(result && result.message) notify_msg.value = result.message
    loading.value = false
 })
+onMounted(() => {
+   window.scroll(0,0)
+})
 
 const apply_changes = async() => {
    const result = await song_store.save()
    notify_msg.value = result.message
 }
 
-const test_this = (daw) => {
+const set_selected_section_daw = (daw) => {
    selected_section_daw.value = daw
 }
 
@@ -47,7 +50,7 @@ const test_this = (daw) => {
          <SongCtrls 
             :selected_section_daw="selected_section_daw"
             :apply_changes="apply_changes"
-            @set-selected-section-daw="test_this"
+            @set-selected-section-daw="set_selected_section_daw"
          />
 
          <div v-if="has_error">
