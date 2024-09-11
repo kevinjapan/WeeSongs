@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
+import useData from '../utilities/useData/useData'
 import reqInit from '../../../utilities/requestInit/RequestInit'
 import { useAppStore } from '@/stores/appStore'
 
@@ -28,7 +29,7 @@ watch(() => props.search_term, async(newValue, oldValue) => {
 
    // delay for perceived 'workings'
    setTimeout(async() => {
-      const result = await get_search_results()
+      await get_search_results()
    },500)
 })
 
@@ -37,25 +38,25 @@ watch(() => props.search_term, async(newValue, oldValue) => {
 const get_search_results = async() => {
 
    try {
-      await fetch(`${app_store.app_api}/songs/search/${local_search_term.value}`,reqInit())
-         .then(response => response.json())
-         .then(data => {           
-            // handle response : 401
-            if(data.message) {
-               if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
-            }
-            if(data.songs_list.length === 0) {               
-               results_list.value = null
-               loading.value = false
-               no_matches.value = true
-               return
-            }
-            results_list.value = data
-            loading.value = false 
-         })
-         .catch((error) => {
-            throw error
-         })
+      
+      const { data, error } = await useData('search_songs',[local_search_term.value],{},reqInit())
+      if(data) {         
+         // handle response : 401
+         if(data.message) {
+            if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
+         }
+         if(data.songs_list.length === 0) {               
+            results_list.value = null
+            loading.value = false
+            no_matches.value = true
+            return
+         }
+         results_list.value = data
+         loading.value = false 
+      }
+      else {
+         throw error
+      }
    }
    catch(error) {
       return {

@@ -12,16 +12,23 @@ import useFetch from '../useFetch/useFetch'
 // since we want to build server-api served dev sites but demo as static
 // - in dev: const { data, error } = await useFetch(`${app_store.app_api}/songs?order_by=${order_by.value}&asc=${asc.value}&page=${page.value}`,reqInit())
 // - in static: const { data, error } = await useFetch(`./songs_list.json`,reqInit())
+//
+//
 
-export default async function useData(end_point,query_params,options) {
+export default async function useData(end_point,url_params,query_params,options) {
 
    const end_points = useEndPoints()
 
-   if(!Object.hasOwn(end_points,end_point)) return false
+   if(!Object.hasOwn(end_points,end_point)) {
+      return { error: 'The query end-point was not recognized.' }
+   }
 
    const end_point_url = end_points[end_point]
    const query_string = new URLSearchParams(query_params)
+
+   // url params : we assume order matches that expected by end-point and we append to url
+   url_params = url_params?.join('/')
    
-   return await useFetch(`${useAppStore().app_api}${end_point_url}?${query_string}`,options)
+   return await useFetch(`${useAppStore().app_api}${end_point_url}${url_params}?${query_string}`,options)
 }
 

@@ -129,7 +129,7 @@ const get_list = async() => {
       page:page.value
    }
       
-   const { data, error } = await useData('songs_list',query_params,reqInit())
+   const { data, error } = await useData('songs_list',[],query_params,reqInit())
 
    if(data) {
       songs_list.value = data

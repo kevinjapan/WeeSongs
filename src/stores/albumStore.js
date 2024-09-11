@@ -3,9 +3,10 @@ import { ref } from 'vue'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useAppStore } from './appStore'
 import { useSongStore } from '@/stores/songStore'
+import useData from '../utilities/useData/useData'
+import reqInit from "../utilities/requestInit/RequestInit"
 import { get_new_album_template } from '../utilities/newAlbumTemplate/newAlbumTemplate'
 import { get_db_ready_datetime } from '../utilities/dates/dates'
-import reqInit from "../utilities/requestInit/RequestInit"
 
 
 
@@ -39,17 +40,16 @@ export const useAlbumStore = defineStore('album_store', () => {
       new_album.title = title
       new_album.slug = title.replace(/ /g, '-')
 
+      // to do : review - should we place the reqInit options inside useEndPoints?
+
       try {
-         await fetch(`${app_store.app_api}/albums`,reqInit("POST",app_store.bearer_token,JSON.stringify(new_album)))
-            .then(response => response.json())
-            .then(data => {
-               if(data.outcome === 'success') {
-                  album.value = data.album
-               }
-            })
-            .catch((error) => {
-               throw error
-            })
+         const { data, error } = await useData('create_album',[],{},reqInit("POST",app_store.bearer_token,JSON.stringify(new_album)))
+         if(data) {
+            if(data.outcome === 'success') album.value = data.album
+         }
+         else {
+            throw error
+         }
       }
       catch(error) {
          return {
@@ -68,6 +68,14 @@ export const useAlbumStore = defineStore('album_store', () => {
    
       const app_store = useAppStore()
       try {
+         
+         const { data, error } = await useData('load_album',[slug],{},reqInit())
+         if(data) {
+            if(data.outcome === 'success') retrieved_song = data.song
+         }
+         else {
+            throw error
+         }
          await fetch(`${app_store.app_api}/albums/${slug}`,reqInit())
             .then(response => response.json())
             .then(data => {
@@ -97,20 +105,20 @@ export const useAlbumStore = defineStore('album_store', () => {
 
       const app_store = useAppStore()
       try {
-         await fetch(`${app_store.app_api}/albums/${modified_album.id}`,reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_album)))
-            .then(response => response.json())
-            .then(data => {           
-               // handle response : 401
-               // PUT http://songs-api-laravel/api/albums/431 401 (Unauthorized)
-               if(data.message) {
-                  if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
-               }
-               // refresh the local copy of song ('updated_at' will have changed)
-               album.value = data
-            })
-            .catch((error) => {
-               throw error
-            })
+         
+         const { data, error } = await useData('save_album',[modified_album.id],{},reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_album)))
+         if(data) {           
+            // handle response : 401
+            // PUT http://songs-api-laravel/api/albums/431 401 (Unauthorized)
+            if(data.message) {
+               if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
+            }
+            // refresh the local copy of song ('updated_at' will have changed)
+            album.value = data
+         }
+         else {
+            throw error
+         }
       }
       catch(error) {
          return {
@@ -131,20 +139,20 @@ export const useAlbumStore = defineStore('album_store', () => {
 
       const app_store = useAppStore()
       try {
-         await fetch(`${app_store.app_api}/albums/${song.value.id}`,reqInit('PUT',app_store.bearer_token,JSON.stringify(album.value)))
-            .then(response => response.json())
-            .then(data => {           
-               // handle response : 401
-               // PUT http://songs-api-laravel/api/albums/431 401 (Unauthorized)
-               if(data.message) {
-                  if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
-               }
-               // note, there is inconsistency in packaging from server - cf w/ load_song api response
-               album.value = data
-            })
-            .catch((error) => {
-               throw error
-            })
+         
+         const { data, error } = await useData('save_album',[song.value.id],{},reqInit('PUT',app_store.bearer_token,JSON.stringify(album.value)))
+         if(data) {
+            // handle response : 401
+            // PUT http://songs-api-laravel/api/albums/431 401 (Unauthorized)
+            if(data.message) {
+               if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
+            }
+            // note, there is inconsistency in packaging from server - cf w/ load_song api response
+            album.value = data
+         }
+         else {
+            throw error
+         }
       }
       catch(error) {
          return {
@@ -163,19 +171,19 @@ export const useAlbumStore = defineStore('album_store', () => {
 
       const app_store = useAppStore()
       try {
-         await fetch(`${app_store.app_api}/albums/${modified_song.id}`,reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_album)))
-            .then(response => response.json())
-            .then(data => {               
-               // handle response : 401
-               // PUT http://songs-api-laravel/api/albums/431 401 (Unauthorized)
-               if(data.message) {
-                  if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
-               }
-               album.value = data.album
-            })
-            .catch((error) => {
-               throw error
-            })
+         
+         const { data, error } = await useData('update_album',[modified_song.id],{},reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_album)))
+         if(data) {         
+            // handle response : 401
+            // PUT http://songs-api-laravel/api/albums/431 401 (Unauthorized)
+            if(data.message) {
+               if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
+            }
+            album.value = data.album
+         }
+         else {
+            throw error
+         }
       }
       catch(error) {
          return {
@@ -237,22 +245,22 @@ export const useAlbumStore = defineStore('album_store', () => {
       const app_store = useAppStore()
    
       try {
-         await fetch(`${app_store.app_api}/albums/${song_id}`,reqInit("DELETE",app_store.bearer_token,{}))
-            .then(response => response.json())
-            .then(data => {       
-               // handle response : 401
-               // PUT http://songs-api-laravel/api/albums/431 401 (Unauthorized)
-               if(data.message) {
-                  if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
-               }
-               if(data.outcome === 'success') {
-                  album.value = null
-                  // any redirection is carried out by client component (some eg lists may not want to)
-               }
-            })
-            .catch((error) => {
-               throw error
-            })
+         
+         const { data, error } = await useData('delete_album',[song_id],{},reqInit("DELETE",app_store.bearer_token,{}))
+         if(data) {      
+            // handle response : 401
+            // PUT http://songs-api-laravel/api/albums/431 401 (Unauthorized)
+            if(data.message) {
+               if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
+            }
+            if(data.outcome === 'success') {
+               album.value = null
+               // any redirection is carried out by client component (some eg lists may not want to)
+            }
+         }
+         else {
+            throw error
+         }
       }
       catch(error) {
          return {

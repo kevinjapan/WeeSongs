@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useAppStore } from '@/stores/appStore'
+import useData from '../utilities/useData/useData'
 import reqInit from "../utilities/requestInit/RequestInit"
 import { get_new_song_template } from '../utilities/newSongTemplate/newSongTemplate'
 import { get_new_section_template } from '../utilities/newSectionTemplate/newSectionTemplate'
@@ -64,19 +65,16 @@ export const useSongStore = defineStore('song_store', () => {
       }
    
       let retrieved_song = null
-      const app_store = useAppStore()
 
       try {
-         await fetch(`${app_store.app_api}/songs/${slug}`,reqInit())
-            .then(response => response.json())
-            .then(data => {
-               if(data.outcome === 'success') {
-                  retrieved_song = data.song
-               }
-            })
-            .catch((error) => {
-               throw error
-            })
+
+         const { data, error } = await useData('get_single_song',[slug],{},reqInit())
+         if(data) {
+            if(data.outcome === 'success') retrieved_song = data.song
+         }
+         else {
+            throw error
+         }
       }
       catch(error) {
          return {
@@ -104,16 +102,13 @@ export const useSongStore = defineStore('song_store', () => {
       new_song.songsheet.updated = datetime
 
       try {
-         await fetch(`${app_store.app_api}/songs`,reqInit("POST",app_store.bearer_token,JSON.stringify(new_song)))
-            .then(response => response.json())
-            .then(data => {
-               if(data.outcome === 'success') {
-                  song.value = data.song
-               }
-            })
-            .catch((error) => {
-               throw error
-            })
+         const { data, error } = await useData('create_song',[],{},reqInit("POST",app_store.bearer_token,JSON.stringify(new_song)))
+         if(data) {
+            if(data.outcome === 'success') song.value = data.song
+         }
+         else {
+            throw error
+         }
       }
       catch(error) {
          return {
@@ -124,7 +119,7 @@ export const useSongStore = defineStore('song_store', () => {
       synched.value = true
       return {
          outcome: 'success',
-         message: ''   // we don't need notification, the song will appear!
+         message: '' // no notification, the song appears
       }
    }
 
@@ -133,22 +128,21 @@ export const useSongStore = defineStore('song_store', () => {
       const app_store = useAppStore()
    
       try {
-         await fetch(`${app_store.app_api}/songs/${song_id}`,reqInit("DELETE",app_store.bearer_token,{}))
-            .then(response => response.json())
-            .then(data => {       
-               // handle response : 401
-               // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
-               if(data.message) {
-                  if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
-               }
-               if(data.outcome === 'success') {
-                  song.value = null
-                  // any redirection is carried out by client component (some eg lists may not want to)
-               }
-            })
-            .catch((error) => {
-               throw error
-            })
+         const { data, error } = await useData('delete_song',[song_id],{},reqInit("DELETE",app_store.bearer_token,{}))
+         if(data) {       
+            // handle response : 401
+            // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
+            if(data.message) {
+               if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
+            }
+            if(data.outcome === 'success') {
+               song.value = null
+               // any redirection is carried out by client component (some eg lists may not want to)
+            }
+         }
+         else {
+            throw error
+         }
       }
       catch(error) {
          return {
@@ -169,20 +163,19 @@ export const useSongStore = defineStore('song_store', () => {
       const app_store = useAppStore()
       
       try {
-         await fetch(`${app_store.app_api}/songs/${modified_song.id}`,reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_song)))
-            .then(response => response.json())
-            .then(data => {           
-               // handle response : 401
-               // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
-               if(data.message) {
-                  if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
-               }
-               // refresh the local copy of song ('updated_at' will have changed)
-               song.value = data
-            })
-            .catch((error) => {
-               throw error
-            })
+         const { data, error } = await useData('save_song',[modified_song.id],{},reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_song)))
+         if(data) {
+            // handle response : 401
+            // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
+            if(data.message) {
+               if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
+            }
+            // refresh the local copy of song ('updated_at' will have changed)
+            song.value = data
+         }
+         else {
+            throw error
+         }
       }
       catch(error) {
          return {
@@ -202,20 +195,19 @@ export const useSongStore = defineStore('song_store', () => {
 
       const app_store = useAppStore()
       try {
-         await fetch(`${app_store.app_api}/songs/${song.value.id}`,reqInit('PUT',app_store.bearer_token,JSON.stringify(song.value)))
-            .then(response => response.json())
-            .then(data => {           
-               // handle response : 401
-               // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
-               if(data.message) {
-                  if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
-               }
-               // note, there is inconsistency in packaging from server - cf w/ load_song api response
-               song.value = data
-            })
-            .catch((error) => {
-               throw error
-            })
+         const { data, error } = await useData('save_song',[song.value.id],{},reqInit('PUT',app_store.bearer_token,JSON.stringify(song.value)))
+         if(data) {          
+            // handle response : 401
+            // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
+            if(data.message) {
+               if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
+            }
+            // note, there is inconsistency in packaging from server - cf w/ load_song api response
+            song.value = data
+         }
+         else {
+            throw error
+         }
       }
       catch(error) {
          return {
@@ -234,19 +226,18 @@ export const useSongStore = defineStore('song_store', () => {
 
       const app_store = useAppStore()
       try {
-         await fetch(`${app_store.app_api}/songs/${modified_song.id}`,reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_song)))
-            .then(response => response.json())
-            .then(data => {               
-               // handle response : 401
-               // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
-               if(data.message) {
-                  if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
-               }
-               song.value = data.song
-            })
-            .catch((error) => {
-               throw error
-            })
+         const { data, error } = await useData('save_song',[modified_song.id],{},reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_song)))
+         if(data) {               
+            // handle response : 401
+            // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
+            if(data.message) {
+               if(data.message === 'Unauthenticated.') throw 'You need to login to perform this action'
+            }
+            song.value = data.song
+         }
+         else {
+            throw error
+         }
       }
       catch(error) {
          return {

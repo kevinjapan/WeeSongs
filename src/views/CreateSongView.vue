@@ -13,7 +13,9 @@ const title = ref('')
 const apply = async() => {
    const result = await songStore.create_song(title.value)
    if(result && result.outcome) {
-      notify_msg.value = result.outcome === 'success' ? 'The song was successfully created' : 'We were unable to create the song'
+      notify_msg.value = result.outcome === 'success' 
+         ? 'The song was successfully created' 
+         : 'We were unable to create the song. ' + result.message
    }
 }
 

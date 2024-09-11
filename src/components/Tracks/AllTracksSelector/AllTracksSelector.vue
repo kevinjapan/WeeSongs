@@ -57,7 +57,7 @@ const get_list = async() => {
       asc:true,
       page:next_page
    }
-   const { data, error } = await useData('songs_list',query_params,reqInit())
+   const { data, error } = await useData('songs_list',[],query_params,reqInit())
 
    if(data) {
 

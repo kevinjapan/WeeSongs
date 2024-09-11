@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 // import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
+import useData from '../utilities/useData/useData'
 import reqInit from '../utilities/requestInit/RequestInit'
 
 
@@ -21,32 +22,36 @@ onMounted(() => {
    window.scroll(0,0)
 })
 
-const authenticate = (credentials,cb_fail,cb_success) => {
+const authenticate = async(credentials,cb_fail,cb_success) => {
 
-   let myRequest = new Request(
-      `${app_store.app_api}/login`,
-      reqInit('POST','',JSON.stringify(credentials))
-   )
-   fetch(myRequest)
-      .then(response => response.json())
-      .then(jsonDataSet => {
-         app_store.bearer_token = jsonDataSet.token
-         app_store.username = jsonDataSet.user.name
+   try {
+      const { data, error } = await useData('login',[],{},reqInit('POST','',JSON.stringify(credentials)))
+      if(data) {
+         app_store.bearer_token = data.token
+         app_store.username = data.user.name
          cb_success()
          loading.value = false 
-      })
-      .catch(error => {
-         cb_fail()
-      })
+      }
+      else {
+         throw error
+      }
+   }
+   catch(error) {
+      cb_fail(error)
+   }
 }
 
 const login = () => {
    login_error.value = false
    loading.value = true 
-   authenticate({email:email.value,password:password.value},() => failed(),() => succeeded())
+   authenticate({email:email.value,password:password.value},(err) => failed(err),() => succeeded())
 }
 
-const failed = () => {
+const failed = (error) => {
+
+   // future : do we want to notify error to user?
+   if(error) console.log(error)
+
    // we set a short delay to clearly empty and fill notification btwn attempts
    setTimeout(() => {
       login_error.value = true
@@ -57,10 +62,8 @@ const failed = () => {
 const succeeded = () => {
    // we set a short delay to notify attempt succeeded
    has_success.value = true
-   // setTimeout(() => router.push('/songs'),1200)    // to do : temp disabled while fixing Albums navigation - single destination ok?
 }
 
-// to do : loading spinner while waiting for server response..
 </script>
 
 
@@ -99,11 +102,10 @@ const succeeded = () => {
 
       <div v-if="loading" class="loading mt_1"></div>
 
-      <div v-if="login_error">We were unable to login.</div>
+      <div v-if="login_error">Sorry, we were unable to login.</div>
 
       <div v-if="has_success">
          <p>You were logged in successfully.</p>
-         <p>Redirecting you to Songs.</p>
       </div>
 
    </div>
