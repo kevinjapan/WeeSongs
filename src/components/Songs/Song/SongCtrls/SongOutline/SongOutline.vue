@@ -11,9 +11,7 @@ const emit = defineEmits(
 )
 
 const go_section = daw => {
-   
    emit('set-selected-section-daw',daw)
-
    let target = document.getElementById(daw)
    if(target !== null) target.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
 }
@@ -22,10 +20,9 @@ const is_section_type = (target_type,actual_type) => {
    return actual_type.toUpperCase().indexOf(target_type.toUpperCase()) >= 0 ? 'verse' : ''
 }
 
-// to do : highlight current 'selected' section (scrolled to)
-//           first - just highlight when select in this component
-const is_selected_section = (daw) => daw === props.selected_section_daw
-
+const is_selected_section = (daw) => {
+   return daw === props.selected_section_daw
+}
 
 </script>
 
@@ -66,7 +63,6 @@ const is_selected_section = (daw) => daw === props.selected_section_daw
       order:2;
    }
 }
-
 .outline_section {
    padding-top:.5rem;
    padding-bottom:.5rem;
