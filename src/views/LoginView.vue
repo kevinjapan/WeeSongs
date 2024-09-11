@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 // import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import reqInit from '../utilities/requestInit/RequestInit'
@@ -16,6 +16,10 @@ const login_error = ref(false)
 const has_success = ref(false)
 
 const loading = ref(false)
+
+onMounted(() => {
+   window.scroll(0,0)
+})
 
 const authenticate = (credentials,cb_fail,cb_success) => {
 
