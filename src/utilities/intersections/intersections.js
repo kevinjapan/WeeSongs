@@ -19,9 +19,8 @@ const create_observers = (elements,callback,options) => {
          entries.forEach(entry => {
             if(!entry.isIntersecting) return
 
-            // to do : review
             // we rely on 'last_page' in AllTracksSelector to remove 'infinite_scroll_trigger',
-            // can we put a failsafe in here to prevent endless loop too?
+            // failsafe in here to prevent endless loop is in AllTracksSelector
             if(callback) callback()            
 
             // entry.target.classList.add(active_class)
