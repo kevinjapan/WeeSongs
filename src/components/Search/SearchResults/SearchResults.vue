@@ -1,7 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
 import useData from '../../../utilities/useData/useData'
-import reqInit from '../../../utilities/requestInit/RequestInit'
 import { useAppStore } from '@/stores/appStore'
 
 
@@ -39,7 +38,7 @@ const get_search_results = async() => {
 
    try {
       
-      const { data, error } = await useData('search_songs',[local_search_term.value],{},reqInit())
+      const { data, error } = await useData('search_songs',[local_search_term.value],{})
       if(data) {         
          // handle response : 401
          if(data.message) {

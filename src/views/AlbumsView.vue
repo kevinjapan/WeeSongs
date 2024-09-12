@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import { useAlbumStore } from '@/stores/albumStore'
 import useData from '../utilities/useData/useData'
-import reqInit from '../utilities/requestInit/RequestInit'
 import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
 import get_ui_ready_date from '../utilities/dates/dates'
 
@@ -61,7 +60,7 @@ const get_list =async() => {
       page:page.value
    }
 
-   const { data, error } = await useData('albums_list',[],query_params,reqInit())
+   const { data, error } = await useData('albums_list',[],query_params)
 
    if(data) {
       albums_list.value = data

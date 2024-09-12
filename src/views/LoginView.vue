@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue'
 // import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import useData from '../utilities/useData/useData'
-import reqInit from '../utilities/requestInit/RequestInit'
 
 
 // LoginView
@@ -25,7 +24,7 @@ onMounted(() => {
 const authenticate = async(credentials,cb_fail,cb_success) => {
 
    try {
-      const { data, error } = await useData('login',[],{},reqInit('POST','',JSON.stringify(credentials)))
+      const { data, error } = await useData('login',[],{},JSON.stringify(credentials))
       if(data) {
          app_store.bearer_token = data.token
          app_store.username = data.user.name
@@ -33,6 +32,7 @@ const authenticate = async(credentials,cb_fail,cb_success) => {
          loading.value = false 
       }
       else {
+         console.log('ERR',error)
          throw error
       }
    }

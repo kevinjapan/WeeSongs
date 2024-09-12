@@ -1,6 +1,7 @@
 import { useAppStore } from '@/stores/appStore'
 import useEndPoints from '../useEndPoints/useEndPoints'
 import useFetch from '../useFetch/useFetch'
+import reqInit from '../requestInit/RequestInit'
 
 
 // useData composable
@@ -18,21 +19,32 @@ import useFetch from '../useFetch/useFetch'
 // useData
 // @url_params  : array of url params (ids/slugs) to include in url path
 // @query_params: object containing key/value pairs to build query string
+// @body        : pass js object or json string
 
-export default async function useData(end_point,url_params,query_params,options) {
+export default async function useData(end_point,url_params,query_params,body) {
+
+   const app_store = useAppStore()
 
    const end_points = useEndPoints()
 
+   // to do : does this still work? test it
    if(!Object.hasOwn(end_points,end_point)) {
       return { error: 'The query end-point was not recognized.' }
    }
 
-   const end_point_url = end_points[end_point]
-   const query_string = new URLSearchParams(query_params)
+   const { request_method, route } = end_points[end_point]
+
+   if(body && typeof body === 'object') {
+      body = JSON.stringify(body)
+   }
+
+   const query_string = Object.keys(query_params).length > 0 ? new URLSearchParams(query_params) : ''
 
    // url params : we assume order matches that expected by end-point and we append to url
    url_params = url_params?.join('/')
-   
-   return await useFetch(`${useAppStore().app_api}${end_point_url}${url_params}?${query_string}`,options)
-}
 
+   return await useFetch(
+      `${app_store.app_api}${route}${url_params}${query_string !== '' ? '?' : ''}${query_string}`,
+      reqInit(request_method,app_store.bearer_token,body)
+   )
+}

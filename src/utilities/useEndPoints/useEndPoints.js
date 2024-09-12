@@ -7,23 +7,72 @@
 // - since we want to build server-api served dev sites but demo as static
 
 export default function useEndPoints() {
+
    return {
 
-      login:'/login',
+      login:{
+         request_method:'POST',
+         route:'/login'
+      },
       
-      songs_list:'/songs',
-      get_single_song:'/songs/',
-      create_song:'/songs',
-      delete_song:'/songs/',
-      save_song:'/songs/',
-      search_songs:'/songs/search/',
 
-      albums_list:'/albums',
-      load_album:'/albums/',
-      create_album:'/albums',
-      delete_album:'/albums/',
-      save_album:'/albums/',
-      update_album:'/albums/'
+      songs_list:{
+         request_method:'GET',
+         route:'/songs'
+      },
+      get_single_song:{
+         request_method:'GET',
+         route:'/songs/'
+      },
+      create_song:{
+         request_metho:'POST',
+         route:'/songs'
+      },
+      delete_song:{
+         request_method:'DELETE',
+         route:'/songs/'
+      },
+      save_song:{
+         request_method:'PUT',
+         route:'/songs/'
+      },
+      update_song:{
+         request_method:'PUT',
+         route:'/songs/'
+      },
+
+
+      search_songs:{
+         request_method:'GET',
+         route:'/songs/search/'
+      },
+
+
+      albums_list:{
+         request_method:'GET',
+         route:'/albums'
+      },
+      load_album:{
+         request_method:'GET',
+         route:'/albums/'
+      },
+      create_album:{
+         request_method:'POST',
+         route:'/albums',
+      },
+
+      delete_album:{
+         request_method:'DELETE',
+         route:'/albums/'
+      },
+      save_album:{
+         request_method:'PUT',
+         route:'/albums/'
+      },
+      update_album:{
+         request_method:'PUT',
+         route:'/albums/'
+      }
 
 
    }

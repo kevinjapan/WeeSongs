@@ -5,7 +5,7 @@ export default function reqInit(method = "POST", bearer_token = "",body = "") {
     if(typeof body === 'object') {
         body = JSON.stringify(body)
     }
-    if(body !== "" && body !== undefined) {
+    if(body && body !== "" && body !== undefined) {
         return {
             method: method,
             headers: { 

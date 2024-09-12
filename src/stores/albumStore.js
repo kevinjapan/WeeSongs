@@ -1,12 +1,9 @@
 
 import { ref } from 'vue'
 import { defineStore, acceptHMRUpdate } from 'pinia'
-import { useAppStore } from './appStore'
 import { useSongStore } from '@/stores/songStore'
 import useData from '../utilities/useData/useData'
-import reqInit from "../utilities/requestInit/RequestInit"
 import { get_new_album_template } from '../utilities/newAlbumTemplate/newAlbumTemplate'
-import { get_db_ready_datetime } from '../utilities/dates/dates'
 
 
 
@@ -30,20 +27,14 @@ export const useAlbumStore = defineStore('album_store', () => {
    // Components can enable their 'apply' ctrls on this flag
    const synched = ref(true)
 
-   
    async function create_album(title) {
 
-      const app_store = useAppStore()
-
       const new_album = get_new_album_template()
-      const datetime = get_db_ready_datetime()
       new_album.title = title
       new_album.slug = title.replace(/ /g, '-')
 
-      // to do : review - should we place the reqInit options inside useEndPoints?
-
       try {
-         const { data, error } = await useData('create_album',[],{},reqInit("POST",app_store.bearer_token,JSON.stringify(new_album)))
+         const { data, error } = await useData('create_album',[],{},JSON.stringify(new_album))
          if(data) {
             if(data.outcome === 'success') album.value = data.album
          }
@@ -65,27 +56,15 @@ export const useAlbumStore = defineStore('album_store', () => {
    }
 
    async function load_album(slug) {
-   
-      const app_store = useAppStore()
+
       try {
-         
-         const { data, error } = await useData('load_album',[slug],{},reqInit())
+         const { data, error } = await useData('load_album',[slug],{})
          if(data) {
-            if(data.outcome === 'success') retrieved_song = data.song
+            if(data.outcome === 'success') album.value = data.album
          }
          else {
             throw error
          }
-         await fetch(`${app_store.app_api}/albums/${slug}`,reqInit())
-            .then(response => response.json())
-            .then(data => {
-               if(data.outcome === 'success') {
-                  album.value = data.album
-               }
-            })
-            .catch((error) => {
-               throw error
-            })
       }
       catch(error) {
          return {
@@ -100,13 +79,14 @@ export const useAlbumStore = defineStore('album_store', () => {
       }
    }
 
+
+   // to do : not saving 'title' correctly to database (suspect prev. issue not related to useData switch)
+
    // save a modified copy of the song to the server (and replace copy in this store)
    async function save_album(modified_album) {
 
-      const app_store = useAppStore()
       try {
-         
-         const { data, error } = await useData('save_album',[modified_album.id],{},reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_album)))
+         const { data, error } = await useData('save_album',[modified_album.id],{},JSON.stringify(modified_album))
          if(data) {           
             // handle response : 401
             // PUT http://songs-api-laravel/api/albums/431 401 (Unauthorized)
@@ -137,10 +117,8 @@ export const useAlbumStore = defineStore('album_store', () => {
    // save this store local copy to server (after we have updated_sections etc)
    async function save() {
 
-      const app_store = useAppStore()
-      try {
-         
-         const { data, error } = await useData('save_album',[song.value.id],{},reqInit('PUT',app_store.bearer_token,JSON.stringify(album.value)))
+      try {         
+         const { data, error } = await useData('save_album',[song.value.id],{},JSON.stringify(album.value))
          if(data) {
             // handle response : 401
             // PUT http://songs-api-laravel/api/albums/431 401 (Unauthorized)
@@ -169,10 +147,8 @@ export const useAlbumStore = defineStore('album_store', () => {
 
    async function update_album(modified_album) {
 
-      const app_store = useAppStore()
-      try {
-         
-         const { data, error } = await useData('update_album',[modified_song.id],{},reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_album)))
+      try {         
+         const { data, error } = await useData('update_album',[modified_song.id],{},JSON.stringify(modified_album))
          if(data) {         
             // handle response : 401
             // PUT http://songs-api-laravel/api/albums/431 401 (Unauthorized)
@@ -241,12 +217,10 @@ export const useAlbumStore = defineStore('album_store', () => {
 
    
    async function delete_album(album_id) {
-
-      const app_store = useAppStore()
    
       try {
+         const { data, error } = await useData('delete_album',[album_id],{})
          
-         const { data, error } = await useData('delete_album',[song_id],{},reqInit("DELETE",app_store.bearer_token,{}))
          if(data) {      
             // handle response : 401
             // PUT http://songs-api-laravel/api/albums/431 401 (Unauthorized)

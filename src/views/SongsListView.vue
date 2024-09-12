@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
 import useData from '../utilities/useData/useData'
-import reqInit from '../utilities/requestInit/RequestInit'
 import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
 import get_ui_ready_date from '../utilities/dates/dates'
 
@@ -129,8 +128,7 @@ const get_list = async() => {
       page:page.value
    }
       
-   const { data, error } = await useData('songs_list',[],query_params,reqInit())
-
+   const { data, error } = await useData('songs_list',[],query_params)
    if(data) {
       songs_list.value = data
       last_page.value = data.songs_list.last_page

@@ -1,9 +1,7 @@
 
 import { ref } from 'vue'
 import { defineStore, acceptHMRUpdate } from 'pinia'
-import { useAppStore } from '@/stores/appStore'
 import useData from '../utilities/useData/useData'
-import reqInit from "../utilities/requestInit/RequestInit"
 import { get_new_song_template } from '../utilities/newSongTemplate/newSongTemplate'
 import { get_new_section_template } from '../utilities/newSectionTemplate/newSectionTemplate'
 import { get_db_ready_datetime } from '../utilities/dates/dates'
@@ -16,19 +14,15 @@ import { get_db_ready_datetime } from '../utilities/dates/dates'
 // always fetching from db on startup. Any differences caused by interruption 
 // (cancel,refresh etc) will be discarded on view opening.
 
-
 export const useSongStore = defineStore('song_store', () => {
-
 
    // The current song
    const song = ref(null)
-
 
    // Songs List page
    const current_songs_page = ref(1)
    const current_order_by = ref('made')
    const current_asc = ref(false)
-
 
    // We follow state of local copy to server copy
    // Components can enable their 'apply' ctrls on this flag
@@ -41,34 +35,29 @@ export const useSongStore = defineStore('song_store', () => {
    // change and rely on reactivity to update components
 
 
+   // load_song
    // we load the song into the store's Song slot
    async function load_song(slug) {
-   
       const result = await get_song(slug)
-      
       if(result.outcome === 'success') {
          song.value = result.song
          delete result.song
          // result.message = 'song successfully loaded into store'
       }
-
       synched.value = true
       return result
    }
 
+
+   // get_song
    // utility function, we get the song, but don't 'store' it
    async function get_song(slug) {
 
-      if(!slug || slug === '') return {
-         outcome: 'fail',
-         message: 'No valid resource slug was provided.'
-      }
-   
+      if(!slug || slug === '') return {outcome: 'fail',message: 'No valid resource slug was provided.'}
+      
       let retrieved_song = null
-
       try {
-
-         const { data, error } = await useData('get_single_song',[slug],{},reqInit())
+         const { data, error } = await useData('get_single_song',[slug],{})
          if(data) {
             if(data.outcome === 'success') retrieved_song = data.song
          }
@@ -91,8 +80,6 @@ export const useSongStore = defineStore('song_store', () => {
 
    async function create_song(title) {
 
-      const app_store = useAppStore()
-
       const new_song = get_new_song_template()
       const datetime = get_db_ready_datetime()
       new_song.title = title
@@ -102,7 +89,7 @@ export const useSongStore = defineStore('song_store', () => {
       new_song.songsheet.updated = datetime
 
       try {
-         const { data, error } = await useData('create_song',[],{},reqInit("POST",app_store.bearer_token,JSON.stringify(new_song)))
+         const { data, error } = await useData('create_song',[],{},JSON.stringify(new_song))
          if(data) {
             if(data.outcome === 'success') song.value = data.song
          }
@@ -124,11 +111,9 @@ export const useSongStore = defineStore('song_store', () => {
    }
 
    async function delete_song(song_id) {
-
-      const app_store = useAppStore()
    
       try {
-         const { data, error } = await useData('delete_song',[song_id],{},reqInit("DELETE",app_store.bearer_token,{}))
+         const { data, error } = await useData('delete_song',[song_id],{})
          if(data) {       
             // handle response : 401
             // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
@@ -157,13 +142,12 @@ export const useSongStore = defineStore('song_store', () => {
       }
    }
 
+   // save_song
    // save a modified copy of the song to the server (and replace copy in this store)
    async function save_song(modified_song) {
-
-      const app_store = useAppStore()
       
       try {
-         const { data, error } = await useData('save_song',[modified_song.id],{},reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_song)))
+         const { data, error } = await useData('save_song',[modified_song.id],{},JSON.stringify(modified_song))
          if(data) {
             // handle response : 401
             // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
@@ -190,13 +174,13 @@ export const useSongStore = defineStore('song_store', () => {
       }
    }
 
+   // save
    // save this store local copy to server (after we have updated_sections etc)
    async function save() {
-
-      const app_store = useAppStore()
+      
       try {
-         const { data, error } = await useData('save_song',[song.value.id],{},reqInit('PUT',app_store.bearer_token,JSON.stringify(song.value)))
-         if(data) {          
+         const { data, error } = await useData('save_sing',[song.value.id],{},JSON.stringify(song.value))
+         if(data) {
             // handle response : 401
             // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
             if(data.message) {
@@ -224,9 +208,8 @@ export const useSongStore = defineStore('song_store', () => {
 
    async function update_song(modified_song) {
 
-      const app_store = useAppStore()
       try {
-         const { data, error } = await useData('save_song',[modified_song.id],{},reqInit('PUT',app_store.bearer_token,JSON.stringify(modified_song)))
+         const { data, error } = await useData('update_song',[modified_song.id],{},JSON.stringify(modified_song))
          if(data) {               
             // handle response : 401
             // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
@@ -251,6 +234,8 @@ export const useSongStore = defineStore('song_store', () => {
          message: 'The song was updated successfully'
       }
    }
+
+   // Song.Section operations
 
    function del_section(section_id) {
       
@@ -301,11 +286,8 @@ export const useSongStore = defineStore('song_store', () => {
          next_daw = String.fromCharCode(daws[daws.length -1].charCodeAt(0) + 1)
          if(next_daw > 'Z'.charCodeAt(0)) next_daw = 'Z'.charCodeAt(0)
          copy_section.daw = next_daw
-
          // we retain title since section type most likely remains the same
-
          modified.aSections.push(copy_section)
-
          song.value.songsheet = modified
          synched.value = false
       }

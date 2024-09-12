@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
 import useData from '../../../utilities/useData/useData'
-import reqInit from '../../../utilities/requestInit/RequestInit'
 import init_infinite_scroll from '../../../utilities/intersections/intersections'
 
 
@@ -57,8 +56,7 @@ const get_list = async() => {
       asc:true,
       page:next_page
    }
-   const { data, error } = await useData('songs_list',[],query_params,reqInit())
-
+   const { data, error } = await useData('songs_list',[],{})
    if(data) {
 
       curr_page.value = next_page
