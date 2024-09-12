@@ -179,7 +179,7 @@ export const useSongStore = defineStore('song_store', () => {
    async function save() {
       
       try {
-         const { data, error } = await useData('save_sing',[song.value.id],{},JSON.stringify(song.value))
+         const { data, error } = await useData('save_song',[song.value.id],{},JSON.stringify(song.value))
          if(data) {
             // handle response : 401
             // PUT http://songs-api-laravel/api/songs/431 401 (Unauthorized)
