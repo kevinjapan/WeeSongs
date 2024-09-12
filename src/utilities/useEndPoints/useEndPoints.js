@@ -14,13 +14,13 @@ export default function useEndPoints() {
       songs_list:'/songs',
       get_single_song:'/songs/',
       create_song:'/songs',
-      delete_song:'/songs',
-      save_song:'/songs',
+      delete_song:'/songs/',
+      save_song:'/songs/',
       search_songs:'/songs/search/',
 
       albums_list:'/albums',
-      create_album:'/albums',
       load_album:'/albums/',
+      create_album:'/albums',
       delete_album:'/albums/',
       save_album:'/albums/',
       update_album:'/albums/'
