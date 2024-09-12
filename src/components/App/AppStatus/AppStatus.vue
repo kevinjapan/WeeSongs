@@ -2,9 +2,11 @@
 import { ref, watch } from 'vue'
 
 
-// AppStatus 
+// AppStatus
+
 // app-level flash notification utility component
 // we don't use v-if in parent component, since we want to use transitions (v-if just toggles display)
+
 
 // we use Component v-model to implement two-way binding
 // empties the parent components notify_msg w/out any explicit call
@@ -17,7 +19,7 @@ const lingering_text = ref('')
 // assign msg then setTimeout to clear
 watch(notification_msg, () => {
    if(notification_msg.value !== '') lingering_text.value = notification_msg.value
-   setTimeout(() => {notification_msg.value = ''},2600)
+   setTimeout(() => {notification_msg.value = ''},5000)
 })
 </script>
 
