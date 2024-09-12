@@ -1,11 +1,14 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
+import { useRoute,useRouter } from 'vue-router'
 import { useAlbumStore } from '@/stores/albumStore'
 import AlbumTracksList from '../../AlbumTracksList/AlbumTracksList.vue';
 
 
 // Album
 
+const route = useRoute()
+const router = useRouter()
 const album_store = useAlbumStore()
 const props = defineProps(['album'])
 const notify_msg = ref('')
