@@ -49,6 +49,10 @@ const update_track_list = async(new_track_list) => {
    show_all_tracks_list.value = false
 }
 
+const close_all_tracks_list = () => {
+   show_all_tracks_list.value = false
+}
+
 </script>
 
 <template>
@@ -70,6 +74,7 @@ const update_track_list = async(new_track_list) => {
          v-if="show_all_tracks_list" 
          :client_track_list="tracks"
          @update-track-list="update_track_list"
+         @close-all-tracks-list="close_all_tracks_list"
       />
 
    </section>

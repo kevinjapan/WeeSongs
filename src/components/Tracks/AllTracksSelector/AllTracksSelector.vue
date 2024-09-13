@@ -17,7 +17,7 @@ const props = defineProps({
   client_track_list: Array
 })
 const emit = defineEmits(
-   ['update-track-list']
+   ['update-track-list','close-all-tracks-list']
 )
 
 // augment this array as more 'pages' arrive
@@ -31,6 +31,8 @@ const selected_tracks = ref([])
 
 // list of slugs for existing track list (we should 'check' checkbox for these)
 const slugs_only = ref([])
+
+const loading_error = ref('')
 
 // manage 'page' arrivals / intersection observer
 const curr_page = ref(0)
@@ -56,7 +58,7 @@ const get_list = async() => {
       asc:true,
       page:next_page
    }
-   const { data, error } = await useData('songs_list',[],{})
+   const { data, error } = await useData('songs_list',[],query_params)
    if(data) {
 
       curr_page.value = next_page
@@ -75,9 +77,13 @@ const get_list = async() => {
       init_infinite_scroll(get_list)
    }
    else {
-      console.log('ERR',error)
-      // to do : loading_error.is_error = true
+      // connection failed, we need to notify and tidy-up
+      loading_error.value = error
    }
+}
+
+const close = () => {
+   emit('close-all-tracks-list')
 }
 
 const init_checked_tracks = () => {
@@ -95,21 +101,31 @@ const apply = () => {
 
 <template>
 
-   <section class="all_tracks_selector">
+   <div>
    
-      <ul>
-         <li v-for="track in all_tracks_list" :key="track.id">            
-            <input type="checkbox" :id="track.id" :name="track.slug" v-model="selected_tracks" 
-               :value="track.slug"
-            />
-            <label :for="track.slug">{{ track.title }}</label>
-         </li>
-         <li v-if="is_last_page === false" class="infinite_scroll_trigger loading"></li>
-      </ul>
+      <p v-if="loading_error !== ''">
+         Sorry, there was a loading error.<br/>
+         <span class="italic">{{ loading_error }}</span>
+         <button @click="close">close</button>
+      </p>
 
-      <button @click="apply">apply</button>
+      <section class="all_tracks_selector">
+         <ul>
+            <li v-for="track in all_tracks_list" :key="track.id">            
+               <input type="checkbox" :id="track.id" :name="track.slug" v-model="selected_tracks" 
+                  :value="track.slug"
+               />
+               <label :for="track.slug">{{ track.title }}</label>
+            </li>
+            <li v-if="is_last_page === false" class="infinite_scroll_trigger loading"></li>
+         </ul>
 
-   </section>
+
+         <div class="flex justify_center p_1"><button @click="apply">apply</button>
+         <button @click="close">close</button></div>
+      </section>
+
+   </div>
    
 </template>
 
@@ -137,5 +153,10 @@ ul {
 li.loading {
    margin-top:2rem;
    margin-bottom:2rem;
+}
+p {
+   width:98%;
+   margin:0;
+   padding:0;
 }
 </style>
