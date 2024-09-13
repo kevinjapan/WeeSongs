@@ -137,7 +137,7 @@ const open_album = () => {
                <a 
                   id="album_id"
                   name="album_id"
-                  @click="open_album">{{ songStore.song?.album.title }}</a>
+                  @click="open_album">{{ songStore.song?.album?.title }}</a>
             </div>
             
             <label for="created_at">Created At</label>
