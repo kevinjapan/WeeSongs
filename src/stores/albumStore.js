@@ -177,7 +177,11 @@ export const useAlbumStore = defineStore('album_store', () => {
 
    async function add_album_tracks(album_id,tracks_slugs_list) {
 
+      if(!album_id || typeof album_id === 'undefined') return {error:' Failed to find album - the album id provided was invalid. '}
+      if(!Array.isArray(tracks_slugs_list)) return {error:' The list of tracks to add provided was invalid. '}
+
       const song_store = useSongStore()
+      let error = []
 
       for (const song_slug of tracks_slugs_list) {
 
@@ -186,18 +190,37 @@ export const useAlbumStore = defineStore('album_store', () => {
             const modified_song = song_obj.song
             if(modified_song.song && modified_song.song.album) delete modified_song.song.album
             modified_song.album_id = album_id
-            await song_store.update_song(modified_song)
+
+            // to do : check we are logged in way *before* attempting this operation - rollout all similar calls to stores.
+
+            const updated_result = await song_store.update_song(modified_song)
+            if(updated_result.outcome === 'success') {
+               // will pass updated data
+            }
+            else {
+               // failed to update_song
+               tracks_slugs_list = null
+               error.push(updated_result.message)
+            }
          }
          else {
-            console.log('ERR',song_obj.message)    // to do : handle this / notify user?
+            // failed to get_song
+            tracks_slugs_list = null
+            error.push(song_obj.message)
          }
       }
-      return tracks_slugs_list
+      return {
+         data: tracks_slugs_list,
+         error: error.join('|')
+      }
    }
 
    async function remove_album_tracks(tracks_slugs_list) {
 
+      if(!Array.isArray(tracks_slugs_list)) return {error:' The list of tracks to remove provided was invalid. '}
+
       const song_store = useSongStore()
+      let error = []
 
       for (const song_slug of tracks_slugs_list) {
 
@@ -206,13 +229,27 @@ export const useAlbumStore = defineStore('album_store', () => {
             const modified_song = song_obj.song
             if(modified_song.song && modified_song.song.album) delete modified_song.song.album
             modified_song.album_id = null
-            await song_store.update_song(modified_song)
+            
+            const updated_result = await song_store.update_song(modified_song)
+            if(updated_result.outcome === 'success') {
+               // will pass updated data
+            }
+            else {
+               // failed to update_song
+               tracks_slugs_list = null
+               error.push(updated_result.message)
+            }
          }
          else {
-            console.log('ERR',song_obj.message)    // to do : handle this / notify user?
+            // failed to get_song
+            tracks_slugs_list = null
+            error.push(song_obj.message)
          }
       }
-      return tracks_slugs_list
+      return {
+         data: tracks_slugs_list,
+         error: error.join('|')
+      }
    }
 
    

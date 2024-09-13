@@ -159,4 +159,9 @@ p {
    margin:0;
    padding:0;
 }
+button {
+   font-size:.9rem;
+   margin:0 .25rem;
+   padding:.25rem .5rem;
+}
 </style>

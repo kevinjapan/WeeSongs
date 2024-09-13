@@ -8,7 +8,7 @@ import AllTracksSelector from '../../Tracks/AllTracksSelector/AllTracksSelector.
 // AlbumTracksList
 
 
-const props = defineProps(['album_id','songs'])
+const props = defineProps(['album_id','songs','notify'])
 
 const album_store = useAlbumStore()
 
@@ -34,19 +34,26 @@ onBeforeMount(() => {
 
 const update_track_list = async(new_track_list) => {
 
-   // determine which tracks have been removed
+   // determine which tracks have been removed, remove from server
    const removed_tracks_slugs = tracks.value.filter(prev_track_slug => !new_track_list.some(slug => slug == prev_track_slug))
-   await album_store.remove_album_tracks(removed_tracks_slugs)
+   const { data: remove_data, error: remove_error } = await album_store.remove_album_tracks(removed_tracks_slugs)
 
-   // determine which tracks have been added
+   // determine which tracks have been added, add to server
    const added_tracks_slugs = new_track_list.filter(prev_track_slug => !tracks.value.some(slug => slug == prev_track_slug))
-   await album_store.add_album_tracks(props.album_id,added_tracks_slugs)
+   const { data: add_data, error: add_error } = await album_store.add_album_tracks(props.album_id,added_tracks_slugs)
 
-   // update component state
-   tracks.value = [...new_track_list.sort()]
+   if(remove_data && add_data) {
 
-   // close dlg
-   show_all_tracks_list.value = false
+      // update component state
+      tracks.value = [...new_track_list.sort()]
+
+      // close dlg
+      show_all_tracks_list.value = false
+   }
+   else {
+      // we bail if either fails (w/ minimal avoidance of duplicate error messages)
+      props.notify(remove_error + ' ' + add_error !== remove_error ? add_error : '')
+   }
 }
 
 const close_all_tracks_list = () => {
