@@ -1,5 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useAppStore } from '@/stores/appStore'
 
 
 // AppStatus
@@ -7,24 +9,29 @@ import { ref, watch } from 'vue'
 // app-level flash notification utility component
 // we don't use v-if in parent component, since we want to use transitions (v-if just toggles display)
 
-
-// we use Component v-model to implement two-way binding
-// empties the parent components notify_msg w/out any explicit call
-const notification_msg = defineModel()
+const app_store = useAppStore()
+const { notify_msg } = storeToRefs(app_store)
 
 // since msg is our toggle flag, transitions take effect after the msg is emptied,
 // we linger the text to allow transition effects to act on the text-filled component
 const lingering_text = ref('')
 
 // assign msg then setTimeout to clear
-watch(notification_msg, () => {
-   if(notification_msg.value !== '') lingering_text.value = notification_msg.value
-   setTimeout(() => {notification_msg.value = ''},5000)
+watch(notify_msg, () => {
+
+   // to do : style UI better to present multiple msgs in notify_msg
+   // to do : rename notify_msg -> notify_msg_list - it's now an array of strings (can be single)
+   //         may need to revisit lingering_text and provide a func to break up the array nicely.
+   // to do : there are still some timing issues w/ this mechanism - review thoroughly
+   if(notify_msg.value.length > 0) lingering_text.value = notify_msg.value.join(' | ')
+   setTimeout(() => {app_store.set_notify_msg([])},5000)
 })
+
+
 </script>
 
 <template>
-   <div class="app_status" :class="{app_status_bg: notification_msg !== ''}">
+   <div class="app_status" :class="{app_status_bg:notify_msg.length > 0}">
       {{ lingering_text }}
    </div>
 </template>

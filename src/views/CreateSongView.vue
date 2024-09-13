@@ -1,21 +1,22 @@
 <script setup>
 import { ref } from 'vue'
+import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
 
 
 // CreateSongView
 
+const app_store = useAppStore()
 const songStore = useSongStore()
-const notify_msg = ref('')
 const title = ref('')
 
 
 const apply = async() => {
    const result = await songStore.create_song(title.value)
    if(result && result.outcome) {
-      notify_msg.value = result.outcome === 'success' 
+      app_store.set_notify_msg(result.outcome === 'success' 
          ? 'The song was successfully created' 
-         : 'We were unable to create the song. ' + result.message
+         : 'We were unable to create the song. ' + result.message)
    }
 }
 
@@ -40,8 +41,6 @@ const apply = async() => {
       <button type="submit">Apply</button>
    
    </form>
-   
-   <AppStatus v-model="notify_msg" />
 
 </template>
 

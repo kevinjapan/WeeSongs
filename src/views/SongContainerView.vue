@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, reactive, onBeforeMount,onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
 import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
 import Song from '../components/Songs/Song/Song/Song.vue'
@@ -9,8 +10,9 @@ import Song from '../components/Songs/Song/Song/Song.vue'
 // SongContainerView
 
 const route = useRoute()
+const app_store = useAppStore()
 const song_store = useSongStore()
-const notify_msg = ref('')
+
 
 const selected_section_daw = ref('A')
 
@@ -24,7 +26,7 @@ const has_error = computed(() => {
 onBeforeMount(async() => {
    // load selected song into store (from 'slug' route param)
    const result = await song_store.load_song(route.params.slug)
-   if(result && result.message) notify_msg.value = result.message
+   if(result && result.message) app_store.set_notify_msg(result.message)
    loading.value = false
 })
 onMounted(() => {
@@ -33,7 +35,7 @@ onMounted(() => {
 
 const apply_changes = async() => {
    const result = await song_store.save()
-   notify_msg.value = result.message
+   app_store.set_notify_msg(result.message)
 }
 
 const set_selected_section_daw = (daw) => {
@@ -70,8 +72,6 @@ const set_selected_section_daw = (daw) => {
          
       </section>      
    </Transition>
-
-   <AppStatus v-model="notify_msg" />
 
 </template>
 

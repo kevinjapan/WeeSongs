@@ -9,7 +9,6 @@ import Album from '../components/Albums/Album/Album/Album.vue'
 
 const route = useRoute()
 const album_store = useAlbumStore()
-const notify_msg = ref('')
 
 // custom suspense flag
 const loading = ref(true)
@@ -24,6 +23,8 @@ onBeforeMount(async() => {
    if(result && result.message) notify_msg.value = result.message
    loading.value = false   
 })
+
+
 </script>
 
 
@@ -45,7 +46,7 @@ onBeforeMount(async() => {
          
       </section>      
    </Transition>
-   <AppStatus v-model="notify_msg" />
+
 </template>
 
 <style scoped>

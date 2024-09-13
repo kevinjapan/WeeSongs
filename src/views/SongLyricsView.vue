@@ -7,9 +7,7 @@ import SongLyrics from '../components/Songs/Song/SongLyrics/SongLyrics.vue'
 
 // SongLyricsView
 
-
 const song_store = useSongStore()
-const notify_msg = ref('')
 
 // custom suspense flag
 const loading = ref(false)
@@ -43,8 +41,6 @@ onMounted(() => {
       </div>
       
    </section>
-
-   <AppStatus v-model="notify_msg" />
 
 </template>
 

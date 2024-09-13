@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import { useSongStore } from '@/stores/songStore'
 import SongSectionLyrics from './SongSectionLyrics/SongSectionLyrics.vue'
 
@@ -8,7 +7,6 @@ import SongSectionLyrics from './SongSectionLyrics/SongSectionLyrics.vue'
 
 const song_store = useSongStore()
 const props = defineProps(['song'])
-const notify_msg = ref('')
 
 const last = (index) => {
    return index === song_store.song.songsheet.aSections.length - 1
@@ -25,8 +23,6 @@ const last = (index) => {
       :index="index" 
       :last="last(index)"
    />
-  
-   <AppStatus v-model="notify_msg" />
 
 </template>
 

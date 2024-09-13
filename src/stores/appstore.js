@@ -15,6 +15,8 @@ export const useAppStore = defineStore('app_store', () => {
    const bearer_token = ref('')
    const username = ref('')
 
+   // we have a single AppStatus notify_msg
+   const notify_msg = ref([])
 
    // getters
    const get_api = computed(() => app_api.value)
@@ -25,6 +27,13 @@ export const useAppStore = defineStore('app_store', () => {
    //   and attempt to re-hydrate session...
    //   server-side, we need to verify correctly expiring tokens
 
+
+   // set_notify_msg
+   // accepts string or array of strings
+   const set_notify_msg = (msg) => {
+      let arr = Array.isArray(msg) ? [...msg] : [msg]
+      notify_msg.value = arr
+   }
 
    const user = ref({
       name:"kev",
@@ -50,7 +59,9 @@ export const useAppStore = defineStore('app_store', () => {
       get_api, 
       set_api,
       bearer_token,
-      username
+      username,
+      notify_msg,
+      set_notify_msg
    }
  })
 

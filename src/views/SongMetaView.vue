@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onBeforeMount, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
 import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
 
@@ -14,8 +15,8 @@ defineProps({
 
 const router = useRouter()
 const route = useRoute()
+const app_store = useAppStore()
 const songStore = useSongStore()
-const notify_msg = ref('')
 
 
 // local state - we don't want to mutate props child properties
@@ -36,7 +37,7 @@ onBeforeMount(async() => {
       // there is an issue w/ server's handling of unknown slug - not clean, garbage returned (error reporting in php)
       // so, for now, we will simply report first line of error in AppStatus notification until fix on server-side
       const result = await songStore.load_song(route.params.slug)
-      if(result && result.outcome === 'fail') notify_msg.value = result.message      
+      if(result && result.outcome === 'fail') app_store.set_notify_msg(result.message)     
    }
    // hydrate local state
    title.value = songStore.song.title
@@ -68,7 +69,7 @@ const apply = async() => {
    modified_song.slug = slug.value
    
    const result = await songStore.save_song(modified_song)
-   if(result && result.message) notify_msg.value = result.message
+   if(result && result.message) app_store.set_notify_msg(result.message)
    
    // reload w/ new slug in url
    if(result.outcome === 'success') router.push(`/songs/${slug.value}/meta`)
@@ -79,7 +80,7 @@ const delete_song = async() => {
    if (window.confirm("Do you really want to delete this song?")) {
       const result = await songStore.delete_song(songStore.song.id)
       if(result) {
-         if(result.message) notify_msg.value = result.message
+         if(result.message) app_store.set_notify_msg(result.message)
          if(result.outcome === 'success') setTimeout(() => router.push('/songs'),3000)
       }
    }
@@ -167,8 +168,6 @@ const open_album = () => {
 
       </section>
    </Transition>
-
-   <AppStatus v-model="notify_msg" />
 
 </template>
 

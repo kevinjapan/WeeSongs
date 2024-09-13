@@ -16,6 +16,7 @@ import AppNav from './components/App/AppNav/AppNav.vue'
       <RouterView />
    </main>
 
+   <AppStatus />
 
 </template>
 

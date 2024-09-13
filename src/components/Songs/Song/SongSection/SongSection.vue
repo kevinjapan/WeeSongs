@@ -14,7 +14,6 @@ const props = defineProps(
 
 const app_store = useAppStore()
 const requires_update = ref(false)
-const notify_msg = ref('')
 const num_bars = ref(props.section.aBars.length)
 const max_bars = 32
 
@@ -80,7 +79,7 @@ const change_bar_txt = (bar_id,txt) => {
 const change_num_bars = (num_bars) => {
    
    if(!app_store.bearer_token) {
-      notify_msg.value = 'You need to login to perform this action'
+      app_store.set_notify_msg('You need to login to perform this action')
       return
    }
    const new_num_bars = parseInt(num_bars)
@@ -161,8 +160,6 @@ const change_num_bars = (num_bars) => {
          <button v-else disabled>Apply</button>
 
       </div>
-
-      <AppStatus v-model="notify_msg" />
 
    </div>
 </template>
