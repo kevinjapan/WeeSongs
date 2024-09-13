@@ -7,11 +7,15 @@ import AllTracksSelector from '../../Tracks/AllTracksSelector/AllTracksSelector.
 
 // AlbumTracksList
 
+// currently, we support one album per song.
+// we only map one album per song and laravel is set up to rely on 
+// relationships on this one-to-many orm - so not a trivial change.
 
-const props = defineProps(['album_id','songs','notify'])
+const props = defineProps(
+   ['album_id','songs','notify']
+)
 
 const album_store = useAlbumStore()
-
 
 // tracks list
 const tracks = ref([])
@@ -28,32 +32,41 @@ onBeforeMount(() => {
    tracks.value = props.songs.map(track => track.slug).sort()
 })
 
-// currently, we support one album per song.
-// we only map one album per song and laravel is set up to rely on 
-// relationships on this one-to-many orm - so not a trivial change.
 
 const update_track_list = async(new_track_list) => {
 
-   // determine which tracks have been removed, remove from server
+   let outcomes = []
+
+   // intermediate to avoid rendering template twice
+   let modified = [...tracks.value]
+
+   // determine which tracks have been added/removed
    const removed_tracks_slugs = tracks.value.filter(prev_track_slug => !new_track_list.some(slug => slug == prev_track_slug))
-   const { data: remove_data, error: remove_error } = await album_store.remove_album_tracks(removed_tracks_slugs)
-
-   // determine which tracks have been added, add to server
    const added_tracks_slugs = new_track_list.filter(prev_track_slug => !tracks.value.some(slug => slug == prev_track_slug))
-   const { data: add_data, error: add_error } = await album_store.add_album_tracks(props.album_id,added_tracks_slugs)
 
-   if(remove_data && add_data) {
-
-      // update component state
-      tracks.value = [...new_track_list.sort()]
-
-      // close dlg
-      show_all_tracks_list.value = false
+   // add and remove are separate actions, so we verify separately
+   const { data: remove_data, error: remove_error } = await album_store.remove_album_tracks(removed_tracks_slugs)
+   if(remove_data){
+      // remove the removed tracks locally - we may not get success on add, so keep ui-ready
+      modified = [...tracks.value.filter(track => !removed_tracks_slugs.some(slug => slug === track))].sort()
+      outcomes.push['Tracks were removed.']
    }
    else {
-      // we bail if either fails (w/ minimal avoidance of duplicate error messages)
-      props.notify(remove_error + ' ' + add_error !== remove_error ? add_error : '')
+      outcomes.push['There was an error removing tracks: ' + remove_error]
    }
+   const { data: add_data, error: add_error } = await album_store.add_album_tracks(props.album_id,added_tracks_slugs)
+   if(add_data){
+      // inject the added tracks locally      
+      modified = [...modified,...added_tracks_slugs].sort()
+      outcomes.push['Tracks were added.']
+   }
+   else {
+      outcomes.push['There was an error adding tracks: ' + add_error]
+   }
+
+   tracks.value = [...modified]
+   show_all_tracks_list.value = false
+   props.notify(outcomes.join('|'))
 }
 
 const close_all_tracks_list = () => {

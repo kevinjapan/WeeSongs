@@ -178,7 +178,7 @@ export const useAlbumStore = defineStore('album_store', () => {
    async function add_album_tracks(album_id,tracks_slugs_list) {
 
       if(!album_id || typeof album_id === 'undefined') return {error:' Failed to find album - the album id provided was invalid. '}
-      if(!Array.isArray(tracks_slugs_list)) return {error:' The list of tracks to add provided was invalid. '}
+      if(!Array.isArray(tracks_slugs_list)) return {error:' The provided list of tracks to add was invalid. '}
 
       const song_store = useSongStore()
       let error = []
@@ -217,7 +217,7 @@ export const useAlbumStore = defineStore('album_store', () => {
 
    async function remove_album_tracks(tracks_slugs_list) {
 
-      if(!Array.isArray(tracks_slugs_list)) return {error:' The list of tracks to remove provided was invalid. '}
+      if(!Array.isArray(tracks_slugs_list)) return {error:' The provided list of tracks to remove was invalid. '}
 
       const song_store = useSongStore()
       let error = []
