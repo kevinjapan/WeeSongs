@@ -20,7 +20,7 @@ const has_error = computed(() => {
 onBeforeMount(async() => {
    // load selected song into store (from 'slug' route param)
    const result = await album_store.load_album(route.params.slug)
-   if(result && result.message) notify_msg.value = result.message
+   if(result && result.message) notify_msg_list.value = result.message
    loading.value = false   
 })
 

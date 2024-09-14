@@ -4,7 +4,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useSongStore } from '@/stores/songStore'
 import useData from '../utilities/useData/useData'
 import { get_new_album_template } from '../utilities/newAlbumTemplate/newAlbumTemplate'
-
+import { add_if_unique_str } from '../utilities/utilities/utilities'
 
 
 // AlbumStore
@@ -200,13 +200,13 @@ export const useAlbumStore = defineStore('album_store', () => {
             else {
                // failed to update_song
                tracks_slugs_list = null
-               error.push(updated_result.message)
+               add_if_unique_str(error,updated_result.message)               
             }
          }
          else {
             // failed to get_song
             tracks_slugs_list = null
-            error.push(song_obj.message)
+            add_if_unique_str(error,song_obj.message)   
          }
       }
       return {
@@ -237,13 +237,13 @@ export const useAlbumStore = defineStore('album_store', () => {
             else {
                // failed to update_song
                tracks_slugs_list = null
-               error.push(updated_result.message)
+               add_if_unique_str(error,updated_result.message)  
             }
          }
          else {
             // failed to get_song
             tracks_slugs_list = null
-            error.push(song_obj.message)
+            add_if_unique_str(error,song_obj.message)   
          }
       }
       return {

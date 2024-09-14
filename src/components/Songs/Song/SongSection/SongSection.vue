@@ -79,7 +79,7 @@ const change_bar_txt = (bar_id,txt) => {
 const change_num_bars = (num_bars) => {
    
    if(!app_store.bearer_token) {
-      app_store.set_notify_msg('You need to login to perform this action')
+      app_store.set_notify_msg_list('You need to login to perform this action')
       return
    }
    const new_num_bars = parseInt(num_bars)

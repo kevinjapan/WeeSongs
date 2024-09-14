@@ -1,5 +1,5 @@
 <script setup>
-import { ref,onBeforeMount } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import { useAppStore } from '@/stores/appStore'
 import { useAlbumStore } from '@/stores/albumStore'
 import AllTracksSelector from '../../Tracks/AllTracksSelector/AllTracksSelector.vue'
@@ -48,14 +48,12 @@ const update_track_list = async(new_track_list) => {
 
    // add and remove are separate actions, so we verify separately
    const { data: remove_data, error: remove_error } = await album_store.remove_album_tracks(removed_tracks_slugs)
-   console.log(remove_data,remove_error)
    if(remove_data){
       // remove the removed tracks locally - we may not get success on add, so keep ui-ready
       modified = [...tracks.value.filter(track => !removed_tracks_slugs.some(slug => slug === track))].sort()
       outcomes.push('Tracks were removed successfully.')
    }
    else {
-      console.log('pushing yes?')
       outcomes.push('There was an error removing tracks: ' + remove_error)
    }
    const { data: add_data, error: add_error } = await album_store.add_album_tracks(props.album_id,added_tracks_slugs)
@@ -70,9 +68,7 @@ const update_track_list = async(new_track_list) => {
 
    tracks.value = [...modified]
    show_all_tracks_list.value = false
- 
-   console.log('outcomes',outcomes)
-   app_store.set_notify_msg(outcomes)
+   app_store.set_notify_msg_list(outcomes)
 
 }
 

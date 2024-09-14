@@ -15,8 +15,8 @@ export const useAppStore = defineStore('app_store', () => {
    const bearer_token = ref('')
    const username = ref('')
 
-   // we have a single AppStatus notify_msg
-   const notify_msg = ref([])
+   // we have a single AppStatus notify_msg_list
+   const notify_msg_list = ref([])
 
    // getters
    const get_api = computed(() => app_api.value)
@@ -28,11 +28,11 @@ export const useAppStore = defineStore('app_store', () => {
    //   server-side, we need to verify correctly expiring tokens
 
 
-   // set_notify_msg
+   // set_notify_msg_list
    // accepts string or array of strings
-   const set_notify_msg = (msg) => {
+   const set_notify_msg_list = (msg) => {
       let arr = Array.isArray(msg) ? [...msg] : [msg]
-      notify_msg.value = arr
+      notify_msg_list.value = arr
    }
 
    const user = ref({
@@ -60,8 +60,8 @@ export const useAppStore = defineStore('app_store', () => {
       set_api,
       bearer_token,
       username,
-      notify_msg,
-      set_notify_msg
+      notify_msg_list,
+      set_notify_msg_list
    }
  })
 

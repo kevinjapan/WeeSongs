@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
 import { useRoute,useRouter } from 'vue-router'
+import { useAppStore } from '@/stores/appStore'
 import { useAlbumStore } from '@/stores/albumStore'
 import AlbumTracksList from '../../AlbumTracksList/AlbumTracksList.vue';
 
@@ -9,9 +10,9 @@ import AlbumTracksList from '../../AlbumTracksList/AlbumTracksList.vue';
 
 const route = useRoute()
 const router = useRouter()
+const app_store = useAppStore()
 const album_store = useAlbumStore()
 const props = defineProps(['album'])
-const notify_msg = ref('')
 
 // local state - we don't want to mutate props child properties
 // we also don't populate immediately, since eg on page refesh, we may not have store
@@ -31,7 +32,7 @@ onBeforeMount(async() => {
       // there is an issue w/ server's handling of unknown slug - not clean, garbage returned (error reporting in php)
       // so, for now, we will simply report first line of error in AppStatus notification until fix on server-side
       const result = await album_store.load_album(route.params.slug)
-      if(result && result.outcome === 'fail') notify_msg.value = result.message      
+      if(result && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)    
    }
 
    // hydrate local state
@@ -53,7 +54,6 @@ const change_title = () => {
    slug.value = title.value.replaceAll(' ','-')
 }
 
-
 // apply local changes
 const apply = async() => {
 
@@ -62,12 +62,13 @@ const apply = async() => {
    modified_album.slug = slug.value
 
    const result = await album_store.save_album(modified_album)
-   if(result && result.message) notify_msg.value = result.message
+   if(result && result.message) {
+      app_store.set_notify_msg_list(result.message)
+   }
 
    // reload w/ new slug in url
    if(result.outcome === 'success') router.push(`/albums/${slug.value}`)
 }
-
 
 </script>
 
@@ -146,9 +147,7 @@ const apply = async() => {
 
       </form>
 
-      <AlbumTracksList :album_id="id" :songs="album_store.album.songs"/>
-
-      <AppStatus v-model="notify_msg" />
+      <AlbumTracksList :album_id="id" :songs="album_store.album.songs" />
 
    </section>
 

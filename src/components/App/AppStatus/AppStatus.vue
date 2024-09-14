@@ -10,35 +10,38 @@ import { useAppStore } from '@/stores/appStore'
 // we don't use v-if in parent component, since we want to use transitions (v-if just toggles display)
 
 const app_store = useAppStore()
-const { notify_msg } = storeToRefs(app_store)
+const { notify_msg_list } = storeToRefs(app_store)
 
 // since msg is our toggle flag, transitions take effect after the msg is emptied,
 // we linger the text to allow transition effects to act on the text-filled component
-const lingering_text = ref('')
+const lingering_texts = ref([])
 
 // assign msg then setTimeout to clear
-watch(notify_msg, () => {
-
-   // to do : style UI better to present multiple msgs in notify_msg
-   // to do : rename notify_msg -> notify_msg_list - it's now an array of strings (can be single)
-   //         may need to revisit lingering_text and provide a func to break up the array nicely.
-   // to do : there are still some timing issues w/ this mechanism - review thoroughly
-   if(notify_msg.value.length > 0) lingering_text.value = notify_msg.value.join(' | ')
-   setTimeout(() => {app_store.set_notify_msg([])},5000)
+watch(notify_msg_list, () => {
+   let msg_key = 0
+   if(notify_msg_list.value.length > 0) lingering_texts.value = notify_msg_list.value.map(msg => {
+      return {
+         key:msg_key++,
+         text:msg
+      }
+   })
+   setTimeout(() => {app_store.set_notify_msg_list([])},6000)
 })
-
 
 </script>
 
 <template>
-   <div class="app_status" :class="{app_status_bg:notify_msg.length > 0}">
-      {{ lingering_text }}
+   <div class="app_status" :class="{app_status_bg:notify_msg_list.length > 0}">
+      <ul>
+         <li v-for="text in lingering_texts" :key="text.key">
+            {{ text.text }}
+         </li>
+      </ul>
    </div>
 </template>
 
 <style scoped>
 .app_status {
-   
    position:fixed;
    top:var(--status-msg-top);
    left:0;
@@ -51,6 +54,7 @@ watch(notify_msg, () => {
    background:lightgrey;
    border:solid 1px lightgrey;
    border-radius:.5rem;
+   text-align:left;
 
    /* transitions */
    -webkit-transform: translateY(-400%);
@@ -78,5 +82,16 @@ watch(notify_msg, () => {
    -o-transition:opacity 1s ease-in-out,transform .75s ease-in-out;
    transition:opacity 1s ease-in-out,transform .75s ease-in-out;
    transition:opacity 1s ease-in-out,transform .75s ease-in-out,-webkit-transform .75s ease-in-out;
+}
+
+ul, li {
+   margin:0;
+   padding:0;
+}
+li {
+   border:solid 1px white;
+   margin-top:.25rem;
+   padding:.25rem;
+   border-radius:.25rem;
 }
 </style>

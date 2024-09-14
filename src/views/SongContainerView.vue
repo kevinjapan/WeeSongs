@@ -26,7 +26,7 @@ const has_error = computed(() => {
 onBeforeMount(async() => {
    // load selected song into store (from 'slug' route param)
    const result = await song_store.load_song(route.params.slug)
-   if(result && result.message) app_store.set_notify_msg(result.message)
+   if(result && result.message) app_store.set_notify_msg_list(result.message)
    loading.value = false
 })
 onMounted(() => {
@@ -35,7 +35,7 @@ onMounted(() => {
 
 const apply_changes = async() => {
    const result = await song_store.save()
-   app_store.set_notify_msg(result.message)
+   app_store.set_notify_msg_list(result.message)
 }
 
 const set_selected_section_daw = (daw) => {
