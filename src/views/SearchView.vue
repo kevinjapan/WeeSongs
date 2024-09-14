@@ -31,8 +31,6 @@ onUnmounted(() => {
    search_store.set_last_search_term(real_search_term.value)
 })
 
-// to do : spinner while waiting for results..
-
 </script>
 
 <template>
