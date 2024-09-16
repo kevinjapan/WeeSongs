@@ -54,6 +54,10 @@ export const useAppStore = defineStore('app_store', () => {
       app_api.value = new_api
    }
 
+   const is_logged_in = () => {
+      return bearer_token.value !== '' ? true : false
+   }
+
    return { 
       app_api, 
       get_api, 
@@ -61,7 +65,8 @@ export const useAppStore = defineStore('app_store', () => {
       bearer_token,
       username,
       notify_msg_list,
-      set_notify_msg_list
+      set_notify_msg_list,
+      is_logged_in
    }
  })
 

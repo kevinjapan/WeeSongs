@@ -24,11 +24,11 @@ const apply = async() => {
 
 <template>
 
-   <h1>Create New Song</h1>
    
    <form class="grid form_grid flex_col" @submit.prevent="apply">
 
 
+      <h3>Create new song</h3>
       <label>Title</label>
       <input 
          v-model="title"
@@ -37,9 +37,24 @@ const apply = async() => {
          placeholder="title here"
       />
 
-      <div></div>
-      <button type="submit">Apply</button>
+      <div></div>      
+      <button type="submit" v-if="app_store.is_logged_in()">Apply</button>
+      <button type="button" v-else disabled>Apply</button>
    
+      
+      <h3>Create new album</h3>
+      <label>Title</label>
+      <input 
+         v-model="title"
+         name="title" 
+         className="border border-slate-200"
+         placeholder="title here"
+      />
+
+      <div></div>      
+      <button type="submit" v-if="app_store.is_logged_in()">Apply</button>
+      <button type="button" v-else disabled>Apply</button>
+
    </form>
 
 </template>

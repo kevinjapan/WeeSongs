@@ -140,10 +140,12 @@ const apply = async() => {
          />
 
          <div></div>
-         <button type="submit">Apply</button>
+         <button type="submit" v-if="app_store.is_logged_in()">Apply</button>
+         <button v-else disabled>Apply</button>
 
          <div></div>
-         <button type="button" @click="delete_song">Delete this Album</button>
+         <button type="button" v-if="app_store.is_logged_in()" @click="delete_song">Delete this Album</button>
+         <button v-else disabled>Delete this Album</button>
 
       </form>
 

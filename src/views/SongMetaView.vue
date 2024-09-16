@@ -81,7 +81,7 @@ const delete_song = async() => {
       const result = await songStore.delete_song(songStore.song.id)
       if(result) {
          if(result.message) app_store.set_notify_msg_list(result.message)
-         if(result.outcome === 'success') setTimeout(() => router.push('/songs'),3000)
+         // if(result.outcome === 'success') setTimeout(() => router.push('/songs'),3000)  to do : re-enable
       }
    }
 }
@@ -159,10 +159,12 @@ const open_album = () => {
             />
             
             <div></div>
-            <button type="submit">Apply</button>
+            <button type="submit" v-if="app_store.is_logged_in()">Apply</button>
+            <button type="button" v-else disabled>Apply</button>
 
             <div></div>
-            <button type="button" @click="delete_song">Delete this Song</button>
+            <button type="button" v-if="app_store.is_logged_in()" @click="delete_song">Delete this Song</button>
+            <button type="button" v-else disabled>Delete this Song</button>
 
          </form>
 
