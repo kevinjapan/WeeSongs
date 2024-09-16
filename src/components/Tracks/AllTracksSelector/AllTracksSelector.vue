@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
+import { useAppStore } from '@/stores/appStore'
 import useData from '../../../utilities/useData/useData'
 import init_infinite_scroll from '../../../utilities/intersections/intersections'
 
@@ -7,10 +8,8 @@ import init_infinite_scroll from '../../../utilities/intersections/intersections
 
 // AllTracksSelector
 
-// 'infinite_scroll_trigger' has potential to spam server, so we provide failsafes
+// 'infinite_scroll_trigger' has potential to spam server, so we provide failsafe
 // we rely on 'last_page' to remove 'infinite_scroll_trigger' and hence stop requests
-// this should always work, but there are two failsafes to prevent endless loop if
-// server fails to return this parameter
 
 
 const props = defineProps({
@@ -20,12 +19,11 @@ const emit = defineEmits(
    ['update-track-list','close-all-tracks-list']
 )
 
+const app_store = useAppStore()
+
 // augment this array as more 'pages' arrive
 const all_tracks_list = ref([])
  
-// 'abs_pages_failsafe' : stops endless loop but limits total songs to (max_last_page x records_per_page)
-const max_last_page = 100
-
 // list slugs of checked tracks
 const selected_tracks = ref([])
 
@@ -51,7 +49,6 @@ const get_list = async() => {
    const next_page = curr_page.value + 1
 
    if(next_page > last_page.value) return
-   if(next_page > max_last_page) return
    
    const query_params = {
       order_by:'title',
@@ -62,13 +59,14 @@ const get_list = async() => {
    if(data) {
 
       curr_page.value = next_page
-      last_page.value = data.songs_list.last_page
+      last_page.value = data.songs_list.last_page ? data.songs_list.last_page : 1
+
+      // template flag for 'infinite_scroll_trigger' exclusion
       is_last_page.value = curr_page.value >= last_page.value ? true : false
          
-      // 'no_data_failsafe' : if we have gone too far w/ page num and no data is returned
-      // this failsafe enforces no limit on the num of songs
-      if(data.songs_list.data.length === 0) { is_last_page.value = true
-         console.log('no data failsafe')
+      // 'no_data_failsafe' : we have gone too far w/ page num and no data is returned
+      if(data.songs_list.data.length === 0) { 
+         is_last_page.value = true
       }
 
       all_tracks_list.value = [...all_tracks_list.value,...data.songs_list.data]
@@ -121,8 +119,11 @@ const apply = () => {
          </ul>
 
 
-         <div class="flex justify_center p_1"><button @click="apply">apply</button>
-         <button @click="close">close</button></div>
+         <div class="flex justify_center p_1">
+            <button v-if="app_store.is_logged_in()" @click="apply">apply</button>
+            <button v-else disabled>apply</button>
+            <button @click="close">close</button>
+         </div>
       </section>
 
    </div>
