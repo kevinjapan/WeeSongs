@@ -34,7 +34,6 @@ onBeforeMount(() => {
    tracks.value = props.songs.map(track => track.slug).sort()
 })
 
-
 const update_track_list = async(new_track_list) => {
 
    let outcomes = []
@@ -46,24 +45,28 @@ const update_track_list = async(new_track_list) => {
    const removed_tracks_slugs = tracks.value.filter(prev_track_slug => !new_track_list.some(slug => slug == prev_track_slug))
    const added_tracks_slugs = new_track_list.filter(prev_track_slug => !tracks.value.some(slug => slug == prev_track_slug))
 
-   // add and remove are separate actions, so we verify separately
-   const { data: remove_data, error: remove_error } = await album_store.remove_album_tracks(removed_tracks_slugs)
-   if(remove_data){
-      // remove the removed tracks locally - we may not get success on add, so keep ui-ready
-      modified = [...tracks.value.filter(track => !removed_tracks_slugs.some(slug => slug === track))].sort()
-      outcomes.push('Tracks were removed successfully.')
+   if(removed_tracks_slugs.length > 0) {
+      const { data: remove_data, error: remove_error } = await album_store.remove_album_tracks(removed_tracks_slugs)
+      if(remove_data){
+         // remove the removed tracks locally - we may not get success on add, so keep ui-ready
+         modified = [...tracks.value.filter(track => !removed_tracks_slugs.some(slug => slug === track))].sort()
+         outcomes.push('Tracks were removed successfully.')
+      }
+      else {
+         outcomes.push('There was an error removing tracks: ' + remove_error)
+      }
    }
-   else {
-      outcomes.push('There was an error removing tracks: ' + remove_error)
-   }
-   const { data: add_data, error: add_error } = await album_store.add_album_tracks(props.album_id,added_tracks_slugs)
-   if(add_data){
-      // inject the added tracks locally      
-      modified = [...modified,...added_tracks_slugs].sort()
-      outcomes.push('Tracks were added successfully.')
-   }
-   else {
-      outcomes.push('There was an error adding tracks: ' + add_error)
+
+   if(added_tracks_slugs.length > 0) {
+      const { data: add_data, error: add_error } = await album_store.add_album_tracks(props.album_id,added_tracks_slugs)
+      if(add_data){
+         // inject the added tracks locally      
+         modified = [...modified,...added_tracks_slugs].sort()
+         outcomes.push('Tracks were added successfully.')
+      }
+      else {
+         outcomes.push('There was an error adding tracks: ' + add_error)
+      }
    }
 
    tracks.value = [...modified]
