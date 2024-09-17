@@ -266,6 +266,13 @@ export const useSongStore = defineStore('song_store', () => {
 
    function clone_section(section_id) {
 
+      if(!section_id) {
+         return {
+            outcome: 'fail',
+            message: "Corrupt SongSection -  missing 'id'."
+         }
+      }
+
       let next_daw = 'Z'
 
       try {

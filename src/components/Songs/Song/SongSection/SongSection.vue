@@ -29,6 +29,10 @@ const del = () => {
    props.del_section(props.section.id)
 }
 const clone = () => {
+   if(!props.section.id) {
+      app_store.set_notify_msg_list("Corrupt SongSection -  missing 'id'.")
+      return false
+   }
    props.clone_section(props.section.id)
 }
 const move = (direction) => {
