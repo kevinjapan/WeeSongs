@@ -70,6 +70,15 @@ const apply = async() => {
    if(result.outcome === 'success') router.push(`/albums/${slug.value}`)
 }
 
+const delete_album = async() => {
+   if (window.confirm("Do you really want to delete this album?")) {
+      const result = await album_store.delete_album(album_store.album.id)
+      if(result) {
+         if(result.message) app_store.set_notify_msg_list(result.message)
+         if(result.outcome === 'success') setTimeout(() => router.push('/albums'),3000)
+      }
+   }
+}
 </script>
 
 <template>
@@ -143,11 +152,13 @@ const apply = async() => {
          <button type="submit" v-if="app_store.is_logged_in()">Apply</button>
          <button v-else disabled>Apply</button>
 
-         <div></div>
-         <button type="button" v-if="app_store.is_logged_in()" @click="delete_song">Delete this Album</button>
+      <section class="mt_3 p_2 border">         
+         <button type="button" v-if="app_store.is_logged_in()" @click="delete_album">Delete this Album</button>
          <button v-else disabled>Delete this Album</button>
+      </section>
 
       </form>
+
 
       <AlbumTracksList :album_id="id" :songs="album_store.album.songs" />
 
