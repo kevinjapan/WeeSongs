@@ -61,7 +61,7 @@ const router = createRouter({
       {
          path: '/songs/create',
          name: 'createsong',
-         component: () => import('../views/CreateSongView.vue')
+         component: () => import('../views/CreateView.vue')
       },
       {
          path: '/songs/:slug/print',
