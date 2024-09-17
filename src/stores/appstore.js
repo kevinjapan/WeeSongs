@@ -22,7 +22,8 @@ export const useAppStore = defineStore('app_store', () => {
    const get_api = computed(() => app_api.value)
 
 
-   // to do : persist login / bearer_token for limited time
+   // future : persist login / bearer_token for limited time
+   // - do post-static separation - we don't use login in static deployment.
    //   our server is a stateless rest model, so we need to save client-side
    //   and attempt to re-hydrate session...
    //   server-side, we need to verify correctly expiring tokens

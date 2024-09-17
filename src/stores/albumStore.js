@@ -79,9 +79,6 @@ export const useAlbumStore = defineStore('album_store', () => {
       }
    }
 
-
-   // to do : not saving 'title' correctly to database (suspect prev. issue not related to useData switch)
-
    // save a modified copy of the song to the server (and replace copy in this store)
    async function save_album(modified_album) {
 
@@ -174,7 +171,6 @@ export const useAlbumStore = defineStore('album_store', () => {
       }
    }
 
-
    async function add_album_tracks(album_id,tracks_slugs_list) {
 
       if(!album_id || typeof album_id === 'undefined') return {error:' Failed to find album - the album id provided was invalid. '}
@@ -190,8 +186,6 @@ export const useAlbumStore = defineStore('album_store', () => {
             const modified_song = song_obj.song
             if(modified_song.song && modified_song.song.album) delete modified_song.song.album
             modified_song.album_id = album_id
-
-            // to do : check we are logged in way *before* attempting this operation - rollout all similar calls to stores.
 
             const updated_result = await song_store.update_song(modified_song)
             if(updated_result.outcome === 'success') {

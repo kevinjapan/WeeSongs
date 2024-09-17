@@ -56,14 +56,9 @@ const add_section = () => {
    if(result && result.message && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)
 }
 
-
 // future : we currently rely on ref in store being changed by changing it directly reactively
 // work w/ this while ok but review - should we change this to emit() and handle?
 
-// to do : change song.title - doesn't change title inside Songsheet.
-
-// to do : if we move a section from end upwards, then add a new section,
-//         verify it doesn't take id from new last section- it is valid on abs largets id num.?
 </script>
 
 <template>

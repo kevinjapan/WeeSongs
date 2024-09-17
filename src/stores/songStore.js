@@ -146,7 +146,17 @@ export const useSongStore = defineStore('song_store', () => {
    // save a modified copy of the song to the server (and replace copy in this store)
    async function save_song(modified_song) {
       
+      // we have some duplication inside songsheet for convenience
+      modified_song.songsheet.title = modified_song.title
+
+      // future : legacy - we also have 'songsheet.updated'/'songsheet.url' which we are not maintaining
+      //           any requirement for these in we will inject from db table fields
+      //           remove from existing data songsheets
+
+      // future : 'lyrics' field is deprecated - remove from data songsheets 
+
       try {
+
          const { data, error } = await useData('save_song',[modified_song.id],{},JSON.stringify(modified_song))
          if(data) {
             // handle response : 401
@@ -176,8 +186,7 @@ export const useSongStore = defineStore('song_store', () => {
 
    // save
    // save this store local copy to server (after we have updated_sections etc)
-   async function save() {
-      
+   async function save() {      
       try {
          const { data, error } = await useData('save_song',[song.value.id],{},JSON.stringify(song.value))
          if(data) {
@@ -207,7 +216,6 @@ export const useSongStore = defineStore('song_store', () => {
    }
 
    async function update_song(modified_song) {
-
       try {
          const { data, error } = await useData('update_song',[modified_song.id],{},JSON.stringify(modified_song))
          if(data) {               
