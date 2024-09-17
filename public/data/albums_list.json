@@ -1,0 +1,113 @@
+{
+    "server_response": "1",
+    "outcome": "success",
+    "albums_list": {
+        "current_page": 1,
+        "data": [
+            {
+                "id": 11,
+                "title": "Album in json file",
+                "slug": "Album-in-json-file",
+                "created_at": "2023-09-22T15:22:44.000000Z",
+                "updated_at": "2023-09-22T15:22:44.000000Z"
+            },
+            {
+                "id": 10,
+                "title": "The Wee Song Sketchbook",
+                "slug": "The-Wee-Song-Sketchbook",
+                "created_at": "2023-09-22T15:22:28.000000Z",
+                "updated_at": "2023-09-22T15:22:28.000000Z"
+            },
+            {
+                "id": 9,
+                "title": "Rough Not Ready",
+                "slug": "Rough-Not-Ready",
+                "created_at": "2023-09-22T15:21:57.000000Z",
+                "updated_at": "2023-09-22T15:21:57.000000Z"
+            },
+            {
+                "id": 8,
+                "title": "Lost For Words",
+                "slug": "Lost-For-Words",
+                "created_at": "2023-09-22T15:20:30.000000Z",
+                "updated_at": "2023-09-22T15:20:30.000000Z"
+            },
+            {
+                "id": 7,
+                "title": "Effervescence",
+                "slug": "Effervescence",
+                "created_at": "2023-02-06T12:41:48.000000Z",
+                "updated_at": "2023-02-06T12:41:48.000000Z"
+            },
+            {
+                "id": 6,
+                "title": "Psycosomatica",
+                "slug": "Psycosomatica",
+                "created_at": "2023-02-06T12:41:15.000000Z",
+                "updated_at": "2023-02-06T12:41:15.000000Z"
+            },
+            {
+                "id": 5,
+                "title": "Beneath The Waves",
+                "slug": "Beneath-The-Waves",
+                "created_at": "2023-02-06T12:40:52.000000Z",
+                "updated_at": "2023-02-06T12:40:52.000000Z"
+            },
+            {
+                "id": 4,
+                "title": "The Mountain That Is",
+                "slug": "The-Mountain-That-Is",
+                "created_at": "2023-02-06T12:40:33.000000Z",
+                "updated_at": "2023-02-06T12:40:33.000000Z"
+            },
+            {
+                "id": 3,
+                "title": "River",
+                "slug": "River",
+                "created_at": "2023-02-06T12:40:11.000000Z",
+                "updated_at": "2023-02-06T12:40:11.000000Z"
+            },
+            {
+                "id": 2,
+                "title": "Life's A Rhetorical Question",
+                "slug": "life's-a-rhetorical-question",
+                "created_at": "2023-02-06T12:34:49.000000Z",
+                "updated_at": "2023-02-06T12:34:49.000000Z"
+            },
+            {
+                "id": 1,
+                "title": "Silver Bullet 23",
+                "slug": "Silver-Bullet-23",
+                "created_at": "2015-12-28T19:05:10.000000Z",
+                "updated_at": "2024-09-13T14:47:14.000000Z"
+            }
+        ],
+        "first_page_url": "http://songs-api-laravel/api/albums?page=1",
+        "from": 1,
+        "last_page": 1,
+        "last_page_url": "http://songs-api-laravel/api/albums?page=1",
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "http://songs-api-laravel/api/albums?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "next_page_url": null,
+        "path": "http://songs-api-laravel/api/albums",
+        "per_page": 24,
+        "prev_page_url": null,
+        "to": 11,
+        "total": 11
+    }
+}
