@@ -8,10 +8,15 @@ import { scroll_to_elem } from '../../../../utilities/utilities/utilities'
 
 // Song
 
+const props = defineProps(
+   ['song']
+)
+const emit = defineEmits(
+   ['set-selected-section-daw']
+)
+
 const app_store = useAppStore()
 const song_store = useSongStore()
-const props = defineProps(['song'])
-
 const update_song = async() => {
    const result = await song_store.save()
    if(result && result.message) app_store.set_notify_msg_list(result.message)
@@ -22,7 +27,6 @@ const del_section = (section_id) => {
    if(result && result.message && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)
 }
 
-
 const go_section = daw => {
    let target = document.getElementById(daw)
    if(target !== null) target.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
@@ -31,6 +35,7 @@ const go_section = daw => {
 const clone_section = (section_id) => {
    const result = song_store.clone_section(section_id)
    if(result && result.message && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)
+   emit('set-selected-section-daw',result.daw)
    // scroll to new section after render delay
    setTimeout(() => scroll_to_elem(result.daw),150)
 }
@@ -53,20 +58,19 @@ const add_section = () => {
 
 
 // future : we currently rely on ref in store being changed by changing it directly reactively
-// work w/ this while ok but review - should we change this to emit() and handle..?
+// work w/ this while ok but review - should we change this to emit() and handle?
 
-// to do : bug : clone a section, then try to move that section - it retains reference to and moves original section
-//          need to replicate reliably - sometimes happens after several clonings?
+// to do : change song.title - doesn't change title inside Songsheet.
 
-
-
+// to do : if we move a section from end upwards, then add a new section,
+//         verify it doesn't take id from new last section- it is valid on abs largets id num.?
 </script>
 
 <template>
 
    <section class="song_wrapper">
 
-      <SongSections 
+      <SongSections
          :song="props.song" 
          :update_song="update_song" 
          :del_section="del_section"

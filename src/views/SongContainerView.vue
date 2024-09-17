@@ -66,6 +66,7 @@ const set_selected_section_daw = (daw) => {
                <Song 
                   :song="song_store.song" 
                   :selected_section_daw="selected_section_daw"
+                  @set-selected-section-daw="set_selected_section_daw"
                />
             </div>
          </div>
