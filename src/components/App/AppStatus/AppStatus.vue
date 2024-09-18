@@ -9,9 +9,6 @@ import { useAppStore } from '@/stores/appStore'
 // app-level flash notification utility component
 // we don't use v-if in parent component, since we want to use transitions (v-if just toggles display)
 
-// to do : close on click
-
-
 const app_store = useAppStore()
 const { notify_msg_list } = storeToRefs(app_store)
 
@@ -31,10 +28,14 @@ watch(notify_msg_list, () => {
    setTimeout(() => {app_store.set_notify_msg_list([])},8000)
 })
 
+const close = () => {
+   app_store.set_notify_msg_list([])
+}
+
 </script>
 
 <template>
-   <div class="app_status" :class="{app_status_bg:notify_msg_list.length > 0}">
+   <div class="app_status" :class="{app_status_bg:notify_msg_list.length > 0}" @click="close">
       <ul>
          <li v-for="text in lingering_texts" :key="text.key">
             {{ text.text }}
