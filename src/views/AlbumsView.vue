@@ -88,6 +88,7 @@ const step_to_page = (step) => {
       album_store.current_albums_page = new_page_num
       page.value = new_page_num
       get_list()
+      window.scroll(0,0)
    }
 }
 
@@ -95,6 +96,7 @@ const navigate_to_page = (selected_page) => {
    album_store.current_albums_page = selected_page
    page.value = parseInt(selected_page)
    get_list()
+   window.scroll(0,0)
 }
 
 const order_albums_by = (col_title) => {
@@ -117,7 +119,6 @@ const order_albums_by = (col_title) => {
    }
 }
 
-
 const clicked_title = (album_slug) => {
    // Navigate to a different location
    router.push(`/albums/${album_slug}`)
@@ -135,28 +136,39 @@ const clicked_title = (album_slug) => {
       <div v-else>
 
          <div v-if="loading" class="loading"></div>
-         <div v-else class="relative m_0 p_0">
+
+         <div v-else>
          
-            <PaginationNav title="PageNav for SongsList" class="mt_3"
-               :page=page 
-               :step_to_page="step_to_page" 
-               :navigate_to_page="navigate_to_page" 
+            <PaginationNav 
+               title="PageNav for AlbumsList"
+               :page=page
                :page_links="page_links" 
-               long-property-name="this is a long property name's value"
+               @step-to-page="step_to_page" 
+               @navigate-to-page="navigate_to_page"
+               class="mt_3"
             />
 
             <ul class="albums_list">
                <li>
-                  <div @click="order_albums_by('title')" class="cursor_pointer">title</div>
-                  <div @click="order_albums_by('created_at')" class="cursor_pointer text_right">made</div>
-                  <div @click="order_albums_by('updated_at')" class="cursor_pointer text_right">updated</div>
+                  <div @click="order_albums_by('title')" class="cursor_pointer col_title">title</div>
+                  <div @click="order_albums_by('created_at')" class="cursor_pointer col_title text_right">made</div>
+                  <div @click="order_albums_by('updated_at')" class="cursor_pointer col_title text_right">updated</div>
                </li>
                <li v-for="album in albums_list.albums_list.data" :key="album.id">
-                  <div class="cursor_pointer" @click="clicked_title(album.slug)">{{ album.title }}</div> 
+                  <div class="cursor_pointer title" @click="clicked_title(album.slug)">{{ album.title }}</div> 
                   <div class="text_right">{{ get_ui_ready_date(album.created_at) }}</div>
                   <div class="text_right">{{ get_ui_ready_date(album.updated_at) }}</div>
                </li>
             </ul>
+
+            <PaginationNav 
+               title="PageNav for AlbumsList"
+               :page=page
+               :page_links="page_links" 
+               @step-to-page="step_to_page" 
+               @navigate-to-page="navigate_to_page"
+               class="mt_3"
+            />
 
          </div>
 
@@ -167,26 +179,12 @@ const clicked_title = (album_slug) => {
 </template>
 
 <style scoped>
-.grid_list {
-   width:100%;
-}
-.grid_list li{
-
-   display:-ms-grid;
-   display:grid;
-
-   -ms-grid-columns: 1fr 1fr 1fr;
-   grid-template-columns: 1fr 1fr 1fr;
-
-   gap:.7rem;
-   
-   text-align:left;
-}
-.songs_list {
+.albums_list {
    max-width:100%;
    padding-right:2rem;
 }
-.text_right {
-   text-align:right;
+.col_title {
+   color:hsl(0, 0%, 73%);
+   font-style:italic;
 }
 </style>
