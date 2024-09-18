@@ -104,7 +104,7 @@ const apply = () => {
       <p v-if="loading_error !== ''">
          Sorry, there was a loading error.<br/>
          <span class="italic">{{ loading_error }}</span>
-         <button @click="close">close</button>
+         <button @click="close" class="wee_btn">close</button>
       </p>
 
       <section class="all_tracks_selector">
@@ -120,9 +120,9 @@ const apply = () => {
 
 
          <div class="flex justify_center p_1">
-            <button v-if="app_store.is_logged_in()" @click="apply">apply</button>
-            <button v-else disabled>apply</button>
-            <button @click="close">close</button>
+            <button v-if="app_store.is_logged_in()" @click="apply" class="wee_btn">apply</button>
+            <button v-else disabled class="wee_btn">apply</button>
+            <button @click="close" class="wee_btn">close</button>
          </div>
       </section>
 
@@ -160,9 +160,5 @@ p {
    margin:0;
    padding:0;
 }
-button {
-   font-size:.9rem;
-   margin:0 .25rem;
-   padding:.25rem .5rem;
-}
+
 </style>

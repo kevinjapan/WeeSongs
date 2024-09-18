@@ -288,13 +288,6 @@ a {
    font-weight:400;
    background:white;
 }
-button {
-   width:fit-content;
-   height:fit-content;
-   padding:0;
-   padding-left:.5rem;
-   padding-right:.5rem;
-}
 
 
 /* 

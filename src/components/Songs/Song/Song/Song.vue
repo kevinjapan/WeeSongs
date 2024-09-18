@@ -74,7 +74,7 @@ const add_section = () => {
          :update_section="update_section"
       />
 
-      <button @click="add_section">add</button>
+      <button @click="add_section">add section</button>
 
    </section>
 

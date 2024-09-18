@@ -87,7 +87,7 @@ const close_all_tracks_list = () => {
 
       <nav class="flex gap_1">
          <div class="flex align_center gap_.5"><h3>Tracks </h3><span class="text_grey">[{{ tracks.length }}]</span></div>
-         <button @click="add_track">+</button>
+         <button class="wee_btn" @click="add_track">+</button>
       </nav>
 
       <ul>
@@ -119,16 +119,6 @@ ul {
    text-align:left;
    border:solid 1px lightgrey;
    border-radius:.25rem;
-}
-button {
-   outline:none;
-   border:none;
-   font-size:1.2rem;
-   width:fit-content;
-   height:fit-content;
-   margin:0;
-   padding:0;
-   background:none;
 }
 </style>
 

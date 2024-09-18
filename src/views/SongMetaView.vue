@@ -182,13 +182,7 @@ section {
    margin-top:10rem;
    margin-bottom:10rem;
 }
-button {
-   max-width:fit-content;
-   border:solid 1px grey;
-   padding:.5rem;
-   margin-left:auto;
-   margin-right:auto;
-}
+
 .combo_field {
    display:-webkit-box;
    display:-ms-flexbox;

@@ -91,42 +91,12 @@ h1 {
    background:hsl(0, 0%, 83%);
 }
 
-button {
-   background:white;
-   border:solid 1px hsl(0, 0%, 83%);
-   margin:0;
-   padding:0;
-}
-button:hover {
-   background:hsl(0, 0%, 93%);
-}
-button:disabled {
-   position:relative;
-   border:solid 1px hsl(0, 0%, 93%);
-}
-button:disabled:hover {
-   border:solid 1px transparent;
-   cursor:auto;
-   background:transparent;
-}
-/* grey out disabled btn */
-button:disabled::before {
-   content:'';
-   position:absolute;
-   width:100%;
-   height:100%;
-   top:0;
-   left:0;
-   background:white;
-   opacity:.7;
-}
 ul {
    margin:0;
    padding:0;
 }
 li {
    margin:0;
-   border:solid 1px navy;
    padding:0;
 }
 

@@ -144,24 +144,30 @@ const change_num_bars = (num_bars) => {
 
       <div className="flex justify_end gap-3">
 
-         <button @click="move('down')" :disabled="app_store.bearer_token === '' || props.last">
+         <button @click="move('down')" :disabled="app_store.bearer_token === '' || props.last"
+            class="wee_btn" >
             <img src="../../../../assets/icons/arrow-down-circle.svg" />
          </button>
 
-         <button @click="move('up')" :disabled="app_store.bearer_token === '' || props.index <= 0">
+         <button @click="move('up')" :disabled="app_store.bearer_token === '' || props.index <= 0"
+            class="wee_btn" >
             <img src="../../../../assets/icons/arrow-up-circle.svg" />
          </button>
 
-         <button @click="del" :disabled="app_store.bearer_token === ''">
+         <button @click="del" :disabled="app_store.bearer_token === ''"
+            class="wee_btn" >
             <img src="../../../../assets/icons/trash.svg" alt="delete section"/>
          </button>
 
-         <button :disabled="app_store.bearer_token === ''" @click="clone">
+         <button :disabled="app_store.bearer_token === ''" @click="clone"
+            class="wee_btn" >
             <img src="../../../../assets/icons/copy.svg" />
          </button>
 
-         <button v-if="requires_update === true && app_store.bearer_token" @click="update_song">Apply</button>         
-         <button v-else disabled>Apply</button>
+         <button v-if="requires_update === true && app_store.bearer_token" @click="update_song"
+            class="wee_btn" >Apply</button>         
+         <button v-else disabled
+         class="wee_btn" >Apply</button>
 
       </div>
 
@@ -193,26 +199,6 @@ const change_num_bars = (num_bars) => {
 div.bar_2:nth-child(-n + 4) {
     border-top:solid 1px lightgrey;
 }
-button {
-   background:white;
-}
-button:disabled {
-   position:relative;
-}
-button:disabled:hover {
-   border:solid 1px transparent;
-   cursor:auto;
-}
-/* grey out disabled btn */
-button:disabled::before {
-   content:'';
-   position:absolute;
-   width:100%;
-   height:100%;
-   top:0;
-   left:0;
-   background:white;
-   opacity:.7;
-}
+
 
 </style>

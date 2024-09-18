@@ -19,7 +19,8 @@ const emit = defineEmits(['submit-search-term'])
       <input id="title" name="title" v-model="search_term" />
       
       <div class="btn_row">
-         <button @click="$emit('submit-search-term')">Search</button>
+         <button v-if="search_term.length > 0" @click="$emit('submit-search-term')">Search</button>
+         <button v-else disabled>Search</button>
       </div>
       
    </form>

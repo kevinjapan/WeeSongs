@@ -113,13 +113,6 @@ const succeeded = () => {
 
 
 <style scoped>
-button {
-   max-width:fit-content;
-   border:solid 1px grey;
-   padding:.5rem;
-   margin-left:auto;
-   margin-right:auto;
-}
 .btn_row {
    grid-column: 1 / 3;
    text-align:center;
