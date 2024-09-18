@@ -36,14 +36,13 @@ const apply_album = async() => {
 
 <template>
 
-   
    <form class="flex flex_col align_start" @submit.prevent="apply_song">
 
       <h3 class="text_left mt_3">Create new song</h3>
       
       <section class="grid form_grid">
          <label for="song_title">Title</label>
-         <div class="flex space_between">
+         <div class="flex justify_between">
             <input 
                v-model="song_title"
                id="song_title"
@@ -60,7 +59,7 @@ const apply_album = async() => {
 
       <section class="grid form_grid">
          <label for="album_title">Title</label>
-         <div class="flex space_between">
+         <div class="flex justify_between">
             <input 
                v-model="album_title"
                id="album_title"
@@ -77,14 +76,4 @@ const apply_album = async() => {
 
 </template>
 
-<style scoped>
-section {
-   width:100%;
-   margin:1rem;
-   padding:1rem;
-   text-align:left;
-   border:solid 1px lightgrey;
-   border-radius:.25rem;
-}
 
-</style>

@@ -22,7 +22,6 @@ onMounted(() => {
 })
 
 const authenticate = async(credentials,cb_fail,cb_success) => {
-
    try {
       const { data, error } = await useData('login',[],{},JSON.stringify(credentials))
       if(data) {
@@ -48,7 +47,6 @@ const login = () => {
 }
 
 const failed = (error) => {
-
    // future : do we want to notify error to user?
    if(error) console.log(error)
 

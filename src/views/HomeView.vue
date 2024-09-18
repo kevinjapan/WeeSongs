@@ -1,15 +1,13 @@
 <script setup>
 
-//
+
 // HomeView
-//
-
-
 
 </script>
 
 <template>
-  <h1>Home</h1>
+   
+  <h3>Home</h3>
 
 </template>
 

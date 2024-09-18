@@ -2,13 +2,10 @@
 import { useSongStore } from '@/stores/songStore'
 import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
 
-//
+
 // SongPrintView
-//
 
 const song_store = useSongStore()
-
-
 
 </script>
 

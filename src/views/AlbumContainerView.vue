@@ -23,10 +23,7 @@ onBeforeMount(async() => {
    if(result && result.message) notify_msg_list.value = result.message
    loading.value = false   
 })
-
-
 </script>
-
 
 <template>
    <Transition>
@@ -46,14 +43,9 @@ onBeforeMount(async() => {
          
       </section>      
    </Transition>
-
 </template>
 
 <style scoped>
-section {
-   width:100%;
-}
-
 /* configure Vue Transition component for app_nav slide-in*/
 .v-enter-active,.v-leave-active {
    -webkit-transition: opacity 2.5s ease-in-out;  

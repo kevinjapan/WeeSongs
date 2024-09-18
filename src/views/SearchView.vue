@@ -35,14 +35,17 @@ onUnmounted(() => {
 
 <template>
 
-   <h1>Search</h1>
+   <h3>Search</h3>
 
-   <SearchForm v-model="search_term" @submit-search-term="submit_search_term" />
+   <SearchForm 
+      v-model="search_term" 
+      @submit-search-term="submit_search_term" 
+   />
    
-   <SearchResults :search_term="real_search_term"/>
+   <SearchResults 
+      :search_term="real_search_term"
+   />
 
 </template>
 
-<style scoped>
 
-</style>
