@@ -365,7 +365,7 @@ const order_songs_by = (col_title) => {
 
       <!-- The directive v-if is used to conditionally render a block.-->
       <div v-if="has_error" class="notify_error">
-         There was a problem loading data from the server, please try again later.
+         There was a problem connecting to the server.
       </div>
 
       <!-- the v-else directive indicates an "else block" for v-if: -->

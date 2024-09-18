@@ -130,7 +130,7 @@ const clicked_title = (album_slug) => {
    <section class="grid_list">
 
       <div v-if="has_error">
-         There was a problem loading data from the server, please try again later.
+         There was a problem connecting to the server.
       </div>
       <div v-else>
 

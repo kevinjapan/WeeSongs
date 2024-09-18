@@ -56,7 +56,7 @@ const set_selected_section_daw = (daw) => {
          />
 
          <div v-if="has_error">
-            There was a problem loading data from the server, please try again later.
+            There was a problem connecting to the server.
          </div>
          <div v-else>
 
