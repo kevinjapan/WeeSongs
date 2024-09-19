@@ -38,14 +38,21 @@ export const useSongStore = defineStore('song_store', () => {
    // load_song
    // we load the song into the store's Song slot
    async function load_song(slug) {
+      
+      flush_prev_song() 
+
       const result = await get_song(slug)
       if(result.outcome === 'success') {
          song.value = result.song
-         delete result.song
+         delete result.song   // to do : review : necessary? purpose?
          // result.message = 'song successfully loaded into store'
       }
       synched.value = true
       return result
+   }
+
+   const flush_prev_song = () => {
+      song.value = null
    }
 
 
