@@ -20,9 +20,6 @@ const clicked_bg = () => {
    display.value = false
 }
 
-// to do : review responsiveness
-
-
 // AppNav CSS Transitions : 
 // - 'app_nav' slides down and fades in - but we delay to allow dimmer to fade in
 // - 'app_nav_links' appearance is determined by it's parent 'app_nav'
@@ -75,7 +72,7 @@ nav.app_nav {
    position:fixed;
    top:var(--app_nav_dropdown_top);
    right:0;
-   z-index:var(--nav_layer);
+   z-index:var(--over_nav_layer);
 
    display:-webkit-box;
    display:-ms-flexbox;
@@ -111,11 +108,11 @@ nav.app_nav {
    -ms-transform: translateY(-100%);
    transform: translateY(-100%);
    opacity:0;
-   -webkit-transition:opacity 2.35s ease-in-out .25s,-webkit-transform .75s ease-in-out .25s;
-   transition:opacity 2.35s ease-in-out .25s,-webkit-transform .75s ease-in-out .25s;
-   -o-transition:opacity 2.35s ease-in-out .25s,transform .75s ease-in-out .25s;
-   transition:opacity 2.35s ease-in-out .25s,transform .75s ease-in-out .25s;
-   transition:opacity 2.35s ease-in-out .25s,transform .75s ease-in-out,-webkit-transform .75s ease-in-out .25s;
+   -webkit-transition:opacity 2.35s ease-in-out .25s,-webkit-transform .5s ease-in-out .25s;
+   transition:opacity 2.35s ease-in-out .25s,-webkit-transform .5s ease-in-out .25s;
+   -o-transition:opacity 2.35s ease-in-out .25s,transform .5s ease-in-out .25s;
+   transition:opacity 2.35s ease-in-out .25s,transform .5s ease-in-out .25s;
+   transition:opacity 2.35s ease-in-out .25s,transform .5s ease-in-out,-webkit-transform .5s ease-in-out .25s;
 }
 
 nav.app_nav > div.app_nav_dimmer {
@@ -144,11 +141,11 @@ nav.app_nav.opened {
    -ms-transform: translateY(0);
    transform: translateY(0);
    opacity:1;
-   -webkit-transition:opacity .5s ease-in-out,-webkit-transform .35s ease-in-out;
-   transition:opacity .5s ease-in-out,-webkit-transform .35s ease-in-out;
-   -o-transition:opacity .5s ease-in-out,transform .35s ease-in-out;
-   transition:opacity .5s ease-in-out,transform .35s ease-in-out;
-   transition:opacity .5s ease-in-out,transform .35s ease-in-out,-webkit-transform .35s ease-in-out;
+   -webkit-transition:opacity .5s ease-in-out,-webkit-transform .5s ease-in-out;
+   transition:opacity .5s ease-in-out,-webkit-transform .5s ease-in-out;
+   -o-transition:opacity .5s ease-in-out,transform .5s ease-in-out;
+   transition:opacity .5s ease-in-out,transform .5s ease-in-out;
+   transition:opacity .5s ease-in-out,transform .5s ease-in-out,-webkit-transform .5s ease-in-out;
 }
 nav.app_nav.opened > div.app_nav_dimmer {
    opacity:.4;
@@ -187,7 +184,7 @@ nav.app_nav.opened > div.app_nav_dimmer {
    position:fixed;
    top:0;
    right:0;
-   z-index:var(--over_nav_layer);
+   z-index:var(--over_over_nav_layer);
 
    display:-webkit-box;
    display:-ms-flexbox;
@@ -197,9 +194,12 @@ nav.app_nav.opened > div.app_nav_dimmer {
    -ms-flex-pack:flex-end;
    justify-content:flex-end;
 
+   /* we use bar to cover scrolling content */
    width:100%;
+
    height:fit-content;
    margin:0;
+   padding:0;
    color:white;
    background:white;
 }
@@ -207,6 +207,7 @@ nav.app_nav.opened > div.app_nav_dimmer {
    background:white;
    border:none;
    outline:none;
+   margin:0;
 }
 /* grey-out opened dropdown ctrl */
 .app_nav_hamburger button.opened {
