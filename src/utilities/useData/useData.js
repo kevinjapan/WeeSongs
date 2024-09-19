@@ -24,15 +24,13 @@ import reqInit from '../requestInit/RequestInit'
 export default async function useData(end_point,url_params,query_params,body) {
 
    const app_store = useAppStore()
+   const end_points = useEndPoints(url_params,query_params)
 
-   const end_points = useEndPoints()
-
-   // to do : does this still work? test it
    if(!Object.hasOwn(end_points,end_point)) {
       return { error: 'The query end-point was not recognized.' }
    }
 
-   const { request_method, route } = end_points[end_point]
+   const { request_method, route, route_url_params } = end_points[end_point]
 
    if(body && typeof body === 'object') {
       body = JSON.stringify(body)
@@ -40,11 +38,9 @@ export default async function useData(end_point,url_params,query_params,body) {
 
    const query_string = Object.keys(query_params).length > 0 ? new URLSearchParams(query_params) : ''
 
-   // url params : we assume order matches that expected by end-point and we append to url
-   url_params = url_params?.join('/')
 
    return await useFetch(
-      `${app_store.app_api}${route}${url_params}${query_string !== '' ? '?' : ''}${query_string}`,
+      `${app_store.app_api}${route}${route_url_params}${query_string !== '' ? '?' : ''}${query_string}`,
       reqInit(request_method,app_store.bearer_token,body)
    )
 }
