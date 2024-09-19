@@ -36,13 +36,15 @@ onBeforeMount(async() => {
    }
 
    // hydrate local state
-   id.value = album_store.album.id
-   title.value = album_store.album.title
-   slug.value = album_store.album.slug
-   outline.value = album_store.album.outline
-   created_at.value = album_store.album.created_at
-   updated_at.value = album_store.album.updated_at
-   deleted_at.value = album_store.album.deleted_at
+   if(album_store.album) {
+      id.value = album_store.album.id
+      title.value = album_store.album.title
+      slug.value = album_store.album.slug
+      outline.value = album_store.album.outline
+      created_at.value = album_store.album.created_at
+      updated_at.value = album_store.album.updated_at
+      deleted_at.value = album_store.album.deleted_at
+   }
 
    // failsafe
    if(!album_store) {
@@ -83,7 +85,7 @@ const delete_album = async() => {
 
 <template>
 
-   <section class="album_wrapper">
+   <section v-if="props.album" class="album_wrapper">
 
       <form class="grid form_grid flex_col border rounded m_1" @submit.prevent="apply">
 

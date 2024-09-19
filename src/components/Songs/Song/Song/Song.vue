@@ -63,7 +63,7 @@ const add_section = () => {
 
 <template>
 
-   <section class="song_wrapper">
+   <section v-if="props.song" class="song_wrapper">
 
       <SongSections
          :song="props.song" 
