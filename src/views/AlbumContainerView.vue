@@ -1,13 +1,16 @@
 <script setup>
 import { ref, computed, reactive, onBeforeMount } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { useAppStore } from '@/stores/appStore'
 import { useAlbumStore } from '@/stores/albumStore'
 import Album from '../components/Albums/Album/Album/Album.vue'
 
 
 // AlbumContainerView
 
+const router = useRouter()
 const route = useRoute()
+const app_store = useAppStore()
 const album_store = useAlbumStore()
 
 // custom suspense flag
@@ -20,7 +23,11 @@ const has_error = computed(() => {
 onBeforeMount(async() => {
    // load selected song into store (from 'slug' route param)
    const result = await album_store.load_album(route.params.slug)
-   if(result && result.message) notify_msg_list.value = result.message
+   if(result && result.message) app_store.set_notify_msg_list(result.message)
+   if(result.outcome === 'fail') {
+      app_store.set_notify_msg_list(result.message)
+      setTimeout(() => router.push(`/NotFound`),500)
+   }
    loading.value = false   
 })
 </script>

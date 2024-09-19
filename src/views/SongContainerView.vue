@@ -14,7 +14,6 @@ const route = useRoute()
 const app_store = useAppStore()
 const song_store = useSongStore()
 
-
 const selected_section_daw = ref('A')
 
 // custom suspense flag
