@@ -1,3 +1,4 @@
+import useStatusCode from '../useStatusCode/useStatusCode'
 
 
 export default async function useFetch(url,options) {
@@ -6,7 +7,14 @@ export default async function useFetch(url,options) {
    let error = null
 
    await fetch(url,options)
-      .then((res) => res.json())
+      .then((res) => {
+         if(res.ok === true) {
+            return res.json()
+         }
+         else {
+            throw useStatusCode(res.status)
+         }
+      }) 
       .then((json) => {
          data = json
       })
