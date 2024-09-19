@@ -20,6 +20,8 @@ const clicked_bg = () => {
    display.value = false
 }
 
+// to do : review responsiveness
+
 
 // AppNav CSS Transitions : 
 // - 'app_nav' slides down and fades in - but we delay to allow dimmer to fade in
@@ -45,11 +47,18 @@ const clicked_bg = () => {
          <div class="app_nav_links">
             <a @click.stop="open_nav_link('/')">Home</a>
             <a @click.stop="open_nav_link('/songs')">Songs</a>
-            <a @click.stop="open_nav_link('/songs/create')">Create</a>
+            <div v-if="app_store.app_api !== ''">
+               <a @click.stop="open_nav_link('/songs/create')">Create</a>
+            </div>
+            <div v-else class="text_lightgrey">
+               <a class="no_cursor_pointer">Create</a>
+            </div>
             <a @click.stop="open_nav_link('/albums')">Albums</a>
             <a @click.stop="open_nav_link('/search')">Search</a>
-            <a v-if="!app_store.bearer_token" @click.stop="open_nav_link('/login')">Login</a>
-            <a v-else  @click.stop="open_nav_link('/account')">{{ app_store.username }}</a>
+            <div v-if="app_store.app_api !== ''">
+               <a v-if="!app_store.bearer_token" @click.stop="open_nav_link('/login')">Login</a>
+               <a v-else  @click.stop="open_nav_link('/account')">{{ app_store.username }}</a>
+            </div>
          </div>
          <div class="app_nav_dimmer"></div>
 
@@ -130,7 +139,6 @@ nav.app_nav > div.app_nav_dimmer {
 }
 
 nav.app_nav.opened {
-
    /* transitions */
    -webkit-transform: translateY(0);
    -ms-transform: translateY(0);
@@ -151,8 +159,7 @@ nav.app_nav.opened > div.app_nav_dimmer {
    transition:opacity 1s ease-in-out .35s;
 }
 
-.app_nav_links {
-   
+.app_nav_links {   
    display:-webkit-box;
    display:-ms-flexbox;
    display:flex;
@@ -175,7 +182,6 @@ nav.app_nav.opened > div.app_nav_dimmer {
    background: white;
    border-radius:0 0 .5rem .5rem;
 }
-
 .app_nav_hamburger {
 
    position:fixed;
@@ -213,10 +219,8 @@ nav.app_nav.opened > div.app_nav_dimmer {
    background:white;
 }
 
-@media (min-width: 768px) {
-   
+@media (min-width: 768px) {   
    nav.app_nav {
-
       top:0;
 
       -webkit-box-orient:horizontal;
@@ -246,7 +250,6 @@ nav.app_nav.opened > div.app_nav_dimmer {
    nav.app_nav > div.app_nav_dimmer {
       display:none;
    }
-
    nav.app_nav.opened {
       /* nullify transitions */
       -webkit-transform: unset;
@@ -256,8 +259,7 @@ nav.app_nav.opened > div.app_nav_dimmer {
    }
    nav.app_nav.opened > div.app_nav_dimmer {
       display:none;
-   }
-   
+   }   
    .app_nav_links {
       -webkit-box-orient:horizontal;
       -webkit-box-direction:normal;
@@ -273,18 +275,15 @@ nav.app_nav.opened > div.app_nav_dimmer {
       width:100%;
       padding:0 1rem 0 1rem;
    }
-
    .app_nav_hamburger {
       display:none;
    }
 }
-
 a {
    width:fit-content;
    margin:0;
    padding:0;
    color:inherit;
-   cursor:pointer;
    font-weight:400;
    background:white;
 }
