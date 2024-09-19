@@ -11,7 +11,7 @@ import init_infinite_scroll from '../../../utilities/intersections/intersections
 // 'infinite_scroll_trigger' has potential to spam server, so we provide failsafe
 // we rely on 'last_page' to remove 'infinite_scroll_trigger' and hence stop requests
 
-
+// Component Interface - props and emits
 const props = defineProps({
   client_track_list: Array
 })

@@ -5,7 +5,16 @@ import { ref } from 'vue'
 // BarCounter
 
 
-const props = defineProps(['bar','num_bars','editable'])
+const props = defineProps({
+   num_bars:Number,
+   editable:Boolean
+})
+
+// previously, although not clear from docs, defining emits makes it function much more easily,
+// otherwise have a lot of probs getting this working w/ converting case btwn emit and @.
+const emit = defineEmits(
+   ['bar-nums-changed']
+)
 
 // we assign $attrs to <input> to enable emit to work w/ parent handler change_num_bars()
 // since we have no single root element in template.
@@ -13,10 +22,6 @@ const props = defineProps(['bar','num_bars','editable'])
 defineOptions({
    inheritAttrs: false
 })
-
-// previously, although not clear from docs, defining emits makes it function much more easily,
-// otherwise have a lot of probs getting this working w/ converting case btwn emit and @.
-const emit = defineEmits(['bar-nums-changed'])
 
 // local state
 const local_num_bars = ref(props.num_bars)
@@ -30,12 +35,12 @@ const local_num_bars = ref(props.num_bars)
 
 <template>
    <input 
-      v-model="local_num_bars"
-      v-bind="$attrs"
-      @keyup.enter="$emit('bar-nums-changed',local_num_bars)"
       name="num_bars"  
       type="text"
+      v-model="local_num_bars"
+      v-bind="$attrs"
       :readonly="props.editable === false"
+      @keyup.enter="$emit('bar-nums-changed',local_num_bars)"
       class="num_bars_input"
    />
    <span class="local_num_label">bars</span>

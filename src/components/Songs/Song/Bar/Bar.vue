@@ -5,8 +5,12 @@ import { ref } from 'vue'
 // Bar
 // single Bar component within Section.aBars
 
-const props = defineProps(['bar','notify_updated_bar'])
-const emit = defineEmits(['bar-chords-changed','bar-txt-changed'])
+const props = defineProps(
+   ['bar','notify_updated_bar']
+)
+const emit = defineEmits(
+   ['bar-chords-changed','bar-txt-changed']
+)
 
 // local state - we don't want to mutate props child properties
 const chords = ref(props.bar.chords)

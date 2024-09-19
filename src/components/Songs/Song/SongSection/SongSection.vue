@@ -124,7 +124,6 @@ const change_num_bars = (num_bars) => {
       <SongSectionTitles 
          :section="section"
          :num_bars="num_bars"
-         :notify_updated_titles="notify_updated_titles"
          :editable="props.editable"
          @section-daw-changed="change_daw"
          @section-title-changed="change_title"

@@ -2,8 +2,19 @@
 import { ref } from 'vue'
 import BarCounter from '../../BarCounter/BarCounter.vue'
 
-const props = defineProps(['section','num_bars','notify_updated_titles','editable'])
-const emit = defineEmits(['section-daw-changed','section-title-changed','bar-nums-changed'])
+
+// SongSectionTitles
+
+// Component Interface - props and emits
+const props = defineProps({
+   section: Object,
+   num_bars: Number,
+   editable: Boolean
+})
+const emit = defineEmits(
+   ['section-daw-changed','section-title-changed','bar-nums-changed']
+
+)
 
 // local state - we don't want to mutate props child properties
 const daw = ref(props.section.daw)
@@ -13,6 +24,8 @@ const title = ref(props.section.title)
 const change_daw = () => emit('section-daw-changed',daw.value)
 const change_title = () => emit('section-title-changed',title.value)
 const change_num_bars = num => emit('bar-nums-changed',num)
+
+// future : validation on input lengths etc below - rollout
 
 </script>
 
