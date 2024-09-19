@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, reactive, onBeforeMount,onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
 import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
@@ -9,6 +9,7 @@ import Song from '../components/Songs/Song/Song/Song.vue'
 
 // SongContainerView
 
+const router = useRouter()
 const route = useRoute()
 const app_store = useAppStore()
 const song_store = useSongStore()
@@ -27,6 +28,10 @@ onBeforeMount(async() => {
    // load selected song into store (from 'slug' route param)
    const result = await song_store.load_song(route.params.slug)
    if(result && result.message) app_store.set_notify_msg_list(result.message)
+   if(result.outcome === 'fail') {
+      app_store.set_notify_msg_list(result.message)
+      setTimeout(() => router.push(`/NotFound`),500)
+   }
    loading.value = false
 })
 onMounted(() => {
