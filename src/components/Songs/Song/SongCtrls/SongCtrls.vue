@@ -25,6 +25,7 @@ const set_selected_section_daw = (daw) => {
 
          <SongCtrlsTitle 
             :title="song_store.song.title" 
+            :writers="song_store.song.writers"
          />
 
          <SongOutline 
@@ -69,13 +70,13 @@ const set_selected_section_daw = (daw) => {
    padding-left:1rem;
    padding-right:1rem;
 
-   background:white;
+   background:white;background:lightgrey;
 }
 
 @media (min-width: 1110px) {
    .song_ctrls {
       display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 2fr 1fr 1fr;
    }
 }
 
