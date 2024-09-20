@@ -15,11 +15,12 @@
 
   --app_nav_height:30px;
 
-  --app_nav_dropdown_top:30px;
+  --app_nav_dropdown_top:50px;
   
   /* z-index layers */
   --app_status_z-index:1000;
-  --over_nav_layer:999;
+  --over_over_nav_layer:999;
+  --over_nav_layer:998;
   --nav_layer:900;
 }
 
@@ -140,6 +141,9 @@ ul {
 .cursor_pointer {
    cursor:pointer;
 }
+a.no_cursor_pointer {
+   cursor:default; 
+}
 
 
 /* 
@@ -191,7 +195,7 @@ ul {
    -ms-flex-wrap:wrap;
    flex-wrap:wrap;
 }
-.space_between {
+.justify_between {
    -webkit-box-pack:justify;
    -ms-flex-pack:justify;
    justify-content:space-between;
@@ -231,6 +235,34 @@ ul {
 
 .border  {border:solid 1px lightgrey;}
 .rounded {border-radius:.25rem;}
+
+/*
+songs and albms list views
+*/
+.grid_list {
+   width:100%;
+   padding:1rem;
+}
+.grid_list li.grid_list_row {
+
+   display:-ms-grid;
+   display:grid;
+
+   -ms-grid-columns: 1fr 1fr 1fr;
+   grid-template-columns: 1fr 1fr 1fr;
+
+   gap:.7rem;
+   
+   padding:.25rem;
+   border-radius:.25rem;
+   text-align:left;
+}
+.grid_list li.grid_list_row:hover {
+   background:hsl(0, 0%, 92%);
+}
+.grid_list li.grid_list_row > div.title {
+   font-size:1.05rem;
+}
 
 
 /* 
@@ -313,8 +345,16 @@ input[readonly] {
 
 .text_center {text-align:center;}
 .text_left {text-align:left;}
+.text_right {text-align:right;}
 .text_grey {color:hsl(0, 0%, 50%);}
+.text_lightgrey {color:hsl(0, 0%, 70%);}
 .italic {font-style:italic;}
+
+
+.greyed_out {
+   color:lightgrey;
+   cursor:unset;
+}
 
 
 .bg_yellow {background:yellow;}
