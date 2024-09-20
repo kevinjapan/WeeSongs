@@ -2,16 +2,15 @@ import { ref, computed, watch } from 'vue'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 
 
-//
+
 // AppStore
-//
 
 export const useAppStore = defineStore('app_store', () => {
 
-   // state props
+   // we use presence/absence as web_api/static toggle flag
    const app_api = ref('http://songs-api-laravel/api')
 
-   // we use presence/absence as logged in flag
+   // we use presence/absence as logged-in flag
    const bearer_token = ref('')
    const username = ref('')
 
