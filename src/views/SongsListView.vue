@@ -70,7 +70,7 @@ const get_list = async() => {
    const { data, error } = await useData('songs_list',[],query_params)
    if(data) {
       songs_list.value = data
-      last_page.value = data.songs_list.last_page
+      last_page.value = parseInt(data.songs_list.last_page)
       loading.value = false         
       page_links.value = data.songs_list.links.filter((element, index,array) => { 
          return index !== 0 && index !== array.length - 1 // we remove server-provided 'prev' and 'next' (unpredictable)
@@ -157,12 +157,12 @@ const order_songs_by = (col_title) => {
             />
    
             <ul class="songs_list">           
-               <li>
+               <li class="grid_list_row">
                   <div @click="order_songs_by('title')" class="cursor_pointer col_title">title</div>
                   <div @click="order_songs_by('created_at')" class="cursor_pointer col_title text_right">made</div>
                   <div @click="order_songs_by('updated_at')" class="cursor_pointer col_title text_right">updated</div>
                </li>
-               <li v-for="song in songs_list.songs_list.data" :key="song.id">
+               <li class="grid_list_row" v-for="song in songs_list.songs_list.data" :key="song.id">
                   <div class="cursor_pointer title" @click="clicked_title(song.slug)">{{ song.title }}</div> 
                   <div class="text_right">{{ get_ui_ready_date(song.made) }}</div>
                   <div class="text_right">{{ get_ui_ready_date(song.updated) }}</div>

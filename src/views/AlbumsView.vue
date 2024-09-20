@@ -25,7 +25,7 @@ const has_error = computed(() => {
 })
 
 // pagination
-const page = ref(app_store.current_songs_page)
+const page = ref(album_store.curr_albums_page)
 
 // order
 const order_by = ref(app_store.current_order_by)   // 'made')
@@ -149,12 +149,12 @@ const clicked_title = (album_slug) => {
             />
 
             <ul class="albums_list">
-               <li>
+               <li class="grid_list_row">
                   <div @click="order_albums_by('title')" class="cursor_pointer col_title">title</div>
                   <div @click="order_albums_by('created_at')" class="cursor_pointer col_title text_right">made</div>
                   <div @click="order_albums_by('updated_at')" class="cursor_pointer col_title text_right">updated</div>
                </li>
-               <li v-for="album in albums_list.albums_list.data" :key="album.id">
+               <li  class="grid_list_row" v-for="album in albums_list.albums_list.data" :key="album.id">
                   <div class="cursor_pointer title" @click="clicked_title(album.slug)">{{ album.title }}</div> 
                   <div class="text_right">{{ get_ui_ready_date(album.created_at) }}</div>
                   <div class="text_right">{{ get_ui_ready_date(album.updated_at) }}</div>
