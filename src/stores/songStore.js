@@ -44,7 +44,6 @@ export const useSongStore = defineStore('song_store', () => {
       const result = await get_song(slug)
       if(result.outcome === 'success') {
          song.value = result.song
-         delete result.song   // to do : review : necessary? purpose?
          // result.message = 'song successfully loaded into store'
       }
       synched.value = true
