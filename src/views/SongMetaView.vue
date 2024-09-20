@@ -8,6 +8,8 @@ import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
 
 // SongMetaView
 
+// to do : add 'written by' author - esp on UI  field :    "  'writers'  []  "
+
 // pass route params as props
 defineProps({
    slug: String
@@ -25,6 +27,7 @@ const songStore = useSongStore()
 const id = ref(null)
 const title = ref('')
 const slug = ref('')
+const writers = ref('')
 const album_id = ref('')
 const created_at = ref('')
 const updated_at = ref('')
@@ -42,6 +45,7 @@ onBeforeMount(async() => {
    // hydrate local state
    title.value = songStore.song.title
    slug.value = songStore.song.slug
+   writers.value = songStore.song.writers
    id.value = songStore.song.id
    album_id.value = songStore.song.album_id
    created_at.value = songStore.song.created_at
@@ -58,7 +62,7 @@ onMounted(() => {
 })
 
 const change_title = () => {
-   slug.value = title.value.replaceAll(' ','-')
+   slug.value = title.value.replaceAll(' ','-').replaceAll("'",'')
 }
 
 // apply local changes
@@ -67,6 +71,7 @@ const apply = async() => {
    const modified_song = JSON.parse(JSON.stringify(songStore.song))
    modified_song.title = title.value
    modified_song.slug = slug.value
+   modified_song.writers = writers.value
    
    const result = await songStore.save_song(modified_song)
    if(result && result.message) app_store.set_notify_msg_list(result.message)
@@ -99,7 +104,6 @@ const open_album = () => {
          <SongCtrls />
 
          <form class="grid form_grid flex_col" @submit.prevent="apply">
-
             
             <label for="id">ID</label>
             <input 
@@ -124,6 +128,13 @@ const open_album = () => {
                id="slug"
                name="slug"
                readonly
+            />
+
+            <label for="writers">Writers</label>
+            <input 
+               v-model="writers"
+               id="writers"
+               name="writers"
             />
 
             <label for="album_id">Album</label>
