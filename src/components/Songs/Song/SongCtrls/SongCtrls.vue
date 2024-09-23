@@ -4,14 +4,17 @@ import SongCtrlsTitle from './SongCtrlsTitle/SongCtrlsTitle.vue'
 import SongCtrlsNav from './SongCtrlsNav/SongCtrlsNav.vue'
 import SongOutline from './SongOutline/SongOutline.vue'
 
-const song_store = useSongStore()
+
+// SongCtrls
 
 const props = defineProps(
-   ['apply_changes','selected_section_daw']
+   ['apply_changes','selected_section_daw','show_outline']
 )
 const emit = defineEmits(
    ['set-selected-section-daw']
 )
+
+const song_store = useSongStore()
 
 const set_selected_section_daw = (daw) => {
    emit('set-selected-section-daw',daw)
@@ -20,27 +23,26 @@ const set_selected_section_daw = (daw) => {
 </script>
 
 <template>
-   <Transition>
-      <section v-if="song_store.song" class="song_ctrls">
+   <section v-if="song_store.song" class="song_ctrls">
 
-         <SongCtrlsTitle 
-            :title="song_store.song.title" 
-            :writers="song_store.song.writers"
-         />
+      <SongCtrlsTitle 
+         :title="song_store.song.title" 
+         :writers="song_store.song.writers"
+      />
 
-         <SongOutline 
-            :song="song_store.song"
-            :selected_section_daw="props.selected_section_daw"
-            @set-selected-section-daw="set_selected_section_daw"
-         />
+      <SongOutline v-if="show_outline === true"
+         :song="song_store.song"
+         :selected_section_daw="props.selected_section_daw"
+         @set-selected-section-daw="set_selected_section_daw"
+      />
+      <div v-else id="no_outline_spacer"></div>
 
-         <SongCtrlsNav 
-            :song="song_store.song" 
-            :apply_changes="props.apply_changes" 
-         />                    
+      <SongCtrlsNav 
+         :song="song_store.song" 
+         :apply_changes="props.apply_changes" 
+      />
 
-      </section>
-   </Transition>
+   </section>
 </template>
 
 <style scoped>
@@ -70,7 +72,7 @@ const set_selected_section_daw = (daw) => {
    padding-left:1rem;
    padding-right:1rem;
 
-   background:white;background:lightgrey;
+   background:hsl(0, 0%, 90%);
 }
 
 @media (min-width: 1110px) {
@@ -100,6 +102,15 @@ li {
    margin:0;
    padding:0;
 }
+#no_outline_spacer {
+   order:3;
+}
+@media (min-width: 1110px) {
+   #no_outline_spacer {
+      order:2;
+   }
+}
+
 
 /* configure Vue Transition component for app_nav slide-in*/
 .v-enter-active,.v-leave-active {

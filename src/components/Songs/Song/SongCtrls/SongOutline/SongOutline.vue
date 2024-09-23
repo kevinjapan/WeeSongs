@@ -3,43 +3,41 @@
 
 // SongOutline
 
+// to do : in eg 'meta' view - enable functionality or hide this ctrl
+
 const props = defineProps(
    ['song','selected_section_daw']
 )
 const emit = defineEmits(
    ['set-selected-section-daw']
 )
-
 const go_section = daw => {
    emit('set-selected-section-daw',daw)
    let target = document.getElementById(daw)
    if(target !== null) target.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
 }
-
 const is_section_type = (target_type,actual_type) => {
    return actual_type.toUpperCase().indexOf(target_type.toUpperCase()) >= 0 ? 'verse' : ''
 }
-
 const is_selected_section = (daw) => {
    return daw === props.selected_section_daw
 }
-
 </script>
 
 <template>
    <div v-if="song" class="song_outline">
       <div v-for="section in song.songsheet.aSections" :key="section.id" :data-section-type="section.title"
          :class="{
-               intro : is_section_type('intro',section.title),
-               verse : is_section_type('verse',section.title),
-               pre_chorous : is_section_type('pre',section.title),
-               post_chorous : is_section_type('post',section.title),
-               chorous : is_section_type('chorous',section.title),
-               bridge : is_section_type('bridge',section.title),
-               outro : is_section_type('outro',section.title),
-               is_selected : is_selected_section(section.daw)
-            }"
-         class="outline_section border border_radius_.5 cursor_pointer px_2_" 
+            intro : is_section_type('intro',section.title),
+            verse : is_section_type('verse',section.title),
+            pre_chorous : is_section_type('pre',section.title),
+            post_chorous : is_section_type('post',section.title),
+            chorous : is_section_type('chorous',section.title),
+            bridge : is_section_type('bridge',section.title),
+            outro : is_section_type('outro',section.title),
+            is_selected : is_selected_section(section.daw)
+         }"
+         class="outline_section border border_radius_.5 cursor_pointer" 
          @click="go_section(section.daw)"
       >
          {{ section.daw }}
@@ -54,7 +52,7 @@ const is_selected_section = (daw) => {
    display:flex;
    gap:0;
    width:fit-content;
-   margin:0;
+   margin:auto;
    padding:.5rem;
    order:3;
 }
@@ -66,6 +64,8 @@ const is_selected_section = (daw) => {
 .outline_section {
    padding-top:.5rem;
    padding-bottom:.5rem;
+   padding-left:.52rem;
+   padding-right:.52rem;
    max-height:2.5rem;
    background:white;
 }
@@ -82,13 +82,6 @@ const is_selected_section = (daw) => {
    padding:.15rem;
    background:white;
    border:solid 1px grey;
-}
-
-.l_0 {left:0;}
-
-.px_2_ {
-   padding-left:.52rem;
-   padding-right:.52rem;
 }
 
 /*

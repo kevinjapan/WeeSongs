@@ -22,7 +22,7 @@ const includes_text = computed(() =>
 
 
 <template>
-   <div v-if="includes_text">
+   <div v-if="includes_text" :id="section.daw">
       <div class="section_lyrics_titles">
          {{ section.daw }} / {{ section.title }}
       </div>
@@ -34,6 +34,7 @@ const includes_text = computed(() =>
          />
       </div>
    </div>
+   <div v-else :id="section.daw"></div>
 </template>
 
 
