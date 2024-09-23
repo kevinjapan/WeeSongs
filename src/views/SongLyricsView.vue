@@ -26,7 +26,9 @@ onMounted(() => {
    
    <section>
       
-      <SongCtrls />
+      <SongCtrls
+         :show_outline="true" 
+      />
 
       <div v-if="has_error">
          There was a problem connecting to the server.

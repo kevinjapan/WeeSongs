@@ -53,7 +53,8 @@ const set_selected_section_daw = (daw) => {
    <Transition>
       <section>
          
-         <SongCtrls 
+         <SongCtrls
+            :show_outline="true"
             :selected_section_daw="selected_section_daw"
             :apply_changes="apply_changes"
             @set-selected-section-daw="set_selected_section_daw"
