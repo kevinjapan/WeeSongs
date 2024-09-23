@@ -8,7 +8,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 export const useAppStore = defineStore('app_store', () => {
 
    // we use presence/absence as web_api/static toggle flag
-   const app_api = ref('http://songs-api-laravel/api')
+   const app_api = false ? ref('http://songs-api-laravel/api') : ref('')
 
    // we use presence/absence as logged-in flag
    const bearer_token = ref('')

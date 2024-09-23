@@ -25,6 +25,7 @@ watch(notify_msg_list, () => {
          text:msg
       }
    })
+   // to do : often, the notification disappears too quickly - influenced by component changing underneath?
    setTimeout(() => {app_store.set_notify_msg_list([])},8000)
 })
 
@@ -47,7 +48,7 @@ const close = () => {
 <style scoped>
 .app_status {
    position:fixed;
-   top:var(--status-msg-top);
+   top:var(--status-msg-top);  /* to do : sometimes interfering on page while hidden - but we need a top? */
    left:0;
    right:0;
    z-index:var(--app_status_z-index);

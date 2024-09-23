@@ -15,7 +15,7 @@
 
   --app_nav_height:30px;
 
-  --app_nav_dropdown_top:50px;
+  --app_nav_dropdown_top:30px;
   
   /* z-index layers */
   --app_status_z-index:1000;
@@ -215,6 +215,11 @@ a.no_cursor_pointer {
    -ms-flex-pack:center;
    justify-content:center;
 }
+.align_items_start {
+   -webkit-box-align:start;
+   -ms-flex-align:start;
+   align-items:start;
+}
 .align_items_center {
    -webkit-box-align:center;
    -ms-flex-align:center;
@@ -393,6 +398,9 @@ input[readonly] {
 .px_1    {padding-left:1rem;padding-right:1rem;}
 .p_0\.5  {padding:.5rem;}
 .py_0\.5 {padding-top:.5rem;padding-bottom:.5rem;}
+
+.l_0 {left:0;}
+
 
 .fit_content {
    width:fit-content;

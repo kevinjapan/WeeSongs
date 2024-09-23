@@ -148,6 +148,8 @@ export const useSongStore = defineStore('song_store', () => {
       }
    }
 
+   // future : non-static only - prevent client-side submit if writers field is not populated
+
    // save_song
    // save a modified copy of the song to the server (and replace copy in this store)
    async function save_song(modified_song) {
