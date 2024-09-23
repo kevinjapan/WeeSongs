@@ -1,18 +1,24 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
+
+
+
+// AppNav
 
 const router = useRouter()
 const app_store = useAppStore()
 
 const display = ref(false)
+const curr_route = ref('/')
 
 // we use router.push() rather than:
 // <RouterLink to="/" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">Home</RouterLink>
 // since we want to interject to close app_nav
 const open_nav_link = route => {
    display.value = false
+   curr_route.value = route
    router.push(route)
 }
 
@@ -26,6 +32,9 @@ const clicked_bg = () => {
 // - 'app_nav_dimmer' adds it's own transitions and fades in before
 //    thus we hide dimmer bg sliding down.
 
+const is_curr_route = (route) => {
+   return route === curr_route.value
+}
 </script>
 
 
@@ -37,31 +46,42 @@ const clicked_bg = () => {
       </button>
    </div>
 
-   <Transition>
 
-      <nav class="app_nav" :class="{opened : display === true}" @click="clicked_bg">
+   <nav class="app_nav" :class="{opened : display === true}" @click="clicked_bg">
 
-         <div class="app_nav_links">
-            <a @click.stop="open_nav_link('/')">Home</a>
-            <a @click.stop="open_nav_link('/songs')">Songs</a>
-            <div v-if="app_store.app_api !== ''">
-               <a @click.stop="open_nav_link('/songs/create')">Create</a>
-            </div>
-            <div v-else class="text_lightgrey">
-               <a class="no_cursor_pointer">Create</a>
-            </div>
-            <a @click.stop="open_nav_link('/albums')">Albums</a>
-            <a @click.stop="open_nav_link('/search')">Search</a>
-            <div v-if="app_store.app_api !== ''">
-               <a v-if="!app_store.bearer_token" @click.stop="open_nav_link('/login')">Login</a>
-               <a v-else  @click.stop="open_nav_link('/account')">{{ app_store.username }}</a>
-            </div>
+      <div class="app_nav_links">
+
+         <a @click.stop="open_nav_link('/')" :class="{selected_view:is_curr_route('/')}">Home</a>
+
+         <a @click.stop="open_nav_link('/songs')" :class="{selected_view:is_curr_route('/songs')}">Songs</a>
+
+         <div v-if="app_store.app_api !== ''">
+            <a @click.stop="open_nav_link('/songs/create')" :class="{selected_view:is_curr_route('/songs/create')}">Create</a>
          </div>
-         <div class="app_nav_dimmer"></div>
 
-      </nav>
+         <div v-else class="text_lightgrey">
+            <a class="no_cursor_pointer">Create</a>
+         </div>
 
-   </Transition>
+         <a @click.stop="open_nav_link('/albums')" :class="{selected_view:is_curr_route('/albums')}">Albums</a>
+
+         <div v-if="app_store.app_api !== ''">
+            <a @click.stop="open_nav_link('/search')" :class="{selected_view:is_curr_route('/search')}">Search</a>
+         </div>
+         <div v-else class="text_lightgrey">
+            <a class="no_cursor_pointer">Search</a>
+         </div>
+
+         <div v-if="app_store.app_api !== ''">
+            <a v-if="!app_store.bearer_token" @click.stop="open_nav_link('/login')" :class="{selected_view:is_curr_route('/login')}">Login</a>
+            <a v-else @click.stop="open_nav_link('/account')" :class="{selected_view:is_curr_route('/account')}">{{ app_store.username }}</a>
+         </div>
+
+      </div>
+      <div class="app_nav_dimmer"></div>
+
+   </nav>
+
 
 </template>
 
@@ -148,7 +168,7 @@ nav.app_nav.opened {
    transition:opacity .5s ease-in-out,transform .5s ease-in-out,-webkit-transform .5s ease-in-out;
 }
 nav.app_nav.opened > div.app_nav_dimmer {
-   opacity:.4;
+   opacity:.2;
    -webkit-transition:opacity 1s ease-in-out .35s;
    transition:opacity 1s ease-in-out .35s;
    -o-transition:opacity 1s ease-in-out .35s;
@@ -176,7 +196,7 @@ nav.app_nav.opened > div.app_nav_dimmer {
    width:fit-content;
    margin-right:.5rem;
    padding:1rem 2rem 1rem 2rem;
-   background: white;
+   background:hsl(0, 0%, 86%);
    border-radius:0 0 .5rem .5rem;
 }
 .app_nav_hamburger {
@@ -197,17 +217,18 @@ nav.app_nav.opened > div.app_nav_dimmer {
    /* we use bar to cover scrolling content */
    width:100%;
 
-   height:fit-content;
+   height:var(--app_nav_height);
    margin:0;
    padding:0;
    color:white;
-   background:white;
+   background:hsl(0, 0%, 86%);
 }
 .app_nav_hamburger button {
-   background:white;
+   background:hsl(0, 0%, 86%);
    border:none;
    outline:none;
    margin:0;
+   padding:0;
 }
 /* grey-out opened dropdown ctrl */
 .app_nav_hamburger button.opened {
@@ -215,9 +236,9 @@ nav.app_nav.opened > div.app_nav_dimmer {
    filter: invert(15%) sepia(61%) saturate(5216%) hue-rotate(180deg) brightness(227%) contrast(105%);
 }
 .app_nav_hamburger img {
-   width:32px;
-   height:32px;
-   background:white;
+   width:30px;
+   height:30px;
+   background:hsl(0, 0%, 86%);
 }
 
 @media (min-width: 768px) {   
@@ -246,7 +267,11 @@ nav.app_nav.opened > div.app_nav_dimmer {
       -webkit-transform: unset;
       -ms-transform: unset;
       transform: unset;
+      transition:unset;
       opacity:1;
+
+      background:hsl(0, 0%, 86%);
+
    }
    nav.app_nav > div.app_nav_dimmer {
       display:none;
@@ -280,34 +305,17 @@ nav.app_nav.opened > div.app_nav_dimmer {
       display:none;
    }
 }
+
 a {
    width:fit-content;
    margin:0;
    padding:0;
    color:inherit;
    font-weight:400;
-   background:white;
+   background:hsl(0, 0%, 86%);
+}
+a.selected_view {
+   font-weight:700;
 }
 
-
-/* 
-   configure Vue Transition component for app_nav slide-in
-*/
-@media (max-width: 768px) {
-   .v-enter-active,.v-leave-active {
-      -webkit-transition: opacity .25s ease-in-out;  
-      -o-transition: opacity .25s ease-in-out;
-      transition: .25s ease-in-out;
-      opacity:1;      
-      -webkit-transform: translate(0, 0);
-      -ms-transform: translate(0, 0);
-      transform: translate(0, 0);
-   }
-   .v-enter-from,.v-leave-to {
-      -webkit-transform: translate(100%, 0);  
-      -ms-transform: translate(100%, 0);
-      transform: translate(100%, 0);
-      opacity:0;
-   }
-}
 </style>
