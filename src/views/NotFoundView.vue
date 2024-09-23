@@ -8,6 +8,7 @@ const show = ref(false)
 
 onMounted(() => {
    setTimeout(() => show.value = true,500)
+   window.scroll(0,0)
 })
 
 </script>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAppStore } from '@/stores/appStore'
 import { useAlbumStore } from '@/stores/albumStore'
 import { useSongStore } from '@/stores/songStore'
@@ -14,6 +14,10 @@ const songStore = useSongStore()
 const song_title = ref('')
 const album_title = ref('')
 
+
+onMounted(() => {
+   window.scroll(0,0)
+})
 
 const apply_song = async() => {
    const result = await songStore.create_song(song_title.value)

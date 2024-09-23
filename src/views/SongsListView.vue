@@ -1,7 +1,6 @@
 <script setup>
-import { ref, reactive, computed, watch, onBeforeMount } from 'vue'
+import { ref, reactive, computed, watch, onBeforeMount, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
 import useData from '../utilities/useData/useData'
 import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
@@ -35,7 +34,7 @@ const loading = ref(true)
 const page = ref(song_store.current_songs_page)
 
 // order
-const order_by = ref(song_store.current_order_by)   // 'made')
+const order_by = ref(song_store.current_order_by)
 
 // asc
 const asc = ref(song_store.current_asc)
@@ -48,6 +47,10 @@ const page_links = ref([])
 
 onBeforeMount( () => {
    get_list()
+})
+
+onMounted(() => {
+   window.scroll(0,0)
 })
 
 // watch works directly on a ref
@@ -91,7 +94,7 @@ const get_new_page_num = (step) => {
 const step_to_page = (step) => {   
    const new_page_num = get_new_page_num(step)
    if(new_page_num) {
-      song_store.current_songs_page = new_page_num
+      song_store.current_songs_page = parseInt(new_page_num)
       page.value = new_page_num
       get_list()
       window.scroll(0,0)
@@ -99,7 +102,7 @@ const step_to_page = (step) => {
 }
 
 const navigate_to_page = (selected_page) => {
-   song_store.current_songs_page = selected_page
+   song_store.current_songs_page = parseInt(selected_page)
    page.value = parseInt(selected_page)
    get_list()
    window.scroll(0,0)
@@ -129,6 +132,9 @@ const order_songs_by = (col_title) => {
       song_store.current_asc = true
    }
 }
+
+// future : legacy in dataset - eg we have 'updated_at' in two locations in song object
+
 </script>
 
 <template>

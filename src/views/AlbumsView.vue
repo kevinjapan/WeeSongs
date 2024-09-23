@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed, watch, onBeforeMount } from 'vue'
+import { ref, reactive, computed, watch, onBeforeMount, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import { useAlbumStore } from '@/stores/albumStore'
@@ -42,6 +42,10 @@ const page_links = ref([])
 
 onBeforeMount(() => {
    get_list()
+})
+
+onMounted(() => {
+   window.scroll(0,0)
 })
 
 watch(order_by, async (new_page, old_page) => {

@@ -1,7 +1,11 @@
 <script setup>
-
+import { onMounted } from 'vue'
 
 // HomeView
+
+onMounted(() => {
+   window.scroll(0,0)
+})
 
 </script>
 

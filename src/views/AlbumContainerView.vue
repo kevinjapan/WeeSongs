@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, reactive, onBeforeMount } from 'vue'
+import { ref, computed, reactive, onBeforeMount, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import { useAlbumStore } from '@/stores/albumStore'
@@ -30,6 +30,10 @@ onBeforeMount(async() => {
    }
    loading.value = false   
 })
+onMounted(() => {
+   window.scroll(0,0)
+})
+
 </script>
 
 <template>
