@@ -8,8 +8,6 @@ import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
 
 // SongMetaView
 
-// to do : add 'written by' author - esp on UI  field :    "  'writers'  []  "
-
 // pass route params as props
 defineProps({
    slug: String

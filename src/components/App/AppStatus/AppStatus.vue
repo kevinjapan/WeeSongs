@@ -25,7 +25,7 @@ watch(notify_msg_list, () => {
          text:msg
       }
    })
-   // to do : often, the notification disappears too quickly - influenced by component changing underneath?
+   // to do : oftentimes, the notification disappears too quickly - influenced by component changing underneath?
    setTimeout(() => {app_store.set_notify_msg_list([])},8000)
 })
 

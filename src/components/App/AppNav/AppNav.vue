@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 
@@ -25,12 +25,6 @@ const open_nav_link = route => {
 const clicked_bg = () => {
    display.value = false
 }
-
-// AppNav CSS Transitions : 
-// - 'app_nav' slides down and fades in - but we delay to allow dimmer to fade in
-// - 'app_nav_links' appearance is determined by it's parent 'app_nav'
-// - 'app_nav_dimmer' adds it's own transitions and fades in before
-//    thus we hide dimmer bg sliding down.
 
 const is_curr_route = (route) => {
    return route === curr_route.value
