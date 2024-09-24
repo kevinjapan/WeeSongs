@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
 import SongSections from '../SongSections/SongSections.vue'
@@ -8,29 +7,22 @@ import { scroll_to_elem } from '../../../../utilities/utilities/utilities'
 
 // Song
 
-const props = defineProps(
-   ['song']
-)
-const emit = defineEmits(
-   ['set-selected-section-daw']
-)
+// Component Interface - props and emits
+const props = defineProps({
+   song:Object
+})
+const emit = defineEmits([
+   'set-selected-section-daw'
+])
 
 const app_store = useAppStore()
 const song_store = useSongStore()
+
 const update_song = async() => {
    const result = await song_store.save()
    if(result && result.message) app_store.set_notify_msg_list(result.message)
 }
 
-const del_section = (section_id) => {
-   const result = song_store.del_section(section_id)
-   if(result && result.message && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)
-}
-
-const go_section = daw => {
-   let target = document.getElementById(daw)
-   if(target !== null) target.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"})
-}
 
 const clone_section = (section_id) => {
    const result = song_store.clone_section(section_id)
@@ -51,6 +43,11 @@ const update_section = (section_id,modified_section) => {
    if(result && result.message && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)
 }
 
+const delete_section = (section_id) => {
+   const result = song_store.del_section(section_id)
+   if(result && result.message && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)
+}
+
 const add_section = () => {
    const result = song_store.add_section()
    if(result && result.message && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)
@@ -66,12 +63,12 @@ const add_section = () => {
    <section v-if="props.song" class="song_wrapper">
 
       <SongSections
-         :song="props.song" 
-         :update_song="update_song" 
-         :del_section="del_section"
-         :clone_section="clone_section"
-         :move_section="move_section"
-         :update_section="update_section"
+         :song="props.song"
+         @update-song="update_song"
+         @clone-section="clone_section"
+         @move-section="move_section"
+         @update-section="update_section"
+         @delete-section="delete_section"
       />
 
       <button @click="add_section">add section</button>
@@ -82,8 +79,7 @@ const add_section = () => {
 
 <style scoped>
 .song_wrapper {
-
-   /* leave plenty space to scroll bottom section from outline */
+   /* we leave plenty space to scroll bottom section from outline */
    margin-top:8rem; 
    margin-bottom:8rem;
    padding-top:0;

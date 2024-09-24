@@ -3,14 +3,16 @@
 
 // SongOutline
 
-// to do : in eg 'meta' view - enable functionality or hide this ctrl
+// Component Interface - props and emits
+const props = defineProps({
+   song:Object,
+   selected_section_daw:String
+})
+const emit = defineEmits([
+   'set-selected-section-daw'
+])
 
-const props = defineProps(
-   ['song','selected_section_daw']
-)
-const emit = defineEmits(
-   ['set-selected-section-daw']
-)
+
 const go_section = daw => {
    emit('set-selected-section-daw',daw)
    let target = document.getElementById(daw)

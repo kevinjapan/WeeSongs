@@ -8,9 +8,19 @@ import SongSectionTitles from './SongSectionTitles/SongSectionTitles.vue'
 // SongSection
 // single SongSection component within Song.aSections
 
-const props = defineProps(
-   ['section','index','update_song','del_section','clone_section','move_section','last','update_section','editable']
-)
+// Component Interface - props and emits
+const props = defineProps({
+   section:Object,
+   index:Number,
+   last:Boolean
+})
+const emit = defineEmits([
+   'update_song',
+   'clone-section',
+   'move-section',
+   'update-section',
+   'delete-section'
+])
 
 const app_store = useAppStore()
 const requires_update = ref(false)
@@ -18,70 +28,62 @@ const num_bars = ref(props.section.aBars.length)
 const max_bars = 32
 
 
-const notify_updated_titles = () => {
-   requires_update.value = true
-}
 const update_song = () => {
-   props.update_song()
    requires_update.value = false
+   emit('update-song')
 }
 const del = () => {
-   props.del_section(props.section.id)
+   emit('delete-section',props.section.id)
 }
 const clone = () => {
    if(!props.section.id) {
       app_store.set_notify_msg_list("Corrupt SongSection -  missing 'id'.")
       return false
    }
-   props.clone_section(props.section.id)
+   emit('clone-section',props.section.id)
 }
 const move = (direction) => {
-   props.move_section(props.section.id,direction)
+   emit('move-section',props.section.id,direction)
 }
 
 const change_daw = (daw) => {
    const modified = JSON.parse(JSON.stringify(props.section))
    modified.daw = daw
-   props.update_section(modified.id,modified)
    requires_update.value = true
+   emit('update-section',modified.id,modified)
 }
 
 const change_title = (title) => {
    const modified = JSON.parse(JSON.stringify(props.section))
    modified.title = title
-   props.update_section(modified.id,modified)
    requires_update.value = true
+   emit('update-section',modified.id,modified)
 }
 
 const change_bar_chords = (bar_id,chords) => {
-
    const modified_section = JSON.parse(JSON.stringify(props.section))
    modified_section.aBars = modified_section.aBars.map((bar) => {
       if(bar.id === bar_id) bar.chords = chords
       return bar
    })
-   props.update_section(modified_section.id,modified_section)
    requires_update.value = true
+   emit('update-section',modified_section.id,modified_section)
 }
 
 // future : review : currently, we are reacting to every text entry into input -
 //          more efficient to only update on 'apply' ?
 const change_bar_txt = (bar_id,txt) => {
-
    const modified_section = JSON.parse(JSON.stringify(props.section))
    modified_section.aBars = modified_section.aBars.map((bar) => {
-
       // future : handle if no id is present - ensure any bar added/saved has a valid id
-
       if(bar.id === bar_id) bar.txt = txt
       return bar
-   })   
-   props.update_section(modified_section.id,modified_section)
+   })
    requires_update.value = true
+   emit('update-section',modified_section.id,modified_section)
 }
 
 const change_num_bars = (num_bars) => {
-   
    if(!app_store.bearer_token) {
       app_store.set_notify_msg_list('You need to login to perform this action')
       return
@@ -94,7 +96,6 @@ const change_num_bars = (num_bars) => {
    const modified = JSON.parse(JSON.stringify(props.section))
    const current_len = modified.aBars.length
    if(new_num_bars === current_len) return
-
    if(new_num_bars < current_len) {
       for(let i = 0; i < (current_len - new_num_bars); i++) {
          modified.aBars.pop()
@@ -104,14 +105,13 @@ const change_num_bars = (num_bars) => {
       // increment max id
       const bar_ids = modified.aBars.map(bar => bar.id)
       let max_id = bar_ids.reduce((a,b) => Math.max(a,b),-Infinity)
-
       for(let j = 0; j < (num_bars - current_len); j++) {
          max_id++
          modified.aBars.push({id:max_id, text:"", mods:"", chords:""})
       }
    }
-   props.update_section(modified.id,modified)
    requires_update.value = true
+   emit('update-section',modified.id,modified)
 }
 
 </script>
@@ -124,7 +124,6 @@ const change_num_bars = (num_bars) => {
       <SongSectionTitles 
          :section="section"
          :num_bars="num_bars"
-         :editable="props.editable"
          @section-daw-changed="change_daw"
          @section-title-changed="change_title"
          @bar-nums-changed="change_num_bars"

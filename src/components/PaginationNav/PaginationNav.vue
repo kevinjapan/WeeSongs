@@ -8,11 +8,12 @@ import { computed } from 'vue'
 const props = defineProps({
    title: String,
    page: Number,
-   page_links: Object
+   page_links: Array
 })
-const emit = defineEmits(
-   ['step-to-page','navigate-to-page']
-)
+const emit = defineEmits([
+   'step-to-page',
+   'navigate-to-page'
+])
 
 // Component methods
 const computed_last_page = computed(() => {

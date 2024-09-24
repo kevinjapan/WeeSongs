@@ -1,11 +1,14 @@
 <script setup>
 import { ref, watch } from 'vue'
 import useData from '../../../utilities/useData/useData'
-import { useAppStore } from '@/stores/appStore'
 
 
-const app_store = useAppStore()
-const props = defineProps(['search_term'])
+// SearchResults
+
+const props = defineProps({
+   search_term:String
+})
+
 const local_search_term = ref('')
 
 const results_list = ref(null)

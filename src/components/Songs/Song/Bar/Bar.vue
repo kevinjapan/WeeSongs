@@ -1,24 +1,29 @@
 <script setup>
 import { ref } from 'vue'
 
-
 // Bar
 // single Bar component within Section.aBars
 
-const props = defineProps(
-   ['bar','notify_updated_bar']
-)
-const emit = defineEmits(
-   ['bar-chords-changed','bar-txt-changed']
-)
+// Component Interface - props and emits
+const props = defineProps({
+   bar:Object
+})
+const emit = defineEmits([
+   'bar-chords-changed',
+   'bar-txt-changed'
+])
 
-// local state - we don't want to mutate props child properties
+
 const chords = ref(props.bar.chords)
 const txt = ref(props.bar.txt)
 
 // emit events
-const change_chords = () => emit('bar-chords-changed',props.bar.id,chords.value)
-const change_txt = () => emit('bar-txt-changed',props.bar.id,txt.value)
+const change_chords = () => {
+   emit('bar-chords-changed',props.bar.id,chords.value)
+}
+const change_txt = () => {
+   emit('bar-txt-changed',props.bar.id,txt.value)
+}
 
 </script>
 

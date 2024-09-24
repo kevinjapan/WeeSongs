@@ -15,9 +15,10 @@ import init_infinite_scroll from '../../../utilities/intersections/intersections
 const props = defineProps({
   client_track_list: Array
 })
-const emit = defineEmits(
-   ['update-track-list','close-all-tracks-list']
-)
+const emit = defineEmits([
+   'update-track-list',
+   'close-all-tracks-list'
+])
 
 const app_store = useAppStore()
 

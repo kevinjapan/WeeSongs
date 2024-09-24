@@ -8,22 +8,27 @@ import BarCounter from '../../BarCounter/BarCounter.vue'
 // Component Interface - props and emits
 const props = defineProps({
    section: Object,
-   num_bars: Number,
-   editable: Boolean
+   num_bars: Number
 })
-const emit = defineEmits(
-   ['section-daw-changed','section-title-changed','bar-nums-changed']
-
-)
+const emit = defineEmits([
+   'section-daw-changed',
+   'section-title-changed',
+   'bar-nums-changed'
+])
 
 // local state - we don't want to mutate props child properties
 const daw = ref(props.section.daw)
 const title = ref(props.section.title)
 
-// emit events
-const change_daw = () => emit('section-daw-changed',daw.value)
-const change_title = () => emit('section-title-changed',title.value)
-const change_num_bars = num => emit('bar-nums-changed',num)
+const change_daw = () => {
+   emit('section-daw-changed',daw.value)
+}
+const change_title = () => {
+   emit('section-title-changed',title.value)
+}
+const change_num_bars = num => {
+   emit('bar-nums-changed',num)
+}
 
 // future : validation on input lengths etc below - rollout
 
@@ -39,7 +44,6 @@ const change_num_bars = num => emit('bar-nums-changed',num)
          class="daw_input w-12 text-slate-400"
          type="text"
          @input="change_daw"
-         :readonly="props.editable === false"
       />
 
       <input
@@ -48,12 +52,10 @@ const change_num_bars = num => emit('bar-nums-changed',num)
          class="title_input w-32 text-slate-400"
          type="text"
          @input="change_title"
-         :readonly="props.editable === false"
       />
       
       <BarCounter
          :num_bars="props.num_bars"
-         :editable="props.editable"
          @bar-nums-changed="change_num_bars"
       />
    

@@ -4,12 +4,10 @@ import { ref } from 'vue'
 
 // BarCounter
 
-
+// Component Interface - props and emits
 const props = defineProps({
-   num_bars:Number,
-   editable:Boolean
+   num_bars:Number
 })
-
 // previously, although not clear from docs, defining emits makes it function much more easily,
 // otherwise have a lot of probs getting this working w/ converting case btwn emit and @.
 const emit = defineEmits(
@@ -39,7 +37,6 @@ const local_num_bars = ref(props.num_bars)
       type="text"
       v-model="local_num_bars"
       v-bind="$attrs"
-      :readonly="props.editable === false"
       @keyup.enter="$emit('bar-nums-changed',local_num_bars)"
       class="num_bars_input"
    />

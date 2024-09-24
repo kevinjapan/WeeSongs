@@ -12,9 +12,11 @@ import AllTracksSelector from '../../Tracks/AllTracksSelector/AllTracksSelector.
 // we only map one album per song and laravel is set up to rely on 
 // relationships on this one-to-many orm - so not a trivial change.
 
-const props = defineProps(
-   ['album_id','songs']
-)
+// Component Interface - props and emits
+const props = defineProps({
+   songs:Array,
+   album_id:Number
+})
 
 const app_store = useAppStore()
 const album_store = useAlbumStore()
@@ -72,7 +74,6 @@ const update_track_list = async(new_track_list) => {
    tracks.value = [...modified]
    show_all_tracks_list.value = false
    app_store.set_notify_msg_list(outcomes)
-
 }
 
 const close_all_tracks_list = () => {
