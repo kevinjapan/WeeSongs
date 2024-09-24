@@ -24,6 +24,7 @@ const outline = ref('')
 const created_at = ref('')
 const updated_at = ref('')
 const deleted_at = ref('')
+// future : try above as single ref object?
 
 onBeforeMount(async() => {
 
@@ -45,6 +46,7 @@ onBeforeMount(async() => {
       updated_at.value = album_store.album.updated_at
       deleted_at.value = album_store.album.deleted_at
    }
+   
 
    // failsafe
    if(!album_store) {
@@ -85,7 +87,7 @@ const delete_album = async() => {
 
 <template>
 
-   <section v-if="props.album" class="album_wrapper">
+   <section v-if="album_store.album" class="album_wrapper">
 
       <form class="grid form_grid flex_col border rounded m_1" @submit.prevent="apply">
 
@@ -162,7 +164,10 @@ const delete_album = async() => {
       </form>
 
 
-      <AlbumTracksList :album_id="id" :songs="album_store.album.songs" />
+      <AlbumTracksList 
+         :album_id="id" 
+         :songs="album_store.album.songs"
+      />
 
    </section>
 

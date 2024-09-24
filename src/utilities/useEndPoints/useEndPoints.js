@@ -6,8 +6,6 @@ import { useAppStore } from '@/stores/appStore'
 // app_store.app_api is our flag - if emtpy, we are in 'web api' mode, else we are in 'static site' mode
 // url params : we assume order matches that expected by end-point and we append to url
    
-
-
 export default function useEndPoints(url_params,query_params) {
 
    const app_store = useAppStore()
@@ -25,14 +23,8 @@ export default function useEndPoints(url_params,query_params) {
          },
          get_single_song:{
             request_method:'GET',
-            route:`/data/${url_params[0]}.json`,
+            route:`/data/songs/${url_params[0]}.json`,
             route_url_params:''
-         },
-         // to do : how we gonna implement search in static?
-         search_songs:{
-            request_method:'GET',
-            route:'/data/search/',
-            route_url_params:url_params?.join('/')
          },
 
 
@@ -43,8 +35,8 @@ export default function useEndPoints(url_params,query_params) {
          },
          load_album:{
             request_method:'GET',
-            route:'/data/',
-            route_url_params:url_params?.join('/')
+            route:`/data/albums/${url_params[0]}.json`,
+            route_url_params:''
          }
       }
 
