@@ -8,7 +8,7 @@ import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
 import get_ui_ready_date from '../utilities/dates/dates'
 
 
-// AlbumsView
+// AlbumsListView
 
 const router = useRouter()
 
@@ -128,6 +128,9 @@ const clicked_title = (album_slug) => {
    router.push(`/albums/${album_slug}`)
 }
 
+const get_album_img = (slug) => {
+   return `/data/imgs/albums/${slug.toLowerCase()}.jpg`
+}
 </script>
 
 <template>
@@ -154,12 +157,16 @@ const clicked_title = (album_slug) => {
 
             <ul class="albums_list">
                <li class="grid_list_row">
+                  <div></div>
                   <div @click="order_albums_by('title')" class="cursor_pointer col_title">title</div>
                   <div @click="order_albums_by('created_at')" class="cursor_pointer col_title text_right">made</div>
                   <div @click="order_albums_by('updated_at')" class="cursor_pointer col_title text_right">updated</div>
                </li>
-               <li  class="grid_list_row" v-for="album in albums_list.albums_list.data" :key="album.id">
-                  <div class="cursor_pointer title" @click="clicked_title(album.slug)">{{ album.title }}</div> 
+               <li v-for="album in albums_list.albums_list.data" :key="album.id" 
+                     class="grid_list_row cursor_pointer"
+                     @click="clicked_title(album.slug)" >
+                  <div><img class="list_teaser_img" :src="get_album_img(album.slug)" /></div>
+                  <div class="cursor_pointer title">{{ album.title }}</div> 
                   <div class="text_right">{{ get_ui_ready_date(album.created_at) }}</div>
                   <div class="text_right">{{ get_ui_ready_date(album.updated_at) }}</div>
                </li>
@@ -190,5 +197,10 @@ const clicked_title = (album_slug) => {
 .col_title {
    color:hsl(0, 0%, 73%);
    font-style:italic;
+}
+img.list_teaser_img {
+   width:80px;
+   height:50px;
+   border-radius:1rem;
 }
 </style>
