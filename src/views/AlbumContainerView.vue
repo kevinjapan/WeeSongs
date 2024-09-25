@@ -3,6 +3,7 @@ import { ref, computed, reactive, onBeforeMount, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import { useAlbumStore } from '@/stores/albumStore'
+import AlbumCtrls from '../components/Albums/AlbumCtrls/AlbumCtrls.vue'
 import Album from '../components/Albums/Album/Album/Album.vue'
 
 
@@ -48,6 +49,10 @@ onMounted(() => {
             <div v-if="loading" class="loading"></div>
 
             <div v-else class="relative m_0 p_0">
+
+               <AlbumCtrls
+               />
+
                <Album :song="album_store.album" />
             </div>
          </div>
