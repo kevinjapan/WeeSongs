@@ -139,7 +139,7 @@ nav.app_nav > div.app_nav_dimmer {
 
    width:100%;
    height:100%;
-   background:grey;
+   background:white;
    
    opacity:0;
    -webkit-transition:opacity .35s ease-in-out;
@@ -190,7 +190,7 @@ nav.app_nav.opened > div.app_nav_dimmer {
    width:fit-content;
    margin-right:.5rem;
    padding:1rem 2rem 1rem 2rem;
-   background:hsl(0, 0%, 86%);
+   background:white;
    border-radius:0 0 .5rem .5rem;
 }
 .app_nav_hamburger {
@@ -263,8 +263,8 @@ nav.app_nav.opened > div.app_nav_dimmer {
       transform: unset;
       transition:unset;
       opacity:1;
-
-      background:hsl(0, 0%, 86%);
+  
+      background:white;
 
    }
    nav.app_nav > div.app_nav_dimmer {
@@ -306,7 +306,7 @@ a {
    padding:0;
    color:inherit;
    font-weight:400;
-   background:hsl(0, 0%, 86%);
+   background:white;
 }
 a.selected_view {
    font-weight:700;

@@ -163,7 +163,7 @@ const change_num_bars = (num_bars) => {
          </button>
 
          <button v-if="requires_update === true && app_store.bearer_token" @click="update_song"
-            class="wee_btn" >Apply</button>         
+            class="wee_btn apply_btn" >Apply</button>         
          <button v-else disabled
          class="wee_btn" >Apply</button>
 
@@ -197,6 +197,9 @@ const change_num_bars = (num_bars) => {
 div.bar_2:nth-child(-n + 4) {
     border-top:solid 1px lightgrey;
 }
-
+.wee_btn {
+   background:white;
+   border:unset;
+}
 
 </style>

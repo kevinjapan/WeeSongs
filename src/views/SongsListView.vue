@@ -134,6 +134,10 @@ const order_songs_by = (col_title) => {
 
 // future : legacy in dataset - eg we have 'updated_at' in two locations in song object
 
+const get_song_img = (slug) => {
+   return `/data/imgs/songs/${slug.toLowerCase()}.jpg`
+}
+
 </script>
 
 <template>
@@ -163,12 +167,16 @@ const order_songs_by = (col_title) => {
    
             <ul class="songs_list">           
                <li class="grid_list_row">
+                  <div></div>
                   <div @click="order_songs_by('title')" class="cursor_pointer col_title">title</div>
                   <div @click="order_songs_by('created_at')" class="cursor_pointer col_title text_right">made</div>
                   <div @click="order_songs_by('updated_at')" class="cursor_pointer col_title text_right">updated</div>
                </li>
-               <li class="grid_list_row" v-for="song in songs_list.songs_list.data" :key="song.id">
-                  <div class="cursor_pointer title" @click="clicked_title(song.slug)">{{ song.title }}</div> 
+               <li v-for="song in songs_list.songs_list.data" :key="song.id"
+                     class="grid_list_row cursor_pointer"  
+                     @click="clicked_title(song.slug)">
+                  <div><img class="list_teaser_img" :src="get_song_img(song.slug)" /></div>
+                  <div class="cursor_pointer title" >{{ song.title }}</div> 
                   <div class="text_right">{{ get_ui_ready_date(song.made) }}</div>
                   <div class="text_right">{{ get_ui_ready_date(song.updated) }}</div>
                </li>
@@ -198,5 +206,10 @@ const order_songs_by = (col_title) => {
 .col_title {
    color:hsl(0, 0%, 73%);
    font-style:italic;
+}
+img.list_teaser_img {
+   width:80px;
+   height:50px;
+   border-radius:1rem;
 }
 </style>

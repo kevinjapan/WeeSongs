@@ -27,6 +27,7 @@ const set_selected_section_daw = (daw) => {
 
       <SongCtrlsTitle 
          :title="song_store.song.title" 
+         :slug="song_store.song.slug"
          :writers="song_store.song.writers"
       />
 
@@ -53,24 +54,13 @@ const set_selected_section_daw = (daw) => {
    right:0px;
    z-index:var(--nav_layer);
    
+   display:-ms-grid;
    display:grid;
+   -ms-grid-columns: 2fr 1fr;
    grid-template-columns: 2fr 1fr;
 
-   /*display:-webkit-box;
-   display:-ms-flexbox;
-   display:flex;
-
-   -webkit-box-pack:justify;
-   -ms-flex-pack:justify;
-   justify-content:space-between;
-
-   -webkit-box-align:center;
-   -ms-flex-align:center;
-   align-items:center;*/
-
    max-width:100%;
-   padding-left:1rem;
-   padding-right:1rem;
+   padding:.5rem;
 
    background:hsl(0, 0%, 90%);
 }

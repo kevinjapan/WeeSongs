@@ -38,9 +38,8 @@ export default async function useData(end_point,url_params,query_params,body) {
 
    const query_string = Object.keys(query_params).length > 0 ? new URLSearchParams(query_params) : ''
 
-
    return await useFetch(
-      `${app_store.app_api}${route}${route_url_params}${query_string !== '' ? '?' : ''}${query_string}`,
+      `${app_store.app_api}${route}${route_url_params}${query_string ? '?' : ''}${query_string ? query_string : ''}`,
       reqInit(request_method,app_store.bearer_token,body)
    )
 }

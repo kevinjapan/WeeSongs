@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onBeforeMount } from 'vue'
+import { ref, computed, onBeforeMount } from 'vue'
 import { useRoute,useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import { useAlbumStore } from '@/stores/albumStore'
-import AlbumTracksList from '../../AlbumTracksList/AlbumTracksList.vue';
+import AlbumTracksList from '../../AlbumTracksList/AlbumTracksList.vue'
+import get_ui_ready_date from '../../../../utilities/dates/dates'
 
 
 // Album
@@ -42,9 +43,9 @@ onBeforeMount(async() => {
       title.value = album_store.album.title
       slug.value = album_store.album.slug
       outline.value = album_store.album.outline
-      created_at.value = album_store.album.created_at
-      updated_at.value = album_store.album.updated_at
-      deleted_at.value = album_store.album.deleted_at
+      created_at.value = get_ui_ready_date(album_store.album.created_at)
+      updated_at.value = get_ui_ready_date(album_store.album.updated_at)
+      deleted_at.value = get_ui_ready_date(album_store.album.deleted_at)
    }
    
 
@@ -83,24 +84,25 @@ const delete_album = async() => {
       }
    }
 }
+
+const get_album_img = computed(() => {
+   return `/data/imgs/albums/${album_store.album.slug.toLowerCase()}.jpg`
+})
+
 </script>
 
 <template>
 
    <section v-if="album_store.album" class="album_wrapper">
 
-      <form class="grid form_grid flex_col border rounded m_1" @submit.prevent="apply">
 
-         <label for="id">id</label>
-         <input 
-            :value="id"
-            id="id"
-            name="id"
-            readonly
-            class="readonly_input"
-            @input="change_title"
-         />
+      <form class="flex flex_col border rounded m_1" @submit.prevent="apply">
 
+         <section>
+         <!-- to do : we will keep img inside form (tried alternative, no dice)-->
+         <img :src="get_album_img" />
+      </section>
+         <section class="flex flex_col border rounded m_1">
          <label for="title">Title</label>
          <input 
             v-model="title"
@@ -125,6 +127,16 @@ const delete_album = async() => {
             name="outline"
          />
 
+         <label for="id">id</label>
+         <input 
+            :value="id"
+            id="id"
+            name="id"
+            readonly
+            class="readonly_input"
+            @input="change_title"
+         />
+         
          <label for="created_at">Created At</label>
          <input 
             :value="created_at"
@@ -155,7 +167,7 @@ const delete_album = async() => {
          <div></div>
          <button type="submit" v-if="app_store.is_logged_in()">Apply</button>
          <button v-else disabled>Apply</button>
-
+      </section>
       <section class="mt_3 p_2 border">         
          <button type="button" v-if="app_store.is_logged_in()" @click="delete_album">Delete this Album</button>
          <button v-else disabled>Delete this Album</button>
@@ -185,6 +197,11 @@ const delete_album = async() => {
    margin-top:5rem;
    margin-bottom:10rem;
 }
+img {
+   grid-column-start: 2;
+   grid-column-end: 3;
+   width:50%;
+}
 @media (min-width: 768px) {
    .album_wrapper {
       -ms-grid-columns: 1fr 1fr;
@@ -194,5 +211,9 @@ const delete_album = async() => {
 .album_title {
    font-size:1.5rem;
 }
-
+label {
+   font-style:italic;
+   color:hsl(0, 0%, 60%);
+   margin-top:.25rem;
+}
 </style>

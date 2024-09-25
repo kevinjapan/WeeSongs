@@ -31,11 +31,11 @@ const props = defineProps(['apply_changes'])
             :to="{ name: 'songlyrics', params: { slug: song_store.song.slug }}"
             activeClass="selected_tab" exactActiveClass="selected_tab">lyrics</RouterLink>
       </li>
-      <li class="mr_1">
+      <!--li class="mr_1">
          <RouterLink 
             :to="{ name: 'songprint', params: { slug: song_store.song.slug }}"
             activeClass="selected_tab" exactActiveClass="selected_tab">print</RouterLink>
-      </li>
+      </li-->
    </ul>
 </template>
 

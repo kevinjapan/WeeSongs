@@ -52,6 +52,7 @@ const is_selected_section = (daw) => {
    display:-webkit-box;
    display:-ms-flexbox;
    display:flex;
+   align-self:center;
    gap:0;
    width:fit-content;
    margin:auto;

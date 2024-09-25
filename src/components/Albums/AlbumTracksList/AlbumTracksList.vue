@@ -80,6 +80,22 @@ const close_all_tracks_list = () => {
    show_all_tracks_list.value = false
 }
 
+const get_song_img = (slug) => {
+   return `/data/imgs/songs/${slug.toLowerCase()}.jpg`
+}
+
+
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+//
+// to do : quick list of to dos to get ready for netlify static upload
+//          create a build (current) and deploy, then continue w/ non-static dev.
+//
+// to do : make 'img-slug' a field property of song - so we can cleanly deal
+//          w/ no image present scenario - eg we don't try to load it
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+
 </script>
 
 <template>
@@ -91,8 +107,9 @@ const close_all_tracks_list = () => {
          <button class="wee_btn" @click="add_track">+</button>
       </nav>
 
-      <ul>
-         <li v-for="song in tracks" :key="song">
+      <ul class="flex flex_col gap_1">
+         <li v-for="song in tracks" :key="song" class="flex gap_1">
+            <img class="song_tiny_teaser" :src="get_song_img(song)" />
             <RouterLink :to="{name:'songcontainer',params: {slug:song}}">{{ song }}</RouterLink>
          </li>
       </ul>
@@ -120,6 +137,9 @@ ul {
    text-align:left;
    border:solid 1px lightgrey;
    border-radius:.25rem;
+}
+img.song_tiny_teaser {
+   width:60px;
 }
 </style>
 
