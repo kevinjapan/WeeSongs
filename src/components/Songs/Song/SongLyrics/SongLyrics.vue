@@ -12,12 +12,11 @@ const last = (index) => {
    return index === song_store.song.songsheet.aSections.length - 1
 }
 
-
 </script>
 
 <template>
 
-   <SongSectionLyrics v-for="(section, index) in song_store.song.songsheet.aSections" 
+   <SongSectionLyrics v-for="(section, index) in song_store.song?.songsheet.aSections" 
       :key="section.id" 
       :section="section"
       :index="index" 

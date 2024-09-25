@@ -1,5 +1,6 @@
 <script setup>
-import { ref,computed, onMounted } from 'vue'
+import { ref, computed, onBeforeMount, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useSongStore } from '@/stores/songStore'
 import SongCtrls from '../components/Songs/Song/SongCtrls/SongCtrls.vue'
 import SongLyrics from '../components/Songs/Song/SongLyrics/SongLyrics.vue'
@@ -7,7 +8,19 @@ import SongLyrics from '../components/Songs/Song/SongLyrics/SongLyrics.vue'
 
 // SongLyricsView
 
+const route = useRoute()
 const song_store = useSongStore()
+
+onBeforeMount(async() => {
+
+   // ensure song is loaded
+   if(!song_store.song) {
+      // there is an issue w/ server's handling of unknown slug - not clean, garbage returned (error reporting in php)
+      // so, for now, we will simply report first line of error in AppStatus notification until fix on server-side
+      const result = await song_store.load_song(route.params.slug)
+      if(result && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)     
+   }
+})
 
 // custom suspense flag
 const loading = ref(false)
