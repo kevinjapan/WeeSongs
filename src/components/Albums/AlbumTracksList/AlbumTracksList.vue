@@ -85,16 +85,10 @@ const get_song_img = (slug) => {
 }
 
 
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
-//
-// to do : quick list of to dos to get ready for netlify static upload
-//          create a build (current) and deploy, then continue w/ non-static dev.
 //
 // to do : make 'img-slug' a field property of song - so we can cleanly deal
 //          w/ no image present scenario - eg we don't try to load it
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
+// 
 
 </script>
 

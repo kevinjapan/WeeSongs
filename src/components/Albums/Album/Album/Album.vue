@@ -96,85 +96,84 @@ const get_album_img = computed(() => {
    <section v-if="album_store.album" class="album_wrapper">
 
 
-      <form class="flex flex_col border rounded m_1" @submit.prevent="apply">
+      <form class="grid form_grid flex_col border rounded m_1" @submit.prevent="apply">
 
-         <section>
-         <!-- to do : we will keep img inside form (tried alternative, no dice)-->
-         <img :src="get_album_img" />
-      </section>
-         <section class="flex flex_col border rounded m_1">
-         <label for="title">Title</label>
-         <input 
-            v-model="title"
-            id="title"
-            name="title"
-            class="album_title"
-            @input="change_title"
-         />
+         <!--section>
+            <img :src="get_album_img" />
+         </section-->
 
-         <label for="slug">Slug</label>
-         <input 
-            v-model="slug"
-            id="slug"
-            name="slug"
-            readonly
-         />
+            <label for="title">Title</label>
+            <input 
+               v-model="title"
+               id="title"
+               name="title"
+               class="album_title"
+               @input="change_title"
+            />
 
-         <label for="outline">Outline</label>
-         <input 
-            v-model="outline"
-            id="outline"
-            name="outline"
-         />
+            <label for="slug">Slug</label>
+            <input 
+               v-model="slug"
+               id="slug"
+               name="slug"
+               readonly
+            />
 
-         <label for="id">id</label>
-         <input 
-            :value="id"
-            id="id"
-            name="id"
-            readonly
-            class="readonly_input"
-            @input="change_title"
-         />
-         
-         <label for="created_at">Created At</label>
-         <input 
-            :value="created_at"
-            id="created_at"
-            name="created_at"
-            readonly
-            class="readonly_input"
-         />
+            <label for="outline">Outline</label>
+            <input 
+               v-model="outline"
+               id="outline"
+               name="outline"
+            />
 
-         <label for="updated_at">Updated At</label>
-         <input 
-            :value="updated_at"
-            id="updated_at"
-            name="updated_at"
-            readonly
-            class="readonly_input"
-         />
+            <label for="id">id</label>
+            <input 
+               :value="id"
+               id="id"
+               name="id"
+               readonly
+               class="readonly_input"
+               @input="change_title"
+            />
+            
+            <label for="created_at">Created At</label>
+            <input 
+               :value="created_at"
+               id="created_at"
+               name="created_at"
+               readonly
+               class="readonly_input"
+            />
 
-         <label for="deleted_at">Deleted At</label>
-         <input 
-            :value="deleted_at"
-            id="deleted_at"
-            name="deleted_at"
-            readonly
-            class="readonly_input"
-         />
+            <label for="updated_at">Updated At</label>
+            <input 
+               :value="updated_at"
+               id="updated_at"
+               name="updated_at"
+               readonly
+               class="readonly_input"
+            />
 
-         <div></div>
-         <button type="submit" v-if="app_store.is_logged_in()">Apply</button>
-         <button v-else disabled>Apply</button>
-      </section>
-      <section class="mt_3 p_2 border">         
-         <button type="button" v-if="app_store.is_logged_in()" @click="delete_album">Delete this Album</button>
-         <button v-else disabled>Delete this Album</button>
-      </section>
+            <label for="deleted_at">Deleted At</label>
+            <input 
+               :value="deleted_at"
+               id="deleted_at"
+               name="deleted_at"
+               readonly
+               class="readonly_input"
+            />
+
+            <div></div>
+            <button type="submit" v-if="app_store.is_logged_in()">Apply</button>
+            <button v-else disabled>Apply</button>
+        
+
+         <section class="mt_3 p_2 border">         
+            <button type="button" v-if="app_store.is_logged_in()" @click="delete_album">Delete this Album</button>
+            <button v-else disabled>Delete this Album</button>
+         </section>
 
       </form>
-
 
       <AlbumTracksList 
          :album_id="id" 
@@ -194,7 +193,7 @@ const get_album_img = computed(() => {
    grid-template-columns:1fr;
 
    max-width:100%;
-   margin-top:5rem;
+   margin-top:1rem;
    margin-bottom:10rem;
 }
 img {
