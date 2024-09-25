@@ -2,18 +2,27 @@
 import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
 
+
+// SongCtrlsNav
+
 const app_store = useAppStore()
 const song_store = useSongStore()
 
-const props = defineProps(['apply_changes'])
+const emit = defineEmits([
+   'apply-changes'
+])
+
+const apply = () => {
+   emit('apply-changes')
+}
 
 
 </script>
 
 <template>
-   <ul class="ctrls_nav flex gap_1 align_items_center m_0 p_0 pr_1 mr_1">
+   <ul class="ctrls_nav flex gap_1 m_0 p_0 pr_1 mr_1">
       <li>
-         <button v-if="app_store.bearer_token && !song_store.synched" @click="apply_changes" class="wee_btn">Apply Changes</button>
+         <button v-if="app_store.bearer_token && !song_store.synched" @click="apply" class="wee_btn">Apply Changes</button>
          <!--button v-else disabled class="wee_btn">Apply Changes</button-->
       </li>
       <li>
@@ -41,16 +50,18 @@ const props = defineProps(['apply_changes'])
 
 <style scoped>
 ul.ctrls_nav {
-   order:2;
+   order:1;
    height:fit-content;
-   margin:auto;
+   margin-top:auto;
+   margin-bottom:0;
+   margin-right:1rem;
    padding:0;
    font-size:1.1rem;
 }
 
 @media (min-width: 1110px) {
    ul.ctrls_nav {
-      order:3;
+      order:2;
    }
 }
 a {

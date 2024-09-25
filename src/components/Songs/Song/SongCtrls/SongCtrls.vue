@@ -7,15 +7,21 @@ import SongOutline from './SongOutline/SongOutline.vue'
 
 // SongCtrls
 
-const props = defineProps(
-   ['apply_changes','selected_section_daw','show_outline']
-)
-const emit = defineEmits(
-   ['set-selected-section-daw']
-)
+// to do : move func props to emit events
+const props = defineProps([
+   'selected_section_daw',
+   'show_outline'
+])
+const emit = defineEmits([
+   'apply-changes',
+   'set-selected-section-daw'
+])
 
 const song_store = useSongStore()
 
+const apply = () => {
+   emit('apply-changes')
+}
 const set_selected_section_daw = (daw) => {
    emit('set-selected-section-daw',daw)
 }
@@ -31,17 +37,21 @@ const set_selected_section_daw = (daw) => {
          :writers="song_store.song.writers"
       />
 
-      <SongOutline v-if="show_outline === true"
-         :song="song_store.song"
-         :selected_section_daw="props.selected_section_daw"
-         @set-selected-section-daw="set_selected_section_daw"
-      />
-      <div v-else id="no_outline_spacer"></div>
+      <section class="flex flex_col align_items_end">
 
-      <SongCtrlsNav 
-         :song="song_store.song" 
-         :apply_changes="props.apply_changes" 
-      />
+         <SongOutline v-if="show_outline === true"
+            :song="song_store.song"
+            :selected_section_daw="props.selected_section_daw"
+            @set-selected-section-daw="set_selected_section_daw"
+         />
+         <div v-else id="no_outline_spacer"></div>
+
+         <SongCtrlsNav 
+            :song="song_store.song" 
+            @apply-changes="apply" 
+         />
+
+      </section>
 
    </section>
 </template>
@@ -56,8 +66,8 @@ const set_selected_section_daw = (daw) => {
    
    display:-ms-grid;
    display:grid;
-   -ms-grid-columns: 2fr 1fr;
-   grid-template-columns: 2fr 1fr;
+   -ms-grid-columns: 1fr;
+   grid-template-columns: 1fr;
 
    max-width:100%;
    padding:.5rem;
@@ -68,7 +78,7 @@ const set_selected_section_daw = (daw) => {
 @media (min-width: 1110px) {
    .song_ctrls {
       display:grid;
-      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
    }
 }
 
