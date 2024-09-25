@@ -19,7 +19,7 @@ const router = createRouter({
       {
          path: '/albums',
          name: 'albums',
-         component: () => import('../views/AlbumsView.vue') 
+         component: () => import('../views/AlbumsListView.vue') 
       },
       {
          path: '/albums/:slug',
