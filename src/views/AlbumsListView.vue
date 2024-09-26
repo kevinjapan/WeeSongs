@@ -129,8 +129,8 @@ const clicked_title = (album_slug) => {
    router.push(`/albums/${album_slug}`)
 }
 
-const get_album_img = (slug) => {
-   return `/data/imgs/albums/${slug.toLowerCase()}.jpg`
+const get_album_img = (img) => {
+   if(img) return `/data/imgs/albums/${img.toLowerCase()}`
 }
 </script>
 
@@ -167,7 +167,10 @@ const get_album_img = (slug) => {
                <li v-for="album in albums_list.albums_list.data" :key="album.id" 
                      class="grid_list_row cursor_pointer"
                      @click="clicked_title(album.slug)" >
-                  <div class="col"><img class="list_teaser_img" :src="get_album_img(album.slug)" /></div>
+                  <div class="col">
+                     <img v-if="album.img" class="list_teaser_img" :src="get_album_img(album?.img)" />
+                     <div v-else class="no_img"></div>
+                  </div>
                   <div class="col cursor_pointer album_title">{{ album.title }}</div> 
                   <div class="col date_col">{{ get_ui_ready_date(album.created_at) }}</div>
                   <div class="col date_col">{{ get_ui_ready_date(album.updated_at) }}</div>
@@ -227,10 +230,13 @@ li.titles_row {
    text-align:center;
 }
 img.list_teaser_img {
-   width:80px;
+   width:160px;
    margin-top:.25rem;
-   height:50px;
+   height:100px;
    border-radius:1rem;
+}
+div.no_img {
+   width:160px;
 }
 @media (min-width: 768px) {
    li.titles_row {
@@ -253,6 +259,9 @@ img.list_teaser_img {
    img.list_teaser_img {
       width:80px;
       height:50px;
+   }
+   div.no_img {
+      width:80px;
    }
 }
 </style>

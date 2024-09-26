@@ -80,8 +80,10 @@ const close_all_tracks_list = () => {
    show_all_tracks_list.value = false
 }
 
-const get_song_img = (slug) => {
-   return `/data/imgs/songs/${slug.toLowerCase()}.jpg`
+const get_resource_img = (img) => {
+   // future : we pass 'slug' into this method, since we only get slugs from parent - review
+   //           ok for now, we know 'slug' and 'img' are identical (albeit img contains file extension)
+   return `/data/imgs/albums/${img.toLowerCase()}.jpg`
 }
 
 
@@ -103,7 +105,7 @@ const get_song_img = (slug) => {
 
       <ul class="flex flex_col gap_1">
          <li v-for="song in tracks" :key="song" class="flex gap_1">
-            <img class="song_tiny_teaser" :src="get_song_img(song)" />
+            <img class="song_tiny_teaser" :src="get_resource_img(song)" />
             <RouterLink :to="{name:'songcontainer',params: {slug:song}}">{{ song }}</RouterLink>
          </li>
       </ul>

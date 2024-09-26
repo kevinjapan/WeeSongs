@@ -135,8 +135,8 @@ const order_songs_by = (col_title) => {
 
 // future : legacy in dataset - eg we have 'updated_at' in two locations in song object
 
-const get_song_img = (slug) => {
-   return `/data/imgs/songs/${slug.toLowerCase()}.jpg`
+const get_song_img = (img) => {
+   return `/data/imgs/songs/${img.toLowerCase()}`
 }
 
 
@@ -179,7 +179,10 @@ const get_song_img = (slug) => {
                <li v-for="song in songs_list.songs_list.data" :key="song.id"
                      class="grid_list_row cursor_pointer"  
                      @click="clicked_title(song.slug)">
-                  <div class="col"><img class="list_teaser_img" :src="get_song_img(song.slug)" /></div>
+                  <div class="col">
+                     <img v-if="song.img" class="list_teaser_img" :src="get_song_img(song?.img)" />
+                     <div v-else class="no_img"></div>
+                  </div>
                   <div class="col cursor_pointer song_title" >{{ song.title }}</div> 
                   <div class="col date_col">{{ get_ui_ready_date(song.made) }}</div>
                   <div class="col date_col">{{ get_ui_ready_date(song.updated) }}</div>
@@ -243,6 +246,10 @@ img.list_teaser_img {
    height:100px;
    border-radius:1rem;
 }
+/* to do : tidy simple handling of no img - rollout AlbumsListView */
+div.no_img {
+   width:160px;
+}
 @media (min-width: 768px) {
    li.titles_row {
       /* toggling display will interfere w/ grid display */
@@ -264,6 +271,9 @@ img.list_teaser_img {
    img.list_teaser_img {
       width:80px;
       height:50px;
+   }
+   div.no_img {
+      width:80px;
    }
 }
 </style>
