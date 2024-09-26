@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { useSongStore } from '@/stores/songStore'
 import useData from '../utilities/useData/useData'
 import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
-import SongLinks from '../components/Songs/Song/SongLinks/SongLinks.vue'
+import ResourceLinks from '../components/ResourceLinks/ResourceLinks.vue'
 import get_ui_ready_date from '../utilities/dates/dates'
 
 
@@ -184,7 +184,7 @@ const get_song_img = (slug) => {
                   <div class="col date_col">{{ get_ui_ready_date(song.made) }}</div>
                   <div class="col date_col">{{ get_ui_ready_date(song.updated) }}</div>
                   <div class="col date_col">
-                     <SongLinks :links="song.links" />
+                     <ResourceLinks :links="song.links" />
                   </div>
                </li>
             </ul>

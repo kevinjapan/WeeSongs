@@ -9,21 +9,45 @@
                "title": "Beneath The Waves",
                "slug": "beneath-the-waves",
                "created_at": "2019-12-02",
-               "updated_at": "2019-12-02"
+               "updated_at": "2019-12-02",
+               "links":[
+                  {
+                  "id":501,
+                  "site":"youtube",
+                  "url":"https://www.youtube.com/watch?v=ME1ScAtrn28&list=PLKBwV2II2uYLVaidMrnYDB_rwPp7dyPX0"
+                  }
+               ]
+
+
             },
             {
                "id": 9,
                "title": "Rough Not Ready",
                "slug": "rough-not-ready",
                "created_at": "2016-09-11",
-               "updated_at": "2016-09-11"
+               "updated_at": "2016-09-11",
+               "links":[
+                  {
+                  "id":901,
+                  "site":"youtube",
+                  "url":"https://www.youtube.com/watch?v=0OegAq4h8Vc&list=PLKBwV2II2uYLL4XuwLtNpT1hBArTmS-Mb"
+                  }
+               ]
+
             },
             {
                "id": 4,
                "title": "Life's A Rhetorical Question",
                "slug": "lifes-a-rhetorical-question",
                "created_at": "2018-10-19",
-               "updated_at": "2018-10-19"
+               "updated_at": "2018-10-19",
+               "links":[
+                  {
+                  "id":401,
+                  "site":"youtube",
+                  "url":"https://www.youtube.com/watch?v=TnTlFNlFDME&list=PLKBwV2II2uYKHAhgqfQqmWhl2fT1fWnIa"
+                  }
+               ]               
             }
       ],
       "first_page_url": "http://songs-api-laravel/api/albums?page=1",

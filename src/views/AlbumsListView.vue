@@ -5,6 +5,7 @@ import { useAppStore } from '@/stores/appStore'
 import { useAlbumStore } from '@/stores/albumStore'
 import useData from '../utilities/useData/useData'
 import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
+import ResourceLinks from '../components/ResourceLinks/ResourceLinks.vue'
 import get_ui_ready_date from '../utilities/dates/dates'
 
 
@@ -161,6 +162,7 @@ const get_album_img = (slug) => {
                   <div @click="order_albums_by('title')" class="cursor_pointer col col_title">title</div>
                   <div @click="order_albums_by('created_at')" class="cursor_pointer col col_title date_col">made</div>
                   <div @click="order_albums_by('updated_at')" class="cursor_pointer col col_title date_col">updated</div>
+                  <div class=" date_col"></div>
                </li>
                <li v-for="album in albums_list.albums_list.data" :key="album.id" 
                      class="grid_list_row cursor_pointer"
@@ -169,6 +171,9 @@ const get_album_img = (slug) => {
                   <div class="col cursor_pointer album_title">{{ album.title }}</div> 
                   <div class="col date_col">{{ get_ui_ready_date(album.created_at) }}</div>
                   <div class="col date_col">{{ get_ui_ready_date(album.updated_at) }}</div>
+                  <div class="col date_col">
+                     <ResourceLinks :links="album.links" />
+                  </div>
                </li>
             </ul>
 
