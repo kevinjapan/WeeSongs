@@ -289,7 +289,7 @@ nav.app_nav.opened > div.app_nav_dimmer {
       -ms-flex-pack:flex-end;
       justify-content:flex-end;
 
-      gap:1rem;
+      gap:.15rem;
 
       width:100%;
       padding:0 1rem 0 1rem;
@@ -302,13 +302,21 @@ nav.app_nav.opened > div.app_nav_dimmer {
 a {
    width:fit-content;
    margin:0;
-   padding:0;
+   padding:0 .5rem;
    color:inherit;
    font-weight:400;
    background:white;
+   border-radius:.25rem;
 }
 a.sel_view {
    font-weight:700;
+   cursor:unset;
+}
+a:not(.sel_view):hover {
+   font-weight:400;
+}
+a:not(.no_cursor_pointer):not(.sel_view):hover {
+   background:hsl(0, 0%, 98%);
 }
 
 </style>
