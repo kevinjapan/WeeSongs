@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 
 
@@ -11,14 +11,13 @@ const router = useRouter()
 const app_store = useAppStore()
 
 const display = ref(false)
-const curr_route = ref('/')
 
 // we use router.push() rather than:
-// <RouterLink to="/" class="view_link" activeClass="selected_view" exactActiveClass="selected_view">Home</RouterLink>
+// <RouterLink to="/" class="view_link" activeClass="sel_view" exactActiveClass="sel_view">Home</RouterLink>
 // since we want to interject to close app_nav
 const open_nav_link = route => {
    display.value = false
-   curr_route.value = route
+   app_store.curr_view_route = route
    router.push(route)
 }
 
@@ -26,8 +25,8 @@ const clicked_bg = () => {
    display.value = false
 }
 
-const is_curr_route = (route) => {
-   return route === curr_route.value
+const is_curr_view_route = (route) => {
+   return route === app_store.curr_view_route
 }
 </script>
 
@@ -45,30 +44,30 @@ const is_curr_route = (route) => {
 
       <div class="app_nav_links">
 
-         <a @click.stop="open_nav_link('/')" :class="{selected_view:is_curr_route('/')}">Home</a>
+         <a @click.stop="open_nav_link('/')" :class="{sel_view:is_curr_view_route('/')}">Home</a>
 
-         <a @click.stop="open_nav_link('/songs')" :class="{selected_view:is_curr_route('/songs')}">Songs</a>
+         <a @click.stop="open_nav_link('/songs')" :class="{sel_view:is_curr_view_route('/songs')}">Songs</a>
 
          <div v-if="app_store.app_api !== ''">
-            <a @click.stop="open_nav_link('/songs/create')" :class="{selected_view:is_curr_route('/songs/create')}">Create</a>
+            <a @click.stop="open_nav_link('/songs/create')" :class="{sel_view:is_curr_view_route('/songs/create')}">Create</a>
          </div>
 
          <div v-else class="text_lightgrey">
             <a class="no_cursor_pointer">Create</a>
          </div>
 
-         <a @click.stop="open_nav_link('/albums')" :class="{selected_view:is_curr_route('/albums')}">Albums</a>
+         <a @click.stop="open_nav_link('/albums')" :class="{sel_view:is_curr_view_route('/albums')}">Albums</a>
 
          <div v-if="app_store.app_api !== ''">
-            <a @click.stop="open_nav_link('/search')" :class="{selected_view:is_curr_route('/search')}">Search</a>
+            <a @click.stop="open_nav_link('/search')" :class="{sel_view:is_curr_view_route('/search')}">Search</a>
          </div>
          <div v-else class="text_lightgrey">
             <a class="no_cursor_pointer">Search</a>
          </div>
 
          <div v-if="app_store.app_api !== ''">
-            <a v-if="!app_store.bearer_token" @click.stop="open_nav_link('/login')" :class="{selected_view:is_curr_route('/login')}">Login</a>
-            <a v-else @click.stop="open_nav_link('/account')" :class="{selected_view:is_curr_route('/account')}">{{ app_store.username }}</a>
+            <a v-if="!app_store.bearer_token" @click.stop="open_nav_link('/login')" :class="{sel_view:is_curr_view_route('/login')}">Login</a>
+            <a v-else @click.stop="open_nav_link('/account')" :class="{sel_view:is_curr_view_route('/account')}">{{ app_store.username }}</a>
          </div>
 
       </div>
@@ -308,7 +307,7 @@ a {
    font-weight:400;
    background:white;
 }
-a.selected_view {
+a.sel_view {
    font-weight:700;
 }
 
