@@ -230,6 +230,11 @@ a.no_cursor_pointer {
    -ms-flex-align:center;
    align-items:center;
 }
+.align_items_end {
+   -webkit-box-align:end;
+   -ms-flex-align:end;
+   align-items:end;
+}
 .align_self_end {
    -ms-flex-item-align:end;
    align-self:flex-end;
@@ -252,14 +257,15 @@ songs and albms list views
 .grid_list {
    width:100%;
    padding:1rem;
+   gap:2rem;
 }
 .grid_list li.grid_list_row {
 
    display:-ms-grid;
    display:grid;
 
-   -ms-grid-columns: .25fr 1fr 1fr 1fr;
-   grid-template-columns: .25fr 1fr 1fr 1fr;
+   -ms-grid-columns:       1fr;
+   grid-template-columns:  1fr;
 
    align-items:center;
    gap:.7rem;
@@ -268,11 +274,14 @@ songs and albms list views
    border-radius:.5rem;
    text-align:left;
 }
-.grid_list li.grid_list_row:hover {
+.grid_list li.grid_list_row:not(.titles_row):hover {
    background:hsl(0, 0%, 92%);
 }
-.grid_list li.grid_list_row > div.title {
-   font-size:1.05rem;
+@media (min-width: 768px) {
+   .grid_list li.grid_list_row {
+      -ms-grid-columns:      .25fr 2fr 1fr 1fr 1fr;
+      grid-template-columns: .25fr 2fr 1fr 1fr 1fr;
+   }
 }
 
 

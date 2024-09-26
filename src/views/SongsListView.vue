@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { useSongStore } from '@/stores/songStore'
 import useData from '../utilities/useData/useData'
 import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
+import SongLinks from '../components/Songs/Song/SongLinks/SongLinks.vue'
 import get_ui_ready_date from '../utilities/dates/dates'
 
 
@@ -138,6 +139,8 @@ const get_song_img = (slug) => {
    return `/data/imgs/songs/${slug.toLowerCase()}.jpg`
 }
 
+
+
 </script>
 
 <template>
@@ -166,19 +169,23 @@ const get_song_img = (slug) => {
             />
    
             <ul class="songs_list">           
-               <li class="grid_list_row">
+               <li class="grid_list_row titles_row">
                   <div></div>
-                  <div @click="order_songs_by('title')" class="cursor_pointer col_title">title</div>
-                  <div @click="order_songs_by('created_at')" class="cursor_pointer col_title text_right">made</div>
-                  <div @click="order_songs_by('updated_at')" class="cursor_pointer col_title text_right">updated</div>
+                  <div @click="order_songs_by('title')" class="cursor_pointer col col_title">title</div>
+                  <div @click="order_songs_by('created_at')" class="cursor_pointer col col_title date_col">made</div>
+                  <div @click="order_songs_by('updated_at')" class="cursor_pointer col col_title date_col">updated</div>
+                  <div class=" date_col"></div>
                </li>
                <li v-for="song in songs_list.songs_list.data" :key="song.id"
                      class="grid_list_row cursor_pointer"  
                      @click="clicked_title(song.slug)">
-                  <div><img class="list_teaser_img" :src="get_song_img(song.slug)" /></div>
-                  <div class="cursor_pointer title" >{{ song.title }}</div> 
-                  <div class="text_right">{{ get_ui_ready_date(song.made) }}</div>
-                  <div class="text_right">{{ get_ui_ready_date(song.updated) }}</div>
+                  <div class="col"><img class="list_teaser_img" :src="get_song_img(song.slug)" /></div>
+                  <div class="col cursor_pointer song_title" >{{ song.title }}</div> 
+                  <div class="col date_col">{{ get_ui_ready_date(song.made) }}</div>
+                  <div class="col date_col">{{ get_ui_ready_date(song.updated) }}</div>
+                  <div class="col date_col">
+                     <SongLinks :links="song.links" />
+                  </div>
                </li>
             </ul>
 
@@ -200,16 +207,63 @@ const get_song_img = (slug) => {
 
 <style scoped>
 .songs_list {
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   -webkit-box-orient:vertical;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:column;
+   flex-direction:column;
+   gap:2rem;
    max-width:100%;
    padding-right:2rem;
+}
+.grid_list_row {
+   padding-top:2rem;
+}
+.song_title {
+   font-size:1.75rem;
+}
+li.titles_row {
+   visibility:hidden;
 }
 .col_title {
    color:hsl(0, 0%, 73%);
    font-style:italic;
 }
+.col {
+   text-align:center;
+}
+.date_col {
+   text-align:center;
+}
 img.list_teaser_img {
-   width:80px;
-   height:50px;
+   width:160px;
+   margin-top:.25rem;
+   height:100px;
    border-radius:1rem;
+}
+@media (min-width: 768px) {
+   li.titles_row {
+      /* toggling display will interfere w/ grid display */
+      visibility:visible;
+   }
+   .songs_list {
+      gap:1rem;
+   }
+   .song_title {
+      font-size:1.05rem;
+      font-weight:500;
+   }
+   .col {
+      text-align:left;
+   }
+   .date_col {
+      text-align:right;
+   }
+   img.list_teaser_img {
+      width:80px;
+      height:50px;
+   }
 }
 </style>

@@ -156,19 +156,19 @@ const get_album_img = (slug) => {
             />
 
             <ul class="albums_list">
-               <li class="grid_list_row">
-                  <div></div>
-                  <div @click="order_albums_by('title')" class="cursor_pointer col_title">title</div>
-                  <div @click="order_albums_by('created_at')" class="cursor_pointer col_title text_right">made</div>
-                  <div @click="order_albums_by('updated_at')" class="cursor_pointer col_title text_right">updated</div>
+               <li class="grid_list_row titles_row">
+                  <div class="col"></div>
+                  <div @click="order_albums_by('title')" class="cursor_pointer col col_title">title</div>
+                  <div @click="order_albums_by('created_at')" class="cursor_pointer col col_title date_col">made</div>
+                  <div @click="order_albums_by('updated_at')" class="cursor_pointer col col_title date_col">updated</div>
                </li>
                <li v-for="album in albums_list.albums_list.data" :key="album.id" 
                      class="grid_list_row cursor_pointer"
                      @click="clicked_title(album.slug)" >
-                  <div><img class="list_teaser_img" :src="get_album_img(album.slug)" /></div>
-                  <div class="cursor_pointer title">{{ album.title }}</div> 
-                  <div class="text_right">{{ get_ui_ready_date(album.created_at) }}</div>
-                  <div class="text_right">{{ get_ui_ready_date(album.updated_at) }}</div>
+                  <div class="col"><img class="list_teaser_img" :src="get_album_img(album.slug)" /></div>
+                  <div class="col cursor_pointer album_title">{{ album.title }}</div> 
+                  <div class="col date_col">{{ get_ui_ready_date(album.created_at) }}</div>
+                  <div class="col date_col">{{ get_ui_ready_date(album.updated_at) }}</div>
                </li>
             </ul>
 
@@ -191,16 +191,63 @@ const get_album_img = (slug) => {
 
 <style scoped>
 .albums_list {
+   display:-webkit-box;
+   display:-ms-flexbox;
+   display:flex;
+   -webkit-box-orient:vertical;
+   -webkit-box-direction:normal;
+   -ms-flex-direction:column;
+   flex-direction:column;
+   gap:2rem;
    max-width:100%;
    padding-right:2rem;
+}
+.grid_list_row {
+   padding-top:2rem;
+}
+.album_title {
+   font-size:1.75rem;
+}
+li.titles_row {
+   visibility:hidden;
 }
 .col_title {
    color:hsl(0, 0%, 73%);
    font-style:italic;
 }
+.col {
+   text-align:center;
+}
+.date_col {
+   text-align:center;
+}
 img.list_teaser_img {
    width:80px;
+   margin-top:.25rem;
    height:50px;
    border-radius:1rem;
+}
+@media (min-width: 768px) {
+   li.titles_row {
+      /* toggling display will interfere w/ grid display */
+      visibility:visible;
+   }
+   .albums_list {
+      gap:1rem;
+   }
+   .album_title {
+      font-size:1.05rem;
+      font-weight:500;
+   }
+   .col {
+      text-align:left;
+   }
+   .date_col {
+      text-align:right;
+   }
+   img.list_teaser_img {
+      width:80px;
+      height:50px;
+   }
 }
 </style>
