@@ -46,18 +46,18 @@ const is_curr_view_route = (route) => {
 
          <a @click.stop="open_nav_link('/')" :class="{sel_view:is_curr_view_route('/')}">Home</a>
 
-         <a @click.stop="open_nav_link('/songs')" :class="{sel_view:is_curr_view_route('/songs')}">Songs</a>
 
          <div v-if="app_store.app_api !== ''">
             <a @click.stop="open_nav_link('/songs/create')" :class="{sel_view:is_curr_view_route('/songs/create')}">Create</a>
          </div>
-
          <div v-else class="text_lightgrey">
             <a class="no_cursor_pointer">Create</a>
          </div>
 
          <a @click.stop="open_nav_link('/albums')" :class="{sel_view:is_curr_view_route('/albums')}">Albums</a>
 
+         <a @click.stop="open_nav_link('/songs')" :class="{sel_view:is_curr_view_route('/songs')}">Songs</a>
+         
          <div v-if="app_store.app_api !== ''">
             <a @click.stop="open_nav_link('/search')" :class="{sel_view:is_curr_view_route('/search')}">Search</a>
          </div>
