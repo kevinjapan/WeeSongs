@@ -246,7 +246,6 @@ img.list_teaser_img {
    height:100px;
    border-radius:1rem;
 }
-/* to do : tidy simple handling of no img - rollout AlbumsListView */
 div.no_img {
    width:160px;
 }

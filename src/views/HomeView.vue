@@ -25,6 +25,9 @@ onMounted(() => {
             Hello, this is a static-site demo
             and not all features of the full application are available.
          </p>
+         <p>
+            This site is under development and not all design features are yet optimized for IOS platforms.
+         </p>
 
       </section>
    </section>

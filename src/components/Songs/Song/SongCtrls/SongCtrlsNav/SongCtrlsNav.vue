@@ -16,11 +16,10 @@ const apply = () => {
    emit('apply-changes')
 }
 
-
 </script>
 
 <template>
-   <ul class="ctrls_nav flex gap_1 m_0 p_0 pr_1 mr_1">
+   <ul class="ctrls_nav flex">
       <li>
          <button v-if="app_store.bearer_token && !song_store.synched" @click="apply" class="wee_btn">Apply Changes</button>
          <!--button v-else disabled class="wee_btn">Apply Changes</button-->
@@ -54,14 +53,21 @@ ul.ctrls_nav {
    height:fit-content;
    margin-top:auto;
    margin-bottom:0;
-   margin-right:1rem;
+   margin:auto;
    padding:0;
    font-size:1.1rem;
+}
+ul.ctrls_nav li {
+   /* we use padding over gap for IOS */
+   padding:0;
+   padding-left:.75rem;
+   padding-right:.75rem;
 }
 
 @media (min-width: 1110px) {
    ul.ctrls_nav {
       order:2;
+      margin:unset;
    }
 }
 a {

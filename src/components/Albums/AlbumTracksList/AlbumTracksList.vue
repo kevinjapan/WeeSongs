@@ -83,14 +83,8 @@ const close_all_tracks_list = () => {
 const get_resource_img = (img) => {
    // future : we pass 'slug' into this method, since we only get slugs from parent - review
    //           ok for now, we know 'slug' and 'img' are identical (albeit img contains file extension)
-   return `/data/imgs/albums/${img.toLowerCase()}.jpg`
+   return `/data/imgs/songs/${img.toLowerCase()}.jpg`
 }
-
-
-//
-// to do : make 'img-slug' a field property of song - so we can cleanly deal
-//          w/ no image present scenario - eg we don't try to load it
-// 
 
 </script>
 
@@ -104,8 +98,8 @@ const get_resource_img = (img) => {
       </nav>
 
       <ul class="flex flex_col gap_1">
-         <li v-for="song in tracks" :key="song" class="flex gap_1">
-            <img class="song_tiny_teaser" :src="get_resource_img(song)" />
+         <li v-for="song in tracks" :key="song" class="flex gap_1 align_items_center">
+            <div class="mr_1"><img class="song_tiny_teaser" :src="get_resource_img(song)" /></div>
             <RouterLink :to="{name:'songcontainer',params: {slug:song}}">{{ song }}</RouterLink>
          </li>
       </ul>
@@ -135,7 +129,8 @@ ul {
    border-radius:.25rem;
 }
 img.song_tiny_teaser {
-   width:60px;
+   width:80px;
+   height:50px;
 }
 </style>
 
