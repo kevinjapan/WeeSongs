@@ -26,7 +26,9 @@ export default async function useData(end_point,url_params,query_params,body) {
    const app_store = useAppStore()
    const end_points = useEndPoints(url_params,query_params)
 
-   if(!Object.hasOwn(end_points,end_point)) {
+   // future : hasOwn not support on pre-15.4 IOS - move to hasOwn()
+   // if(!Object.hasOwn(end_points,end_point)) {
+   if(!end_points.hasOwnProperty(end_point)) {
       return { error: 'The query end-point was not recognized.' }
    }
 

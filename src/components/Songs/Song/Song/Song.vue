@@ -56,6 +56,9 @@ const add_section = () => {
 // future : we currently rely on ref in store being changed by changing it directly reactively
 // work w/ this while ok but review - should we change this to emit() and handle?
 
+
+// to do : currently we don't support sm screens - review viewport widths are acceptable and notify if sm screen.
+
 </script>
 
 <template>
@@ -80,8 +83,18 @@ const add_section = () => {
 <style scoped>
 .song_wrapper {
    /* we leave plenty space to scroll bottom section from outline */
-   margin-top:8rem; 
+   margin-top:12rem; 
    margin-bottom:8rem;
    padding-top:0;
+}
+@media (min-width: 768px) {
+   .song_wrapper {
+      margin-top:8rem; /* to do : align these w/ css var() so we can rationalize across site */
+   }
+}
+@media (hover: none) {
+   .song_wrapper {
+      margin-top:14rem; 
+   }
 }
 </style>
