@@ -1,7 +1,5 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore, acceptHMRUpdate } from 'pinia'
-import { useRoute } from 'vue-router'
-
 
 
 // AppStore
@@ -11,10 +9,8 @@ export const useAppStore = defineStore('app_store', () => {
    // we use presence/absence as web_api/static toggle flag
    const app_api = false ? ref('http://songs-api-laravel/api') : ref('')
 
-   // we track curr view for highlight nav links on page refreshes
-   // to do :  refreshing a page will set back to default (selects 'Home' on AppNav)
-   //          review - may already work on Netlify w/ _redirects file?
-   const curr_view_route = ref('/')
+   // synch AppNav w/ current view 
+   const curr_view_route = ref('')
 
    // we use presence/absence as logged-in flag
    const bearer_token = ref('')
@@ -25,6 +21,8 @@ export const useAppStore = defineStore('app_store', () => {
 
    // getters
    const get_api = computed(() => app_api.value)
+
+   
 
 
    // future : persist login / bearer_token for limited time
