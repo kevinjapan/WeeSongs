@@ -7,11 +7,11 @@ import SongOutline from './SongOutline/SongOutline.vue'
 
 // SongCtrls
 
-// to do : move func props to emit events
-const props = defineProps([
-   'selected_section_daw',
-   'show_outline'
-])
+// Component Interface - props and emits
+const props = defineProps({
+   show_outline:Boolean,
+   selected_section_daw:String
+})
 const emit = defineEmits([
    'apply-changes',
    'set-selected-section-daw'
