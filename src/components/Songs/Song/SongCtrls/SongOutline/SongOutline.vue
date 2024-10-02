@@ -24,6 +24,10 @@ const is_section_type = (target_type,actual_type) => {
 const is_selected_section = (daw) => {
    return daw === props.selected_section_daw
 }
+
+// to do : in safari, 'tooltips' don't disappear after clicking
+
+
 </script>
 
 <template>
@@ -52,16 +56,16 @@ const is_selected_section = (daw) => {
    display:-webkit-box;
    display:-ms-flexbox;
    display:flex;
-   align-self:center;
    gap:0;
-   width:fit-content;
    margin:auto;
+   width:fit-content;
    padding:.5rem;
-   order:3;
+   order:2;
 }
 @media (min-width: 1110px) {
    .song_outline {
-      order:2;
+      margin:unset;
+      order:1;
    }
 }
 .outline_section {
@@ -75,16 +79,18 @@ const is_selected_section = (daw) => {
 .outline_section:hover {
    background:hsl(0, 0%, 93%);
 }
-.outline_section:hover::before {
-   position:absolute;
-   content:attr(data-section-type);
-   width:fit-content;
-   height:fit-content;
-   margin-top:1.5rem;
-   margin-left:.5rem;
-   padding:.15rem;
-   background:white;
-   border:solid 1px grey;
+@media (hover: hover) {
+   .outline_section:hover::before {
+      position:absolute;
+      content:attr(data-section-type);
+      width:fit-content;
+      height:fit-content;
+      margin-top:1.5rem;
+      margin-left:.5rem;
+      padding:.15rem;
+      background:white;
+      border:solid 1px grey;
+   }
 }
 
 /*
