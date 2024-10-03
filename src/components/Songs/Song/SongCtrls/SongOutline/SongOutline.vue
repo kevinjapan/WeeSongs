@@ -24,10 +24,6 @@ const is_section_type = (target_type,actual_type) => {
 const is_selected_section = (daw) => {
    return daw === props.selected_section_daw
 }
-
-// to do : in safari, 'tooltips' don't disappear after clicking
-
-
 </script>
 
 <template>

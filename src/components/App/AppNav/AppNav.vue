@@ -16,7 +16,6 @@ const display = ref(false)
 // <RouterLink to="/" class="view_link" activeClass="sel_view" exactActiveClass="sel_view">Home</RouterLink>
 // since we want to interject to close app_nav
 const open_nav_link = route => {
-   console.log('open_nav_link')
    display.value = false
    app_store.curr_view_route = route
    router.push(route)
