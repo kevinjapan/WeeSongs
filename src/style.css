@@ -17,6 +17,10 @@
   --app_nav_height_sm:120px;
 
   --app_nav_dropdown_top:30px;
+
+  /* space songs content below top nav */
+  --song_top_margin_sm:12rem;
+  --song_top_margin_lg:8rem;
   
   /* z-index layers */
   --app_status_z-index:1000;

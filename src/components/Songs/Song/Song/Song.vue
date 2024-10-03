@@ -59,6 +59,8 @@ const add_section = () => {
 
 // to do : currently we don't support sm screens - review viewport widths are acceptable and notify if sm screen.
 
+// to do : limit total no. sections - disable 'add section' below on that limit
+
 </script>
 
 <template>
@@ -83,13 +85,13 @@ const add_section = () => {
 <style scoped>
 .song_wrapper {
    /* we leave plenty space to scroll bottom section from outline */
-   margin-top:12rem; 
+   margin-top:var(--song_top_margin_sm);
    margin-bottom:8rem;
    padding-top:0;
 }
 @media (min-width: 768px) {
    .song_wrapper {
-      margin-top:8rem; /* to do : align these w/ css var() so we can rationalize across site */
+      margin-top:var(--song_top_margin_lg);
    }
 }
 @media (hover: none) {
