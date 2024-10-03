@@ -6,8 +6,11 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 
 export const useAppStore = defineStore('app_store', () => {
 
+   // toggle web_api/static
+   const is_static = false
+
    // we use presence/absence as web_api/static toggle flag
-   const app_api = false ? ref('http://songs-api-laravel/api') : ref('')
+   const app_api = is_static ? ref('') : ref('http://songs-api-laravel/api')
 
    // synch AppNav w/ current view 
    const curr_view_route = ref('')
