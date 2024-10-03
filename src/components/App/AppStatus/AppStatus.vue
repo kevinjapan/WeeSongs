@@ -16,7 +16,8 @@ const { notify_msg_list } = storeToRefs(app_store)
 // we linger the text to allow transition effects to act on the text-filled component
 const lingering_texts = ref([])
 
-// assign msg then setTimeout to clear
+// Notification messages are held in an array (list) of strings
+// assign msg then set to clear
 watch(notify_msg_list, () => {
    let msg_key = 0
    if(notify_msg_list.value.length > 0) lingering_texts.value = notify_msg_list.value.map(msg => {
@@ -25,8 +26,11 @@ watch(notify_msg_list, () => {
          text:msg
       }
    })
-   // to do : oftentimes, the notification disappears too quickly - influenced by component changing underneath?
-   setTimeout(() => {app_store.set_notify_msg_list([])},8000)
+   
+   // watch is called twice - our initial clear will trigger again - so we ignore second w/ empty msg list
+   if(notify_msg_list.value.length > 0) {
+      setTimeout(() => {app_store.set_notify_msg_list([])},5000)
+   }
 })
 
 const close = () => {
@@ -48,7 +52,7 @@ const close = () => {
 <style scoped>
 .app_status {
    position:fixed;
-   top:var(--status-msg-top);  /* to do : sometimes interfering on page while hidden - but we need a top? */
+   top:var(--status-msg-top);
    left:0;
    right:0;
    z-index:var(--app_status_z-index);
