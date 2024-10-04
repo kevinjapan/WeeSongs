@@ -10,7 +10,7 @@ const props = defineProps({
    song:Object
 })
 const emit = defineEmits([
-   'update_song',
+   'update-song',
    'clone-section',
    'move-section',
    'update-section',

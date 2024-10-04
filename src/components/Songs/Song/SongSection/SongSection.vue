@@ -15,7 +15,7 @@ const props = defineProps({
    last:Boolean
 })
 const emit = defineEmits([
-   'update_song',
+   'update-song',
    'clone-section',
    'move-section',
    'update-section',
