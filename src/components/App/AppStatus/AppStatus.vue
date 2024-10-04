@@ -26,10 +26,15 @@ watch(notify_msg_list, () => {
          text:msg
       }
    })
+
    
    // watch is called twice - our initial clear will trigger again - so we ignore second w/ empty msg list
    if(notify_msg_list.value.length > 0) {
-      setTimeout(() => {app_store.set_notify_msg_list([])},5000)
+
+      // we determine delay by no. of msgs in list
+      const delay_before_clear = 1000 + (notify_msg_list.value.length * 2000 )
+      setTimeout(() => {app_store.set_notify_msg_list([])},delay_before_clear)
+   
    }
 })
 
