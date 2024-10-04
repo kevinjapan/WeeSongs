@@ -55,7 +55,8 @@ const update_track_list = async(new_track_list) => {
          outcomes.push('Tracks were removed successfully.')
       }
       else {
-         outcomes.push('There was an error removing tracks: ' + remove_error)
+         outcomes.push("Sorry, we couldn't remove from the tracklist: ")
+         outcomes.push(remove_error)
       }
    }
 
@@ -67,7 +68,8 @@ const update_track_list = async(new_track_list) => {
          outcomes.push('Tracks were added successfully.')
       }
       else {
-         outcomes.push('There was an error adding tracks: ' + add_error)
+         outcomes.push("Sorry, we couldn't add to the tracklist")
+         outcomes.push(add_error)
       }
    }
 
