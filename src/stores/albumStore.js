@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { useSongStore } from '@/stores/songStore'
 import useData from '../utilities/useData/useData'
+import useValidSong from '../utilities/useValidSong/useValidSong'
 import { get_new_album_template } from '../utilities/newAlbumTemplate/newAlbumTemplate'
 import { add_if_unique_str } from '../utilities/utilities/utilities'
 
@@ -187,11 +188,17 @@ export const useAlbumStore = defineStore('album_store', () => {
             if(modified_song.song && modified_song.song.album) delete modified_song.song.album
             modified_song.album_id = album_id
 
+            // ------------------------------------------------------------------------
+            // to do : bug - failing to update_song since 'writers' cannot be null
+            // 2. fix here, so client doesn't submit if 'writers' is empty - rollout  
+            useValidSong(modified_song) // to do : handle result from useValidSong()
+
             const updated_result = await song_store.update_song(modified_song)
             if(updated_result.outcome === 'success') {
                // will pass updated data
             }
             else {
+               console.log('updated_result',updated_result)
                // failed to update_song
                tracks_slugs_list = null
                add_if_unique_str(error,updated_result.message)               
