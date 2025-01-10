@@ -1,5 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+
+// npm install --save-dev @types/node required
 import { fileURLToPath, URL } from 'url'
 
 // https://vitejs.dev/config/
