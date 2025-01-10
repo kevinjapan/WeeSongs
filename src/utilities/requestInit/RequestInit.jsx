@@ -13,7 +13,7 @@ export default function reqInit(method = "POST", bearer_token = "",body = "") {
          headers: { 
                'Accept':'application/json',
                'Authorization': `Bearer ${bearer_token}`,
-               'Content-Type': 'application/json',
+               'Content-Type': 'application/json'
          },
          credentials: 'include',
          mode: "cors",
@@ -26,7 +26,7 @@ export default function reqInit(method = "POST", bearer_token = "",body = "") {
          method: method,
          headers: { 
             'Authorization': `Bearer ${bearer_token}`,
-            'Accept':'application/json',
+            'Accept':'application/json'
          },
          mode: "cors",
          cache: "default"
