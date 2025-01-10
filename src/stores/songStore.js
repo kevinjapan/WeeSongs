@@ -304,7 +304,7 @@ export const useSongStore = defineStore('song_store', () => {
          copy_section.id = ids[ids.length - 1] + 1
 
          // calc next DAW char
-         const daws = modified.aSections.map(section => section.daw)
+         let daws = modified.aSections.map(section => section.daw)
          daws.sort()
          next_daw = String.fromCharCode(daws[daws.length -1].charCodeAt(0) + 1)
          if(next_daw > 'Z'.charCodeAt(0)) next_daw = 'Z'.charCodeAt(0)
