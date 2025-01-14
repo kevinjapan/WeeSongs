@@ -43,6 +43,19 @@ export const useSongStore = defineStore('song_store', () => {
 
       const result = await get_song(slug)
       if(result.outcome === 'success') {
+
+         // reset ids (for legacy songs w/ no 'id')
+         // for simplicity, we just overwrite on each load since uniqueness is important
+         let reset_sec_id = 100
+         for (const section of result.song.songsheet.aSections) {
+            section.id = reset_sec_id
+            let reset_bar_id = 1
+            for (const bar of section.aBars) {
+               bar.id = reset_sec_id + reset_bar_id++
+            }
+            reset_sec_id += 100
+         }
+
          song.value = result.song
          // result.message = 'song successfully loaded into store'
       }
@@ -194,7 +207,8 @@ export const useSongStore = defineStore('song_store', () => {
 
    // save
    // save this store local copy to server (after we have updated_sections etc)
-   async function save() {      
+   async function save() {    
+
       try {
          const { data, error } = await useData('save_song',[song.value.id],{},JSON.stringify(song.value))
          if(data) {
