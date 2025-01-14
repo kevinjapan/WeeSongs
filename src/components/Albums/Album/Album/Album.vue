@@ -10,7 +10,8 @@ import get_ui_ready_date from '../../../../utilities/dates/dates'
 
 // Album
 
-// to do : add img
+// future : allow user to add img (we use slug to name .jpg file)
+
 const route = useRoute()
 const router = useRouter()
 const app_store = useAppStore()
@@ -57,8 +58,9 @@ onBeforeMount(async() => {
    }
 })
 
+// autogen slug from title
 const change_title = () => {
-   slug.value = title.value.replaceAll(' ','-')
+   slug.value = title.value.replaceAll(' ','-').replaceAll('\'','')
 }
 
 // apply local changes
