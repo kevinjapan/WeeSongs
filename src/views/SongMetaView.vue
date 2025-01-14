@@ -36,9 +36,9 @@ onBeforeMount(async() => {
    // ensure song is loaded
    if(!songStore.song) {
       // there is an issue w/ server's handling of unknown slug - not clean, garbage returned (error reporting in php)
-      // so, for now, we will simply report first line of error in AppStatus notification until fix on server-side
+      // so, for now, we will simply report first line of error in AppNotifications notification until fix on server-side
       const result = await songStore.load_song(route.params.slug)
-      if(result && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)     
+      if(result && result.outcome === 'fail') app_store.set_app_notifications(result.message)     
    }
    // hydrate local state
    title.value = songStore.song.title
@@ -72,7 +72,7 @@ const apply = async() => {
    modified_song.writers = writers.value
    
    const result = await songStore.save_song(modified_song)
-   if(result && result.message) app_store.set_notify_msg_list(result.message)
+   if(result && result.message) app_store.set_app_notifications(result.message)
    
    // reload w/ new slug in url
    if(result.outcome === 'success') router.push(`/songs/${slug.value}/meta`)
@@ -83,7 +83,7 @@ const delete_song = async() => {
    if (window.confirm("Do you really want to delete this song?")) {
       const result = await songStore.delete_song(songStore.song.id)
       if(result) {
-         if(result.message) app_store.set_notify_msg_list(result.message)
+         if(result.message) app_store.set_app_notifications(result.message)
          if(result.outcome === 'success') setTimeout(() => router.push('/songs'),3000)
       }
    }

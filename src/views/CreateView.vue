@@ -22,7 +22,7 @@ onMounted(() => {
 const apply_song = async() => {
    const result = await songStore.create_song(song_title.value)
    if(result && result.outcome) {
-      app_store.set_notify_msg_list(result.outcome === 'success' 
+      app_store.set_app_notifications(result.outcome === 'success' 
          ? 'The song was successfully created' 
          : 'We were unable to create the song. ' + result.message)
    }
@@ -30,7 +30,7 @@ const apply_song = async() => {
 const apply_album = async() => {
    const result = await albumStore.create_album(album_title.value)
    if(result && result.outcome) {
-      app_store.set_notify_msg_list(result.outcome === 'success' 
+      app_store.set_app_notifications(result.outcome === 'success' 
          ? 'The album was successfully created' 
          : 'We were unable to create the album. ' + result.message)
    }

@@ -4,13 +4,12 @@ import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/stores/appStore'
 
 
-// AppStatus
-
+// AppNotifications
 // app-level flash notification utility component
-// we don't use v-if in parent component, since we want to use transitions (v-if just toggles display)
+// we don't use v-if in parent component, since we want to use transitions (v-if just toggles display property)
 
 const app_store = useAppStore()
-const { notify_msg_list } = storeToRefs(app_store)
+const { app_notifications } = storeToRefs(app_store)
 
 // since msg is our toggle flag, transitions take effect after the msg is emptied,
 // we linger the text to allow transition effects to act on the text-filled component
@@ -18,9 +17,9 @@ const lingering_texts = ref([])
 
 // Notification messages are held in an array (list) of strings
 // assign msg then set to clear
-watch(notify_msg_list, () => {
+watch(app_notifications, () => {
    let msg_key = 0
-   if(notify_msg_list.value.length > 0) lingering_texts.value = notify_msg_list.value.map(msg => {
+   if(app_notifications.value.length > 0) lingering_texts.value = app_notifications.value.map(msg => {
       return {
          key:msg_key++,
          text:msg
@@ -29,23 +28,23 @@ watch(notify_msg_list, () => {
 
    
    // watch is called twice - our initial clear will trigger again - so we ignore second w/ empty msg list
-   if(notify_msg_list.value.length > 0) {
+   if(app_notifications.value.length > 0) {
 
       // we determine delay by no. of msgs in list
-      const delay_before_clear = 1000 + (notify_msg_list.value.length * 2000 )
-      setTimeout(() => {app_store.set_notify_msg_list([])},delay_before_clear)
+      const delay_before_clear = 5000 + (app_notifications.value.length * 2000 )
+      setTimeout(() => {app_store.set_app_notifications([])},delay_before_clear)
    
    }
 })
 
 const close = () => {
-   app_store.set_notify_msg_list([])
+   app_store.set_app_notifications([])
 }
 
 </script>
 
 <template>
-   <div class="app_status" :class="{app_status_bg:notify_msg_list.length > 0}" @click="close">
+   <div class="app_status" :class="{app_status_bg:app_notifications.length > 0}" @click="close">
       <ul>
          <li v-for="text in lingering_texts" :key="text.key">
             {{ text.text }}

@@ -75,7 +75,7 @@ const update_track_list = async(new_track_list) => {
 
    tracks.value = [...modified]
    show_all_tracks_list.value = false
-   app_store.set_notify_msg_list(outcomes)
+   app_store.set_app_notifications(outcomes)
 }
 
 const close_all_tracks_list = () => {

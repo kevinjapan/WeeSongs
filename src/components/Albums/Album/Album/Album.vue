@@ -7,8 +7,10 @@ import AlbumTracksList from '../../AlbumTracksList/AlbumTracksList.vue'
 import get_ui_ready_date from '../../../../utilities/dates/dates'
 
 
+
 // Album
 
+// to do : add img
 const route = useRoute()
 const router = useRouter()
 const app_store = useAppStore()
@@ -32,9 +34,9 @@ onBeforeMount(async() => {
    // ensure album is loaded
    if(!album_store.album) {
       // there is an issue w/ server's handling of unknown slug - not clean, garbage returned (error reporting in php)
-      // so, for now, we will simply report first line of error in AppStatus notification until fix on server-side
+      // so, for now, we will simply report first line of error in AppNotifications notification until fix on server-side
       const result = await album_store.load_album(route.params.slug)
-      if(result && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)    
+      if(result && result.outcome === 'fail') app_store.set_app_notifications(result.message)    
    }
 
    // hydrate local state
@@ -68,7 +70,7 @@ const apply = async() => {
 
    const result = await album_store.save_album(modified_album)
    if(result && result.message) {
-      app_store.set_notify_msg_list(result.message)
+      app_store.set_app_notifications(result.message)
    }
 
    // reload w/ new slug in url
@@ -79,7 +81,7 @@ const delete_album = async() => {
    if (window.confirm("Do you really want to delete this album?")) {
       const result = await album_store.delete_album(album_store.album.id)
       if(result) {
-         if(result.message) app_store.set_notify_msg_list(result.message)
+         if(result.message) app_store.set_app_notifications(result.message)
          if(result.outcome === 'success') setTimeout(() => router.push('/albums'),3000)
       }
    }

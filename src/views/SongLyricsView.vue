@@ -16,9 +16,9 @@ onBeforeMount(async() => {
    // ensure song is loaded
    if(!song_store.song) {
       // there is an issue w/ server's handling of unknown slug - not clean, garbage returned (error reporting in php)
-      // so, for now, we will simply report first line of error in AppStatus notification until fix on server-side
+      // so, for now, we will simply report first line of error in AppNotifications notification until fix on server-side
       const result = await song_store.load_song(route.params.slug)
-      if(result && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)     
+      if(result && result.outcome === 'fail') app_store.set_app_notifications(result.message)     
    }
 })
 

@@ -6,7 +6,8 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 
 export const useAppStore = defineStore('app_store', () => {
 
-   // toggle web_api/static
+   // toggle web_api/static 
+   // to do : this flag isn't working quite as i expect - netlify version is working despite..?
    const is_static = false
 
    // we use presence/absence as web_api/static toggle flag
@@ -19,8 +20,8 @@ export const useAppStore = defineStore('app_store', () => {
    const bearer_token = ref('')
    const username = ref('')
 
-   // we have a single AppStatus notify_msg_list
-   const notify_msg_list = ref([])
+   // we have a single AppNotifications app_notifications
+   const app_notifications = ref([])
 
    // getters
    const get_api = computed(() => app_api.value)
@@ -35,11 +36,11 @@ export const useAppStore = defineStore('app_store', () => {
    //   server-side, we need to verify correctly expiring tokens
 
 
-   // set_notify_msg_list
+   // set_app_notifications
    // accepts string or array of strings
-   const set_notify_msg_list = (msg) => {
+   const set_app_notifications = (msg) => {
       let arr = Array.isArray(msg) ? [...msg] : [msg]
-      notify_msg_list.value = arr
+      app_notifications.value = arr
    }
 
    const user = ref({
@@ -72,8 +73,8 @@ export const useAppStore = defineStore('app_store', () => {
       set_api,
       bearer_token,
       username,
-      notify_msg_list,
-      set_notify_msg_list,
+      app_notifications,
+      set_app_notifications,
       is_logged_in
    }
  })

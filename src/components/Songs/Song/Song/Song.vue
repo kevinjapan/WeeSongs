@@ -15,42 +15,42 @@ const emit = defineEmits([
    'set-selected-section-daw'
 ])
 
+// stores
 const app_store = useAppStore()
 const song_store = useSongStore()
 
+
+// save local copy to server
 const update_song = async() => {
    const result = await song_store.save()
-   if(result && result.message) app_store.set_notify_msg_list(result.message)
+   if(result && result.message) app_store.set_app_notifications(result.message)
 }
 
 
+// actions on local copy
 const clone_section = (section_id) => {
    const result = song_store.clone_section(section_id)
-   if(result && result.message && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)
+   if(result && result.message && result.outcome === 'fail') app_store.set_app_notifications(result.message)
    emit('set-selected-section-daw',result.daw)
    // scroll to new section after render delay
    setTimeout(() => scroll_to_elem(result.daw),150)
 }
-
 const move_section = (section_id,direction) => {
    const result = song_store.move_section(section_id,direction)
-   if(result && result.message && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)
+   if(result && result.message && result.outcome === 'fail') app_store.set_app_notifications(result.message)
    setTimeout(() => scroll_to_elem(result.daw),150)
 }
-
-const update_section = (section_id,modified_section) => {
-   const result = song_store.update_section(section_id,modified_section)
-   if(result && result.message && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)
-}
-
-const delete_section = (section_id) => {
-   const result = song_store.del_section(section_id)
-   if(result && result.message && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)
-}
-
 const add_section = () => {
    const result = song_store.add_section()
-   if(result && result.message && result.outcome === 'fail') app_store.set_notify_msg_list(result.message)
+   if(result && result.message && result.outcome === 'fail') app_store.set_app_notifications(result.message)
+}
+const update_section = (section_id,modified_section) => {
+   const result = song_store.update_section(section_id,modified_section)
+   if(result && result.message && result.outcome === 'fail') app_store.set_app_notifications(result.message)
+}
+const delete_section = (section_id) => {
+   const result = song_store.del_section(section_id)
+   if(result && result.message && result.outcome === 'fail') app_store.set_app_notifications(result.message)
 }
 
 // future : we currently rely on ref in store being changed by changing it directly reactively
