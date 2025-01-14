@@ -31,7 +31,7 @@ watch(() => route.fullPath, () => {
       <RouterView />
    </main>
 
-   <AppStatus />
+   <AppNotifications />
 
 </template>
 
