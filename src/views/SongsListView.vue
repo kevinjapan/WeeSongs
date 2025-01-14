@@ -16,6 +16,9 @@ import get_ui_ready_date from '../utilities/dates/dates'
 // we are using non-json 'created_at' col server-side to order results,
 // while we are accessing json field inside Song in the row to display.
 
+// to do : default no-image when img not found
+
+
 const router = useRouter()
 const song_store = useSongStore()
 
@@ -133,10 +136,9 @@ const order_songs_by = (col_title) => {
    }
 }
 
-// future : legacy in dataset - eg we have 'updated_at' in two locations in song object
-
-const get_song_img = (img) => {
-   return `/data/imgs/songs/${img.toLowerCase()}`
+// future : support other img types
+const get_song_img = (slug) => {
+   if(slug) return `/data/imgs/songs/${slug.toLowerCase()}.jpg`
 }
 
 
@@ -180,8 +182,8 @@ const get_song_img = (img) => {
                      class="grid_list_row cursor_pointer"  
                      @click="clicked_title(song.slug)">
                   <div class="col">
-                     <img v-if="song.img" class="list_teaser_img" :src="get_song_img(song?.img)" />
-                     <div v-else class="no_img"></div>
+                     <img class="list_teaser_img" :src="get_song_img(song?.slug)" />
+                     <!-- to do : handle if no img found (see AlubmsListView) <div v-else class="no_img"></div> -->
                   </div>
                   <div class="col cursor_pointer song_title" >{{ song.title }}</div> 
                   <div class="col date_col">{{ get_ui_ready_date(song.made) }}</div>

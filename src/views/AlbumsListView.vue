@@ -129,8 +129,9 @@ const clicked_title = (album_slug) => {
    router.push(`/albums/${album_slug}`)
 }
 
-const get_album_img = (img) => {
-   if(img) return `/data/imgs/albums/${img.toLowerCase()}`
+// future : support other img types
+const get_album_img = (slug) => {
+   if(slug) return `/data/imgs/albums/${slug.toLowerCase()}.jpg`
 }
 </script>
 
@@ -167,9 +168,9 @@ const get_album_img = (img) => {
                <li v-for="album in albums_list.albums_list.data" :key="album.id" 
                      class="grid_list_row cursor_pointer"
                      @click="clicked_title(album.slug)" >
-                  <div class="col">
-                     <img v-if="album.img" class="list_teaser_img" :src="get_album_img(album?.img)" />
-                     <div v-else class="no_img"></div>
+                  <div class="col"> 
+                     <img class="list_teaser_img" :src="get_album_img(album?.slug)" />
+                     <!-- to do : handleif no img found (see SongsListView) <div v-else class="no_img">{{album?.img}}</div> -->
                   </div>
                   <div class="col cursor_pointer album_title">{{ album.title }}</div> 
                   <div class="col date_col">{{ get_ui_ready_date(album.created_at) }}</div>
