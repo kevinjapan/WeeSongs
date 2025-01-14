@@ -187,11 +187,8 @@ export const useAlbumStore = defineStore('album_store', () => {
             const modified_song = song_obj.song
             if(modified_song.song && modified_song.song.album) delete modified_song.song.album
             modified_song.album_id = album_id
-
-            // ------------------------------------------------------------------------
-            // to do : bug - failing to update_song since 'writers' cannot be null
-            // 2. fix here, so client doesn't submit if 'writers' is empty - rollout  
-            useValidSong(modified_song) // to do : handle result from useValidSong()
+ 
+            useValidSong(modified_song) // future : handle result from useValidSong()
 
             const updated_result = await song_store.update_song(modified_song)
             if(updated_result.outcome === 'success') {
