@@ -134,12 +134,8 @@ const get_album_img = (slug) => {
    if(slug) return `/data/imgs/albums/${slug.toLowerCase()}.jpg`
 }
 
-const set_default_img = (slug) => {
-   const img_elem = document.getElementById(slug)
-   if(img_elem) {
-      img_elem.src = '/data/imgs/songs/no-img.jpg'
-      img_elem.classList.add('opactity_3')
-   }
+const set_default_img = (Event) => { 
+   Event.target.src = '/data/imgs/songs/no-img.jpg'
 }
 
 </script>
@@ -182,7 +178,7 @@ const set_default_img = (slug) => {
                         :id="album?.slug" 
                         class="list_teaser_img" 
                         :src="get_album_img(album?.slug)" 
-                        @error="set_default_img(album?.slug)"
+                        @error="set_default_img"
                      />
                   </div>
                   <div class="col cursor_pointer album_title">{{ album.title }}</div> 
@@ -247,7 +243,6 @@ img.list_teaser_img {
    width:160px;
    margin-top:.25rem;
    height:100px;
-   border-radius:1rem;
 }
 div.no_img {
    width:160px;

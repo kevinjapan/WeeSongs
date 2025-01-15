@@ -9,19 +9,13 @@ const props = defineProps({
    writers:String
 })
 
-
 const get_song_img = (slug) => {
    return `/data/imgs/songs/${slug.toLowerCase()}.jpg`
 }
 
-const set_default_img = (slug) => {
-   const img_elem = document.getElementById(slug)
-   if(img_elem) {
-      img_elem.src = '/data/imgs/songs/no-img.jpg'
-      img_elem.classList.add('opactity_3')
-   }
+const set_default_img = (Event) => { 
+   Event.target.src = '/data/imgs/songs/no-img.jpg'
 }
-
 
 </script>
 
@@ -31,7 +25,7 @@ const set_default_img = (slug) => {
          :id="props?.slug"
          class="song_teaser_img"
          :src="get_song_img(props.slug)"
-         @error="set_default_img(props?.slug)" 
+         @error="set_default_img" 
       />
       <div class="flex flex_col align_items_start justify_center song_ctrls_title m_0">
          <h1 class="text_left">{{ props.title }}</h1>
