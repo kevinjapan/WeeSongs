@@ -133,6 +133,15 @@ const clicked_title = (album_slug) => {
 const get_album_img = (slug) => {
    if(slug) return `/data/imgs/albums/${slug.toLowerCase()}.jpg`
 }
+
+const set_default_img = (slug) => {
+   const img_elem = document.getElementById(slug)
+   if(img_elem) {
+      img_elem.src = '/data/imgs/songs/no-img.jpg'
+      img_elem.classList.add('opactity_3')
+   }
+}
+
 </script>
 
 <template>
@@ -169,8 +178,12 @@ const get_album_img = (slug) => {
                      class="grid_list_row cursor_pointer"
                      @click="clicked_title(album.slug)" >
                   <div class="col"> 
-                     <img class="list_teaser_img" :src="get_album_img(album?.slug)" />
-                     <!-- to do : handleif no img found (see SongsListView) <div v-else class="no_img">{{album?.img}}</div> -->
+                     <img 
+                        :id="album?.slug" 
+                        class="list_teaser_img" 
+                        :src="get_album_img(album?.slug)" 
+                        @error="set_default_img(album?.slug)"
+                     />
                   </div>
                   <div class="col cursor_pointer album_title">{{ album.title }}</div> 
                   <div class="col date_col">{{ get_ui_ready_date(album.created_at) }}</div>

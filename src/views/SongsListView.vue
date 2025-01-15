@@ -141,6 +141,13 @@ const get_song_img = (slug) => {
    if(slug) return `/data/imgs/songs/${slug.toLowerCase()}.jpg`
 }
 
+const set_default_img = (slug) => {
+   const img_elem = document.getElementById(slug)
+   if(img_elem) {
+      img_elem.src = '/data/imgs/songs/no-img.jpg'
+      img_elem.classList.add('opactity_3')
+   }
+}
 
 
 </script>
@@ -182,7 +189,7 @@ const get_song_img = (slug) => {
                      class="grid_list_row cursor_pointer"  
                      @click="clicked_title(song.slug)">
                   <div class="col">
-                     <img class="list_teaser_img" :src="get_song_img(song?.slug)" />
+                     <img :id="song?.slug" class="list_teaser_img" :src="get_song_img(song?.slug)" @error="set_default_img(song?.slug)" />
                      <!-- to do : handle if no img found (see AlubmsListView) <div v-else class="no_img"></div> -->
                   </div>
                   <div class="col cursor_pointer song_title" >{{ song.title }}</div> 
