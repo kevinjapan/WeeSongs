@@ -19,7 +19,7 @@
   --app_nav_dropdown_top:30px;
 
   /* space songs content below top nav */
-  --song_top_margin_sm:12rem;
+  --song_top_margin_sm:14rem;
   --song_top_margin_lg:8rem;
   
   /* z-index layers */
@@ -175,8 +175,20 @@ a.no_cursor_pointer {
    display:grid;
 }
 .section_grid {
-   -ms-grid-columns:repeat(4, 1fr);
-   grid-template-columns: repeat(4, 1fr);
+   -ms-grid-columns:repeat(1, 1fr);
+   grid-template-columns: repeat(1, 1fr);
+}
+@media screen and (min-width: 610px) {
+   .section_grid {
+      -ms-grid-columns:repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+   }
+}
+@media screen and (min-width: 910px) {
+   .section_grid {
+      -ms-grid-columns:repeat(4, 1fr);
+      grid-template-columns: repeat(4, 1fr);
+   }
 }
 
 

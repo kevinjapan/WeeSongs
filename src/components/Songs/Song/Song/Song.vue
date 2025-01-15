@@ -57,8 +57,6 @@ const delete_section = (section_id) => {
 // work w/ this while ok but review - should we change this to emit() and handle?
 
 
-// to do : currently we don't support sm screens - review viewport widths are acceptable and notify if sm screen.
-
 // to do : limit total no. sections - disable 'add section' below on that limit
 
 </script>
@@ -89,7 +87,7 @@ const delete_section = (section_id) => {
    margin-bottom:8rem;
    padding-top:0;
 }
-@media (min-width: 768px) {
+@media (min-width: 1110px) {
    .song_wrapper {
       margin-top:var(--song_top_margin_lg);
    }
