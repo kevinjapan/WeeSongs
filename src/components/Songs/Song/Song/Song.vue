@@ -1,6 +1,7 @@
 <script setup>
 import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
+import { useSongConfigStore } from '@/stores/SongConfigStore'
 import SongSections from '../SongSections/SongSections.vue'
 import { scroll_to_elem } from '../../../../utilities/utilities/utilities'
 
@@ -18,6 +19,7 @@ const emit = defineEmits([
 // stores
 const app_store = useAppStore()
 const song_store = useSongStore()
+const song_config_store = useSongConfigStore()
 
 
 // save local copy to server
@@ -41,6 +43,10 @@ const move_section = (section_id,direction) => {
    setTimeout(() => scroll_to_elem(result.daw),150)
 }
 const add_section = () => {
+   if(song_store.song.songsheet.aSections.length >= song_config_store.max_sections) {
+      app_store.set_app_notifications(`This song already contains the max number of sections [${song_config_store.max_sections}]`)
+      return
+   }
    const result = song_store.add_section()
    if(result && result.message && result.outcome === 'fail') app_store.set_app_notifications(result.message)
 }
@@ -55,9 +61,6 @@ const delete_section = (section_id) => {
 
 // future : we currently rely on ref in store being changed by changing it directly reactively
 // work w/ this while ok but review - should we change this to emit() and handle?
-
-
-// to do : limit total no. sections - disable 'add section' below on that limit
 
 </script>
 

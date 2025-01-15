@@ -45,7 +45,7 @@ export const useSongStore = defineStore('song_store', () => {
       if(result.outcome === 'success') {
 
          // reset ids (for legacy songs w/ no 'id')
-         // for simplicity, we just overwrite on each load since uniqueness is important
+         // for simplicity, we just overwrite on each load since only uniqueness is important
          let reset_sec_id = 100
          for (const section of result.song.songsheet.aSections) {
             section.id = reset_sec_id
