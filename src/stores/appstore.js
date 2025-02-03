@@ -6,8 +6,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 
 export const useAppStore = defineStore('app_store', () => {
 
-   // toggle web_api/static 
-   // to do : this flag isn't working quite as i expect - netlify version is working despite..?
+   // toggle web_api/static
    const is_static = false
 
    // we use presence/absence as web_api/static toggle flag
@@ -20,6 +19,10 @@ export const useAppStore = defineStore('app_store', () => {
    const bearer_token = ref('')
    const username = ref('')
 
+   // list_view_types
+   const list_view_types = ['card','teaser_card','list']
+   const list_view_type = ref('card')
+   
    // we have a single AppNotifications app_notifications
    const app_notifications = ref([])
 
@@ -27,6 +30,9 @@ export const useAppStore = defineStore('app_store', () => {
    const get_api = computed(() => app_api.value)
 
    
+
+   //
+   const items_per_page = ref(20) 
 
 
    // future : persist login / bearer_token for limited time
@@ -66,16 +72,26 @@ export const useAppStore = defineStore('app_store', () => {
       return bearer_token.value !== '' ? true : false
    }
 
+   function switch_list_view_type() {
+      const curr_index = list_view_types.indexOf(list_view_type.value)
+      const new_index = curr_index < list_view_types.length - 1   ?  curr_index + 1  :  0
+      list_view_type.value = list_view_types[new_index]
+   }
+
    return { 
       app_api, 
       curr_view_route,
+      list_view_type,
+      items_per_page,
+
       get_api, 
       set_api,
       bearer_token,
       username,
       app_notifications,
       set_app_notifications,
-      is_logged_in
+      is_logged_in,
+      switch_list_view_type
    }
  })
 
