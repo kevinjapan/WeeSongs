@@ -64,7 +64,7 @@ a:hover {
 }
 
 img {
-   border-radius:.5rem;
+   border-radius:.25rem;
 }
 
 /*
@@ -443,4 +443,8 @@ input[readonly] {
 
 .opactity_3 {
    opacity:.3;
+}
+
+.no_user_select {
+   user-select:none;
 }
