@@ -1,10 +1,9 @@
 import { is_subset_array } from '../utilities/utilities'
 
 
+
 // useValidSong
 // test if a valid Song (contains all required fields) before submitting to server
-
-// to do : complete - test this by adding tracks to track list in album
 
 export default function useValidSong(song) {
 
@@ -22,10 +21,10 @@ export default function useValidSong(song) {
    // check all required_props are keys in the Song
    if(!is_subset_array(Object.keys(required_props),song_keys)) {
       console.log('nope, not all keys present')
-      // to do : bail - we don't have all the keys
+      // future : bail - we don't have all the keys
    }
 
-   // to do : now we need to check they are all populated
+   // future : now we need to check they are all populated
 
 
 

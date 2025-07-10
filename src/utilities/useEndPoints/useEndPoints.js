@@ -1,11 +1,12 @@
 import { useAppStore } from '@/stores/appStore'
 
-// useEndPoints composable
 
+
+// useEndPoints composable
 // map end_points names to relative URLs
 // app_store.app_api is our flag - if emtpy, we are in 'web api' mode, else we are in 'static site' mode
 // url params : we assume order matches that expected by end-point and we append to url
-   
+
 export default function useEndPoints(url_params,query_params) {
 
    const app_store = useAppStore()
