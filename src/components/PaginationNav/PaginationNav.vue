@@ -1,75 +1,104 @@
-<script setup>
-import { computed } from 'vue'
+<script setup lang="ts">
+import { ref, computed, watchEffect } from 'vue'
 
 
 // PaginationNav
 
-// Component Interface - props and emits
-const props = defineProps({
-   title: String,
-   page: Number,
-   page_links: Array
-})
+const props = defineProps<{
+   title: string,
+   page: number,
+   total_num_items: number,
+   items_per_page: number
+}>()
+
 const emit = defineEmits([
    'step-to-page',
    'navigate-to-page'
 ])
 
-// Component methods
-const computed_last_page = computed(() => {
-   return parseInt(props.page_links[props.page_links.length - 1].label)
+const num_pages = ref<number>(0)
+
+watchEffect(() => {
+   num_pages.value = Math.ceil(props.total_num_items / props.items_per_page)
 })
-const step = (step) => {
-   const last_page = computed_last_page
-   if(!isNaN(last_page)) {
-      if( parseInt(props.page) + step > last_page || parseInt(props.page) + step < 1 ) return
+
+
+const step = (step: number) => {
+   if(step > 0) {
+      // to do : return something on next line
+      if(props.page >= num_pages.value) return
+   }
+   else {
+      // to do : return something on next line
+      if(props.page - 1 <= 0) return
    }
    emit('step-to-page',step)
 }
-const go_to_page = (selected_page) => {
-   emit('navigate-to-page',selected_page)
-}
-const is_selected_link = (link_label => {
-   return parseInt(link_label) === parseInt(props.page)
-})
 
 const on_first_page = computed(() => {
-   return props.page === 1
+   return props.page === 1 || props.page === 0
 })
+
 const on_last_page = computed(() => {
-   return props.page === computed_last_page.value}
-)
+   return props.page  >= num_pages.value
+})
+
+const items_of = computed(() => {
+   if(props.page < 1) return 0
+   let last_item_num = props.page * props.items_per_page
+   if(last_item_num > props.total_num_items) last_item_num = props.total_num_items
+   return (props.page * props.items_per_page) - (props.items_per_page - 1) + '-' + last_item_num
+})
+
+// to do : fix no. of albums in /albums list view pagination
 </script>
 
-
 <template>
-   <ul class="nav_bar justify_between">
-      <li v-on:click="step(-1)" class="cursor_pointer italic" :class="{greyed_out: on_first_page}">< prev</li>
-      <li v-for="link in page_links" :key="link.label" v-on:click="go_to_page(link.label)" 
-         class="page_link cursor_pointer" :class="{selected_link: is_selected_link(link.label)}">
-         {{ link.label }}
-      </li>
-      <li v-on:click="step(1)" class="cursor_pointer italic" :class="{greyed_out: on_last_page}">next ></li>
-   </ul>
+   <section class="nav_bar no_user_select"> 
+      <div>Page 
+         <input :value="page" class="curr_page_input" :name="title"/></div>
+         <div style="padding-left:.15rem;"> of {{ num_pages }}</div>
+      <div><span class="items_of">{{ items_of }}</span> of {{ total_num_items }} Records</div>
+      <div class="flex ml_2">
+         <button v-on:click="step(-1)" class="page_nav_btn start_btn" :class="{greyed_out: on_first_page}"><</button>
+         <button v-on:click="step(1)" class="page_nav_btn end_btn" :class="{greyed_out: on_last_page}">></button>
+      </div>
+   </section>
 </template>
 
 
 <style scoped>
-.nav_bar {
+section.nav_bar {
    display:-webkit-box;
    display:-ms-flexbox;
    display:flex;
-   width:fit-content;
-   margin-left:auto;
-   margin-right:auto;
+   justify-content:flex-end;
+   -webkit-box-align:center;
+   -ms-flex-align:center;
+   align-items:center;
+   -ms-flex-wrap:wrap;
+   flex-wrap:wrap;
+   gap:.15rem;
+   width:100%;
+   height:fit-content;
+   margin:0;
+   padding:0;
+   padding:.35rem 1rem;
+   list-style:none;
+   background:white;
+   border-radius:.15rem;
+   font-size:.9rem;
+   color:hsl(0, 0%, 30%);
 }
 .nav_bar li {
    width:fit-content;
+   height:fit-content;
    margin:0;
-   padding:1rem;
+   padding:.25rem;
    padding-top:.25rem;
    padding-bottom:.25rem;
    white-space:nowrap;
+   cursor:pointer;
 }
 .nav_bar li:hover {
    background:hsl(0, 0%, 96%);
@@ -81,5 +110,49 @@ const on_last_page = computed(() => {
    font-weight:700;
    background:hsl(0, 0%, 96%);
    border-radius:.25rem;
+}
+input.curr_page_input {
+   width:3rem;
+   text-align:center;
+   padding:0;
+   color:hsl(0, 0%, 40%);
+   font-size:.8rem;
+   font-weight:100;
+   padding:.15rem;
+   border-radius:0;
+   border:solid 1px hsl(0, 0%, 60%);
+}
+.page_nav_btn {
+   cursor:pointer;
+   font-style:italic;
+   border:solid 1px hsl(0, 0%, 90%);
+   padding:.1rem;
+   padding-top:.2rem;
+   padding-left:.4rem;
+   padding-right:.4rem;
+}
+.page_nav_btn.start_btn {
+   border-radius:.15rem 0 0 .15rem;
+}
+.page_nav_btn.end_btn {
+   border-radius:0 .15rem .15rem 0;
+}
+.page_nav_btn:hover {
+   border:solid 1px hsl(0, 0%, 75%);
+}
+.items_of {
+   display:inline-block;
+   width:5rem;
+   padding-left:.15rem;
+   /*border:solid 1px hsl(0, 0%, 88%);*/
+   text-align:right;
+}
+button {
+   background:hsl(0, 0%, 95%);
+   color:grey; 
+}
+button.greyed_out{
+   color:hsl(0, 0%, 89%);
+   cursor:none;
 }
 </style>

@@ -7,17 +7,20 @@ import AlbumCtrlsNav from './AlbumCtrlsNav/AlbumCtrlsNav.vue'
 
 const album_store = useAlbumStore()
 
+
+// to do : tidy UI
+// to do : review naming of AlbumCtrls components
+
 </script>
 
 
 <template>
 
    <section>
-      <AlbumCtrlsTitle
-         :title="album_store.album.title"
-      />
-      <AlbumCtrlsNav 
-      />
+      <AlbumCtrlsTitle :title="album_store.album.title" />
+
+      <AlbumCtrlsNav />
+
    </section>
 
 </template>

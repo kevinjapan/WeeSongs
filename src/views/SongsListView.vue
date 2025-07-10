@@ -1,8 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, computed, watch, onBeforeMount, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAppStore } from '@/stores/appStore'
 import { useSongStore } from '@/stores/songStore'
 import useData from '../utilities/useData/useData'
+import ListCtrls from '../components/ListCtrls/ListCtrls.vue'
 import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
 import ResourceLinks from '../components/ResourceLinks/ResourceLinks.vue'
 import get_ui_ready_date from '../utilities/dates/dates'
@@ -19,6 +21,7 @@ import get_ui_ready_date from '../utilities/dates/dates'
 
 const router = useRouter()
 const song_store = useSongStore()
+const app_store = useAppStore()
 
 const songs_list = ref(null)
 
@@ -45,6 +48,12 @@ const last_page = ref(1)
 
 // page links
 const page_links = ref([])
+
+//
+const total_num_items = ref(0)
+
+// toggle card / list view
+const list_view_type = ref(app_store.list_view_type)
 
 onBeforeMount( () => {
    get_list()
@@ -73,6 +82,7 @@ const get_list = async() => {
       
    const { data, error } = await useData('songs_list',[],query_params)
    if(data) {
+      if( data.songs_list.total) total_num_items.value = data.songs_list.total
       songs_list.value = data
       last_page.value = parseInt(data.songs_list.last_page)
       loading.value = false         
@@ -143,6 +153,10 @@ const set_default_img = (Event) => {
    Event.target.src = '/data/imgs/songs/no-img.jpg'
 }
 
+const sort_list_by = (order_by) => {
+   console.log('to do : sort list in store',order_by)
+}
+
 </script>
 
 <template>
@@ -161,14 +175,21 @@ const set_default_img = (Event) => {
       
          <div v-else>
          
-            <PaginationNav 
-               title="PageNav for SongsList" 
-               :page=page 
-               :page_links="page_links"
-               @step-to-page="step_to_page" 
-               @navigate-to-page="navigate_to_page" 
-               class="mt_3"
-            />
+            <!-- to do : migrate to new ListCtrls/PaginationNav components : rollout to other client views/components -->
+            <ListCtrls
+               :list_view_type="list_view_type"
+               @toggle-view="$emit('toggle-view')"
+               @sort-list-by="sort_list_by"
+            >
+               <PaginationNav
+                  title="top_page_nav"
+                  :page=page
+                  :total_num_items=total_num_items
+                  :items_per_page=app_store.items_per_page
+                  @step-to-page="step_to_page" 
+                  @navigate-to-page="navigate_to_page" 
+               />
+            </ListCtrls>
    
             <ul class="songs_list">           
                <li class="grid_list_row titles_row">
@@ -197,14 +218,20 @@ const set_default_img = (Event) => {
                </li>
             </ul>
 
-            <PaginationNav 
-               title="PageNav for SongsList" 
-               :page=page 
-               :page_links="page_links"
-               @step-to-page="step_to_page" 
-               @navigate-to-page="navigate_to_page" 
-               class="mt_3"
-            />
+            <ListCtrls
+               :list_view_type="list_view_type"
+               @toggle-view="$emit('toggle-view')"
+               @sort-list-by="sort_list_by"
+            >
+               <PaginationNav
+                  title="bottom_page_nav"
+                  :page=page
+                  :total_num_items=total_num_items
+                  :items_per_page=app_store.items_per_page
+                  @step-to-page="step_to_page" 
+                  @navigate-to-page="navigate_to_page" 
+               />
+            </ListCtrls>
 
          </div>
       </div>

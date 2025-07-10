@@ -1,12 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, computed, watch, onBeforeMount, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import { useAlbumStore } from '@/stores/albumStore'
 import useData from '../utilities/useData/useData'
 import PaginationNav from '../components/PaginationNav/PaginationNav.vue'
-import ResourceLinks from '../components/ResourceLinks/ResourceLinks.vue'
-import get_ui_ready_date from '../utilities/dates/dates'
+import AlbumCard from '../components/Albums/Album/AlbumCard/AlbumCard.vue'
 
 
 // AlbumsListView
@@ -124,17 +123,14 @@ const order_albums_by = (col_title) => {
    }
 }
 
-const clicked_title = (album_slug) => {
+const clicked_title = (album_slug: string) => {
    // Navigate to a different location
    router.push(`/albums/${album_slug}`)
 }
 
-// future : support other img types
-const get_album_img = (slug) => {
-   if(slug) return `/data/imgs/albums/${slug.toLowerCase()}.jpg`
-}
 
-const set_default_img = (Event) => { 
+
+const set_default_img = (Event: HTMLElement) => { 
    Event.target.src = '/data/imgs/songs/no-img.jpg'
 }
 
@@ -142,7 +138,7 @@ const set_default_img = (Event) => {
 
 <template>
 
-   <section class="grid_list">
+   <section class="albums_list_view">
 
       <div v-if="has_error">
          There was a problem connecting to the server.
@@ -156,43 +152,45 @@ const set_default_img = (Event) => {
             <PaginationNav 
                title="PageNav for AlbumsList"
                :page=page
+               :total_num_items=app_store.total_num_items
+               :items_per_page=app_store.items_per_page
                :page_links="page_links" 
                @step-to-page="step_to_page" 
                @navigate-to-page="navigate_to_page"
                class="mt_3"
             />
 
+            <!-- Albums List -->
             <ul class="albums_list">
-               <li class="grid_list_row titles_row">
+               <!-- <li class="album_cover titles_row">
                   <div class="col"></div>
                   <div @click="order_albums_by('title')" class="cursor_pointer col col_title">title</div>
                   <div @click="order_albums_by('created_at')" class="cursor_pointer col col_title date_col">made</div>
                   <div @click="order_albums_by('updated_at')" class="cursor_pointer col col_title date_col">updated</div>
                   <div class=" date_col"></div>
-               </li>
-               <li v-for="album in albums_list.albums_list.data" :key="album.id" 
-                     class="grid_list_row cursor_pointer"
-                     @click="clicked_title(album.slug)" >
-                  <div class="col"> 
-                     <img 
-                        :id="album?.slug" 
-                        class="list_teaser_img" 
-                        :src="get_album_img(album?.slug)" 
-                        @error="set_default_img"
+               </li> -->
+
+               <!-- Album Card -->
+               <li 
+                  v-for="album in albums_list.albums_list.data" 
+                  :key="album.id" 
+                  @click="clicked_title(album.slug)" >
+
+                     <AlbumCard 
+                        :title=album.title
+                        :slug=album?.slug
+                        :created_at=album.created_at
+                        :updated_at=album.updated_at
+                        :links=album.links
                      />
-                  </div>
-                  <div class="col cursor_pointer album_title">{{ album.title }}</div> 
-                  <div class="col date_col">{{ get_ui_ready_date(album.created_at) }}</div>
-                  <div class="col date_col">{{ get_ui_ready_date(album.updated_at) }}</div>
-                  <div class="col date_col">
-                     <ResourceLinks :links="album.links" />
-                  </div>
                </li>
             </ul>
 
             <PaginationNav 
                title="PageNav for AlbumsList"
                :page=page
+               :total_num_items=app_store.total_num_items
+               :items_per_page=app_store.items_per_page
                :page_links="page_links" 
                @step-to-page="step_to_page" 
                @navigate-to-page="navigate_to_page"
@@ -208,21 +206,21 @@ const set_default_img = (Event) => {
 </template>
 
 <style scoped>
+
+/* see album_cover in  style.css */
+section.albums_list_view {
+   margin:6rem 1rem;
+}
 .albums_list {
    display:-webkit-box;
    display:-ms-flexbox;
    display:flex;
-   -webkit-box-orient:vertical;
-   -webkit-box-direction:normal;
-   -ms-flex-direction:column;
-   flex-direction:column;
-   gap:2rem;
+   justify-content:flex-start;
+   gap:1rem;
    max-width:100%;
-   padding-right:2rem;
+   padding:1rem 0;
 }
-.grid_list_row {
-   padding-top:2rem;
-}
+
 .album_title {
    font-size:1.75rem;
 }
@@ -236,14 +234,11 @@ li.titles_row {
 .col {
    text-align:center;
 }
-.date_col {
+
+/* .date_col {
    text-align:center;
-}
-img.list_teaser_img {
-   width:160px;
-   margin-top:.25rem;
-   height:100px;
-}
+} */
+
 div.no_img {
    width:160px;
 }
@@ -253,7 +248,7 @@ div.no_img {
       visibility:visible;
    }
    .albums_list {
-      gap:1rem;
+      gap:2rem;
    }
    .album_title {
       font-size:1.05rem;
@@ -262,13 +257,9 @@ div.no_img {
    .col {
       text-align:left;
    }
-   .date_col {
+   /* .date_col {
       text-align:right;
-   }
-   img.list_teaser_img {
-      width:80px;
-      height:50px;
-   }
+   } */
    div.no_img {
       width:80px;
    }

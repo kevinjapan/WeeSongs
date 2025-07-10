@@ -92,7 +92,7 @@ const get_resource_img = (img) => {
 
 <template>
 
-   <section class="relative mt_2 text_left">
+   <section class="album_tracks_list relative mt_2 text_left">
 
       <nav class="flex gap_1">
          <div class="flex align_center gap_.5"><h3>Tracks </h3><span class="text_grey">[{{ tracks.length }}]</span></div>
@@ -119,16 +119,21 @@ const get_resource_img = (img) => {
 
 
 <style scoped>
+section.album_tracks_list {
+   margin:2rem;
+   padding:1rem;
+   background:white;
+   border-radius:.5rem;
+   user-select:none;
+}
 h3 {
    text-align:left;
 }
 ul {
    width:fit-content;
-   margin:.5rem 0;
+   /* margin:.5rem 0; */
    padding:.5rem 1rem .5rem 1rem;
    text-align:left;
-   border:solid 1px lightgrey;
-   border-radius:.25rem;
 }
 img.song_tiny_teaser {
    width:80px;

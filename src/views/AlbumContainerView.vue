@@ -39,7 +39,7 @@ onMounted(() => {
 
 <template>
    <Transition>
-      <section>
+      <section class="album_container_view">
          
          <div v-if="has_error">
             There was a problem connecting to the server.
@@ -50,10 +50,12 @@ onMounted(() => {
 
             <div v-else class="relative m_0 p_0">
 
-               <AlbumCtrls
-               />
 
-               <Album :song="album_store.album" />
+                  <AlbumCtrls />
+
+                  <Album :song="album_store.album" />
+
+               
             </div>
          </div>
          
@@ -62,6 +64,11 @@ onMounted(() => {
 </template>
 
 <style scoped>
+
+section.album_container_view {
+   background:lightblue;
+   height:1200px;
+}
 /* configure Vue Transition component for app_nav slide-in*/
 .v-enter-active,.v-leave-active {
    -webkit-transition: opacity 2.5s ease-in-out;  

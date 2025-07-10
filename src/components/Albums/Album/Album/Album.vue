@@ -4,6 +4,7 @@ import { useRoute,useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/appStore'
 import { useAlbumStore } from '@/stores/albumStore'
 import AlbumTracksList from '../../AlbumTracksList/AlbumTracksList.vue'
+import FormField from '../../../Form/FormField/FormField.vue'
 import get_ui_ready_date from '../../../../utilities/dates/dates'
 
 
@@ -97,15 +98,15 @@ const get_album_img = computed(() => {
 
 <template>
 
-   <section v-if="album_store.album" class="album_wrapper">
+   <section v-if="album_store.album" class="album_form_wrapper">
 
 
-      <form class="grid form_grid flex_col border rounded m_1" @submit.prevent="apply">
+      <form class="grid form_grid " @submit.prevent="apply">
 
-         <!--section>
-            <img :src="get_album_img" />
-         </section-->
 
+         <h3 class="colspan_2 text_left" >Edit Album</h3>
+            
+         <FormField>
             <label for="title">Title</label>
             <input 
                v-model="title"
@@ -114,7 +115,9 @@ const get_album_img = computed(() => {
                class="album_title"
                @input="change_title"
             />
+         </FormField>
 
+         <FormField>
             <label for="slug">Slug</label>
             <input 
                v-model="slug"
@@ -122,14 +125,18 @@ const get_album_img = computed(() => {
                name="slug"
                readonly
             />
+         </FormField>
 
+         <FormField>
             <label for="outline">Outline</label>
             <input 
                v-model="outline"
                id="outline"
                name="outline"
             />
+         </FormField>
 
+         <FormField>
             <label for="id">id</label>
             <input 
                :value="id"
@@ -139,7 +146,9 @@ const get_album_img = computed(() => {
                class="readonly_input"
                @input="change_title"
             />
-            
+         </FormField>
+         
+         <FormField>
             <label for="created_at">Created At</label>
             <input 
                :value="created_at"
@@ -148,7 +157,9 @@ const get_album_img = computed(() => {
                readonly
                class="readonly_input"
             />
+         </FormField>
 
+         <FormField>
             <label for="updated_at">Updated At</label>
             <input 
                :value="updated_at"
@@ -157,7 +168,9 @@ const get_album_img = computed(() => {
                readonly
                class="readonly_input"
             />
+         </FormField>
 
+         <FormField>
             <label for="deleted_at">Deleted At</label>
             <input 
                :value="deleted_at"
@@ -166,10 +179,11 @@ const get_album_img = computed(() => {
                readonly
                class="readonly_input"
             />
+         </FormField>
 
-            <div></div>
-            <button type="submit" v-if="app_store.is_logged_in()">Apply</button>
-            <button v-else disabled>Apply</button>
+         <div></div>
+         <button type="submit" v-if="app_store.is_logged_in()">Apply</button>
+         <button v-else disabled>Apply</button>
         
 
          <section class="mt_3 p_2 border">         
@@ -189,34 +203,44 @@ const get_album_img = computed(() => {
 </template>
 
 <style scoped>
-.album_wrapper {
+
+.album_form_wrapper {
    display:-ms-grid;
    display:grid;
 
    -ms-grid-columns: 1fr;
    grid-template-columns:1fr;
 
+   gap:0;
+
    max-width:100%;
-   margin-top:1rem;
    margin-bottom:10rem;
+   margin-top:26rem;
+   position:relative;
+   z-index:500;
+   /* to do : improve neutral bg color */
+   
 }
 img {
    grid-column-start: 2;
    grid-column-end: 3;
-   width:50%;
+   /* width:50%; */
 }
 @media (min-width: 768px) {
-   .album_wrapper {
+   .album_form_wrapper {
       -ms-grid-columns: 1fr 1fr;
       grid-template-columns:1fr 1fr;
    }
 }
 .album_title {
-   font-size:1.5rem;
+   font-size:1.25rem;
 }
-label {
-   font-style:italic;
-   color:hsl(0, 0%, 60%);
-   margin-top:.25rem;
+
+.form_grid {
+   max-width:80%;
+   margin:2rem;
+   padding:1rem;
+   background:white;
+   border-radius:.5rem;
 }
 </style>
