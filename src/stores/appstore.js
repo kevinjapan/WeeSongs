@@ -7,7 +7,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 export const useAppStore = defineStore('app_store', () => {
 
    // toggle web_api/static
-   const is_static = false
+   const is_static = true
 
    // we use presence/absence as web_api/static toggle flag
    const app_api = is_static ? ref('') : ref('http://songs-api-laravel/api')
@@ -33,6 +33,9 @@ export const useAppStore = defineStore('app_store', () => {
 
    //
    const items_per_page = ref(20) 
+
+   //
+   const total_num_items = ref(120) // to do : calc from json or server call
 
 
    // future : persist login / bearer_token for limited time
@@ -83,6 +86,7 @@ export const useAppStore = defineStore('app_store', () => {
       curr_view_route,
       list_view_type,
       items_per_page,
+      total_num_items,
 
       get_api, 
       set_api,
