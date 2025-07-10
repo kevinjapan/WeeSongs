@@ -1,5 +1,7 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font_family: IBM Plex Sans, system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  --font_size:18px;
   line-height: 1.5;
   font-weight: 400;
 
@@ -29,6 +31,33 @@
   --nav_layer:900;
 }
 
+
+ /* ibm-plex-sans-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/fonts/ibm-plex-sans/ibm-plex-sans-v21-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* ibm-plex-sans-italic - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'IBM Plex Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: url('/assets/fonts/ibm-plex-sans/ibm-plex-sans-v21-latin-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* ibm-plex-sans-700 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/assets/fonts/ibm-plex-sans/ibm-plex-sans-v21-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+
 html {
    scroll-behavior:smooth;
    box-sizing: border-box;
@@ -37,10 +66,12 @@ html {
    box-sizing: inherit;
 }
 body {
-  margin: 0;
-  display: flex;
-  min-width: 320px;
-  min-height: 100vh;
+   font-family:var(--font_family);
+   font-size:var(--font_size);
+   margin: 0;
+   display: flex;
+   min-width: 320px;
+   min-height: 100vh;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -52,7 +83,9 @@ h1 {
   font-weight:300;
   line-height: 1.1;
 }
-
+p {
+   line-height:2rem;
+}
 a {
    font-weight: 500;
    color: #646cff;
@@ -271,11 +304,7 @@ a.no_cursor_pointer {
 /*
 songs and albms list views
 */
-.grid_list {
-   width:100%;
-   padding:1rem;
-   gap:2rem;
-}
+
 .grid_list li.grid_list_row {
 
    display:-ms-grid;
@@ -296,8 +325,8 @@ songs and albms list views
 }
 @media (min-width: 768px) {
    .grid_list li.grid_list_row {
-      -ms-grid-columns:      .25fr 2fr 1fr 1fr 1fr;
-      grid-template-columns: .25fr 2fr 1fr 1fr 1fr;
+      -ms-grid-columns:      .25fr 1fr 1fr 1fr 1fr;
+      grid-template-columns: .25fr 1fr 1fr 1fr 1fr;
    }
 }
 
@@ -306,28 +335,24 @@ songs and albms list views
    forms 
 */
 form {
-   max-width:600px;
-   margin:1rem;
-   margin-left:auto;
-   margin-right:auto;
-   padding:1rem;
+   width:100%;
+   padding:.5rem;
    text-align:right;
 }
 .form_grid {
    -ms-grid-columns: 1fr;
    grid-template-columns: 1fr;
-   gap:1rem;
+   gap:.5rem;
 }
 @media (min-width: 680px) {
    .form_grid {
-      -ms-grid-columns: 1fr 4fr;
-      grid-template-columns: 1fr 4fr;
-      gap:1rem;
+      -ms-grid-columns: 1fr ;
+      grid-template-columns: 1fr ;
+      gap:.5rem;
    }
 }
 .form_ctrls {
    width:100%;
-   background:yellow;
 }
 label {
    text-align:left;
@@ -335,10 +360,9 @@ label {
    padding-top:.15rem;
 }
 input {
+   font-family:var(--font_family);
    outline:none;
    padding:.3rem;
-   border:solid 1px lightgrey;
-   border-radius:.25rem;
    font-size:1.05rem;
    color:hsl(0, 0%, 10%);
    max-width:90%;
@@ -347,6 +371,9 @@ input {
 input[readonly] {
    min-width:fit-content;
    border:solid 1px transparent;
+}
+.colspan_2 {
+   grid-column:1/2;
 }
 
 /* 
