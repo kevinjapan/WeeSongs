@@ -37,15 +37,16 @@ const set_selected_section_daw = (daw) => {
          :writers="song_store.song.writers"
       />
 
-      <section class="flex flex_col align_items_end">
 
-         <SongOutline v-if="show_outline === true"
+         <SongOutline 
             :song="song_store.song"
             :selected_section_daw="props.selected_section_daw"
             @set-selected-section-daw="set_selected_section_daw"
          />
-         <div v-else id="no_outline_spacer"></div>
+         <!-- to do : rather than empty space - show outline but greyed out -->
+         <!-- <div v-else id="no_outline_spacer"></div> -->
 
+      <section class="flex  align_items_end" style="gap:1rem;">
          <SongCtrlsNav 
             :song="song_store.song" 
             @apply-changes="apply" 
@@ -58,21 +59,24 @@ const set_selected_section_daw = (daw) => {
 
 <style scoped>
 
-.song_ctrls {
+section.song_ctrls {
    position:fixed;
    top:var(--app_nav_height);
    right:0px;
    z-index:var(--nav_layer);
    
-   display:-ms-grid;
-   display:grid;
-   -ms-grid-columns: 1fr;
-   grid-template-columns: 1fr;
+   display:flex;
+   justify-content:space-between;
+   align-items:center;
 
-   max-width:100%;
-   padding:.5rem;
+   width:100%;
+   height:140px;
+   
+   margin:0;
+   padding:0;
+   padding:0 2rem 0 0;
 
-   background:hsl(0, 0%, 90%);
+   background:var(--primary_color);
 }
 
 @media (min-width: 1110px) {
@@ -102,14 +106,14 @@ li {
    margin:0;
    padding:0;
 }
-#no_outline_spacer {
+/* #no_outline_spacer {
    order:3;
 }
 @media (min-width: 1110px) {
    #no_outline_spacer {
       order:2;
    }
-}
+} */
 
 
 /* configure Vue Transition component for app_nav slide-in*/

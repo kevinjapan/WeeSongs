@@ -8,6 +8,8 @@ import { scroll_to_elem } from '../../../../utilities/utilities/utilities'
 
 // Song
 
+// to do : page flicks on 'edit' cf w/ 'lyrics' & 'meta' views
+
 // Component Interface - props and emits
 const props = defineProps({
    song:Object
@@ -87,8 +89,10 @@ const delete_section = (section_id) => {
 .song_wrapper {
    /* we leave plenty space to scroll bottom section from outline */
    margin-top:var(--song_top_margin_sm);
+   margin-top:15rem;
    margin-bottom:8rem;
-   padding-top:0;
+   padding:1rem;
+   padding-top:4rem;
 }
 @media (min-width: 1110px) {
    .song_wrapper {

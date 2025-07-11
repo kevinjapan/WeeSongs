@@ -55,7 +55,7 @@ const set_selected_section_daw = (daw) => {
 <template>
 
    <Transition>
-      <section>
+      <section class="song_container_view">
          
          <SongCtrls
             :show_outline="true"
@@ -86,7 +86,7 @@ const set_selected_section_daw = (daw) => {
 </template>
 
 <style scoped>
-section {
+section.song_container_view {
    width:100%;
 }
 

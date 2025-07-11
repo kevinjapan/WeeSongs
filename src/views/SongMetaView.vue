@@ -186,9 +186,10 @@ const open_album = () => {
 <style scoped>
 section {
    width:100%;
+   margin-top:12rem;
 }
 .meta_wrapper {
-   margin-top:10rem;
+   margin-top:12rem;
    margin-bottom:10rem;
 }
 

@@ -66,7 +66,7 @@ onMounted(() => {
 <style scoped>
 
 section.album_container_view {
-   background:lightblue;
+   background:var(--primary_color);;
    height:1200px;
 }
 /* configure Vue Transition component for app_nav slide-in*/

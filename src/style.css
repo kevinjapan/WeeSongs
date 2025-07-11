@@ -5,6 +5,7 @@
   line-height: 1.5;
   font-weight: 400;
 
+  --primary_color:hsl(0, 0%, 89%);
   color:#242424;
   background:white;
 
@@ -422,7 +423,7 @@ input[readonly] {
 
 
 .bg_yellow {background:yellow;}
-.bg_lightblue {background:lightblue;}
+.bg_primary {background:var(--primary);}
 .bg_info {background:hsl(120, 73%, 85%);}
 
 

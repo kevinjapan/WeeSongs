@@ -26,6 +26,6 @@ a {
    font-weight:400;
 }
 a:hover {
-   font-weight:600;
+   font-weight:400;
 }
 </style>

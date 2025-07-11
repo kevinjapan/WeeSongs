@@ -28,6 +28,7 @@ const is_selected_section = (daw) => {
 
 <template>
    <div v-if="song" class="song_outline">
+      <div class="outline_label">outline</div>
       <div v-for="section in song.songsheet.aSections" :key="section.id" :data-section-type="section.title"
          :class="{
             intro : is_section_type('intro',section.title),
@@ -55,13 +56,18 @@ const is_selected_section = (daw) => {
    gap:0;
    margin:auto;
    width:fit-content;
-   padding:.5rem;
-   order:2;
+   align-items:center;
+   align-self:center;
+   padding:0;
+   /* order:2; */
+}
+.outline_label {
+   padding-right:1rem;
 }
 @media (min-width: 1110px) {
    .song_outline {
       margin:unset;
-      order:1;
+      /* order:1; */
    }
 }
 .outline_section {
