@@ -254,6 +254,7 @@ nav.app_nav.opened > div.app_nav_dimmer {
       height:var(--app_nav_height);
       margin:0;
       padding:0;
+      padding-bottom:1rem;
       font-size:1.2rem;
       font-weight:300;
 

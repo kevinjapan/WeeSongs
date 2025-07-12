@@ -65,7 +65,8 @@ section {
    width:100%;
 }
 .lyrics_wrapper {
-   margin-top:12rem;
+   margin-top:15rem;
    margin-bottom:10rem;
+   padding:0 2rem;
 }
 </style>
